@@ -97,7 +97,7 @@ namespace TheMainEvent_Capstone
 			if (Debugger.IsAttached)
 			{
 				// An unhandled exception has occurred; break into the debugger
-				Debugger.Break();
+					Debugger.Break();
 			}
 		}
 

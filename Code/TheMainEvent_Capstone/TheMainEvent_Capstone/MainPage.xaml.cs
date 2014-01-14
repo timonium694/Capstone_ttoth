@@ -19,7 +19,6 @@ namespace TheMainEvent_Capstone
 		{
 			InitializeComponent();
 
-
 			// Sample code to localize the ApplicationBar
 			//BuildLocalizedApplicationBar();
 		}
