@@ -33,6 +33,7 @@
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 			<Button x:Name="Login" Content="Login" HorizontalAlignment="Left" Margin="169,450,0,0" VerticalAlignment="Top" Click="Login_Click"/>
+			<Button x:Name="Update" Content="Update" HorizontalAlignment="Left" Margin="169,378,0,0" VerticalAlignment="Top" Click="Update_Click"/>
 		</Grid>
 
 	</Grid>

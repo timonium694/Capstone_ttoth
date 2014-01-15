@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace TheMainEvent_Capstone.Model
 {
-	class Event
+	public class Event
 	{
+		public string ID { get; set; }
 		public string Address { get; set; }
 		public string Title { get; set; }
+		public DateTime Date { get; set; }
+		public string OtherDetails { get; set; }
+		public string Description { get; set; }
+
 	}
 }

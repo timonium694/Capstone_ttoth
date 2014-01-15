@@ -7,6 +7,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using TheMainEvent_Capstone.Resources;
+using Parse;
 
 namespace TheMainEvent_Capstone
 {
@@ -17,6 +18,7 @@ namespace TheMainEvent_Capstone
 		/// </summary>
 		/// <returns>The root frame of the Phone Application.</returns>
 		public static PhoneApplicationFrame RootFrame { get; private set; }
+		
 
 		/// <summary>
 		/// Constructor for the Application object.
@@ -28,6 +30,7 @@ namespace TheMainEvent_Capstone
 
 			// Standard XAML initialization
 			InitializeComponent();
+			ParseClient.Initialize("IGsDi6HHQcDsNBSTYmR6FCSArVf69Kqr8BiQppnY", "ESSQP4LAnMLxk9iVKkceQS7h3C7oIE8cJBkM0wkY");
 
 			// Phone-specific initialization
 			InitializePhoneApplication();
@@ -55,6 +58,12 @@ namespace TheMainEvent_Capstone
 				PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
 			}
 
+		}
+		private async void Test()
+		{
+			var testObject = new ParseObject("TestObject");
+			testObject["foo"] = "bar";
+			await testObject.SaveAsync();
 		}
 
 		// Code to execute when the application is launching (eg, from Start)
@@ -97,7 +106,7 @@ namespace TheMainEvent_Capstone
 			if (Debugger.IsAttached)
 			{
 				// An unhandled exception has occurred; break into the debugger
-					Debugger.Break();
+				Debugger.Break();
 			}
 		}
 

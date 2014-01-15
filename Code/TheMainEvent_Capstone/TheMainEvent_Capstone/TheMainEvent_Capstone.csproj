@@ -93,7 +93,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataAccessLayer\EventDAL.cs" />
+    <Compile Include="DataAccessLayer\UserDAL.cs" />
     <Compile Include="Model\Event.cs" />
+    <Compile Include="Model\EventOwner.cs" />
     <Compile Include="Model\GeoCoder\GeocodeQueryHandler.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -102,6 +105,8 @@
     <Compile Include="MapPage.xaml.cs">
       <DependentUpon>MapPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\EventAttendee.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -159,6 +164,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\Interface\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Parse">
+      <HintPath>..\packages\Parse.1.2.12\lib\wp8\Parse.dll</HintPath>
+    </Reference>
+    <Reference Include="Parse.Phone">
+      <HintPath>..\packages\Parse.1.2.12\lib\wp8\Parse.Phone.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
