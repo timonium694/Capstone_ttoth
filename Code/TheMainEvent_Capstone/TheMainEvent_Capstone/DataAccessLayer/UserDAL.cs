@@ -52,5 +52,26 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 				Console.WriteLine(ex.Message);
 			}
 		}
+		public async void AddContact(string userId, string ContactId)
+		{
+			ParseObject contact = new ParseObject("Contact");
+			contact["userId"] = userId;
+			contact["contactId"] = ContactId;
+			await contact.SaveAsync();
+		}
+		public async Task<List<User>> GetContacts(string userId)
+		{
+			var query = from contact in ParseObject.GetQuery("Contact")
+						where contact.Get<string>("userId").Equals("userId")
+						select contact;
+			IEnumerable<ParseObject> cons = await query.FindAsync();
+			List<User> contacts = new List<User>();
+			foreach (ParseObject p in cons)
+			{
+				User u = await this.RetrieveUser(p.Get<string>("contactId"));
+				contacts.Add(u);
+			}
+			return contacts;
+		}
 	}
 }

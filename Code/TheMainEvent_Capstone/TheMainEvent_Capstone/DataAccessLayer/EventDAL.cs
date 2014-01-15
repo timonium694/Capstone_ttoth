@@ -47,6 +47,20 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			ParseObject po = new ParseObject("EventAttendee");
 			po["userId"] = userId;
 			po["eventId"] = eventId;
+
+
+
+			var query = (from accept in ParseObject.GetQuery("UserInvites")
+						 where accept.Get<string>("userId").Equals(userId)
+						 where accept.Get<string>("eventId").Equals(eventId)
+						 select accept);
+			IEnumerable<ParseObject> events = await query.FindAsync();
+			ParseObject invite = events.FirstOrDefault();
+			if (invite != null)
+			{
+				invite["isAccepted"] = "true";
+				await invite.SaveAsync();
+			}
 			await po.SaveAsync();
 		}
 		public async void UpdateEvent(string id, Event e)
@@ -62,7 +76,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			await temp.SaveAsync();
 
 		}
-		private async Task<List<User>> GetAttendees(string eventId)
+		public async Task<List<User>> GetAttendees(string eventId)
 		{
 			var query = (from attendee in ParseObject.GetQuery("EventAttendee")
 						 where attendee.Get<string>("userId") == eventId
@@ -71,7 +85,13 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			List<User> users = new List<User>();
 			foreach (ParseObject p in ids)
 			{
-				users.Add(new User() { Email = p.Get<string>("email"), Id = p.ObjectId, Password = p.Get<string>("password"), Username = p.Get<string>("username") });
+				users.Add(new User()
+				{
+					Email = p.Get<string>("email"),
+					Id = p.ObjectId,
+					Password = p.Get<string>("password"),
+					Username = p.Get<string>("username")
+				});
 			}
 
 			return users;
@@ -85,6 +105,56 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			UserDAL ud = new UserDAL();
 			User u = await ud.RetrieveUser(last.Get<string>("ownerId"));
 			return u;
+		}
+		public async void InviteUser(string userId, string eventId)
+		{
+			ParseObject p = new ParseObject("UserInvites");
+			p["userId"] = userId;
+			p["eventId"] = eventId;
+			p["isAccepted"] = "false";
+			await p.SaveAsync();
+		}
+		public async Task<List<Event>> GetInvitesForUser(string userId)
+		{
+			var query = (from invite in ParseObject.GetQuery("UserInvites")
+						 where invite.Get<string>("userId").Equals(userId)
+						 where invite.Get<string>("isAccepted").Equals("false")
+						 select invite);
+			IEnumerable<ParseObject> events = await query.FindAsync();
+			List<Event> evs = new List<Event>();
+			foreach (ParseObject o in events)
+			{
+				string id = o.Get<string>("eventId");
+				Event e = await this.RetrieveEvent(id);
+				evs.Add(e);
+			}
+			return evs;
+		}
+		public async Task<List<User>> GetInvitees(string eventId)
+		{
+			var query = (from invite in ParseObject.GetQuery("UserInvites")
+						 where invite.Get<string>("eventId").Equals(eventId)
+						 where invite.Get<string>("isAccepted").Equals("false")
+						 select invite);
+			IEnumerable<ParseObject> invites = await query.FindAsync();
+			List<User> users = new List<User>();
+			foreach (ParseObject o in invites)
+			{
+				UserDAL ud = new UserDAL();
+				User u = await ud.RetrieveUser(o.Get<string>("userId"));
+				users.Add(u);
+			}
+			return users;
+		}
+		public async void RejectInvitation(string userId, string eventId)
+		{
+			var query = (from accept in ParseObject.GetQuery("UserInvites")
+						 where accept.Get<string>("userId").Equals(userId)
+						 where accept.Get<string>("eventId").Equals(eventId)
+						 select accept);
+			IEnumerable<ParseObject> events = await query.FindAsync();
+			ParseObject invite = events.FirstOrDefault();
+			await invite.DeleteAsync();
 		}
 
 	}
