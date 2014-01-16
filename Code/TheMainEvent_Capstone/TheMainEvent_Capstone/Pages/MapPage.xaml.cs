@@ -34,7 +34,7 @@ namespace TheMainEvent_Capstone
 		{
 			InitializeComponent();
 			Loaded += MapPage_Loaded;
-			//Use this to ask check consent was given to use the map control
+			//Use this to check that consent was given to use the map control
 			//if ((bool)IsolatedStorageSettings.ApplicationSettings["LocationConsent"] != true)
 			//{
 			//	return;

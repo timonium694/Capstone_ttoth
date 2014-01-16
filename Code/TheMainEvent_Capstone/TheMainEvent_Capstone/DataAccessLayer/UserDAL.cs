@@ -11,23 +11,29 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 	class UserDAL
 	{
 		private User u;
-		
+
 		public async Task<User> RetrieveUser(string id)
 		{
 			var query = (from user in ParseUser.Query
-						where user.ObjectId == id
-						select user);
+						 where user.ObjectId == id
+						 select user);
 			IEnumerable<ParseUser> ids = await query.FindAsync();
 			ParseUser last = ids.FirstOrDefault();
-			this.u = new User() { Email=last.Get<string>("email"), Id = last.ObjectId, Password = last.Get<string>("password"), Username = last.Get<string>("username") };
+			this.u = new User()
+			{
+				Email = last.Get<string>("email"),
+				Id = last.ObjectId,
+				Password = last.Get<string>("password"),
+				Username = last.Get<string>("username")
+			};
 			return this.u;
 		}
-		public async void CreateUser(User u) 
+		public async void CreateUser(User u)
 		{
 			try
 			{
 				//Get the highest valid number
-				var query = from id in ParseObject.GetQuery("Id")
+				var query = from id in ParseObject.GetQuery("")
 							where id.Get<int>("number") > 1
 							select id;
 				IEnumerable<ParseObject> ids = await query.FindAsync();
@@ -43,7 +49,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 
 				//save next id
 				tempId++;
-				ParseObject temp = new ParseObject("Id");
+				ParseObject temp = new ParseObject("");
 				temp["number"] = tempId;
 				await temp.SaveAsync();
 			}
@@ -55,20 +61,20 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		public async void AddContact(string userId, string ContactId)
 		{
 			ParseObject contact = new ParseObject("Contact");
-			contact["userId"] = userId;
-			contact["contactId"] = ContactId;
+			contact["user"] = userId;
+			contact["contact"] = ContactId;
 			await contact.SaveAsync();
 		}
 		public async Task<List<User>> GetContacts(string userId)
 		{
 			var query = from contact in ParseObject.GetQuery("Contact")
-						where contact.Get<string>("userId").Equals("userId")
+						where contact.Get<string>("user").Equals("user")
 						select contact;
 			IEnumerable<ParseObject> cons = await query.FindAsync();
 			List<User> contacts = new List<User>();
 			foreach (ParseObject p in cons)
 			{
-				User u = await this.RetrieveUser(p.Get<string>("contactId"));
+				User u = await this.RetrieveUser(p.Get<string>("contact"));
 				contacts.Add(u);
 			}
 			return contacts;

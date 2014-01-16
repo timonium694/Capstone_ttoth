@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheMainEvent_Capstone.Model
 {
-	class EventOwner
+	public class EventOwner
 	{
 		public string EventId { get; set; }
 		public string UserId { get; set; }

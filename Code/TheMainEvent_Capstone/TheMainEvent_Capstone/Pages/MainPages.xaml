@@ -18,17 +18,38 @@
 		<!--Pivot Control-->
 		<phone:Pivot Title="The Main Event">
 			<!--Pivot item one-->
-			<phone:PivotItem Header="Events" Margin="12,90,12,0">
-				<phone:LongListSelector x:Name="EventsList" Margin="0,0,-12,0" ItemsSource="{Binding Events}" Height="541" VerticalAlignment="Bottom" SelectionChanged="EventsList_SelectionChanged">
-					<phone:LongListSelector.ItemTemplate>
-						<DataTemplate>
-							<StackPanel Margin="0,0,0,17">
-								<TextBlock  Text="{Binding Title}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-								<TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-							</StackPanel>
-						</DataTemplate>
-					</phone:LongListSelector.ItemTemplate>
-				</phone:LongListSelector>
+			<phone:PivotItem Header="Events">
+				<Grid Margin="12,0,-12,0">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="20*"/>
+						<RowDefinition Height="80*"/>
+					</Grid.RowDefinitions>
+					<StackPanel HorizontalAlignment="Center" Grid.Row="0" Orientation="Horizontal">
+						<Button x:Name="FindEvent" Content="Find Events" Height="70" Click="FindEvent_Click" />
+						<Button x:Name="CreateEvent" Content="New Event" Height="70" Click="CreateEvent_Click"/>
+					</StackPanel>
+					<phone:LongListSelector
+						Grid.Row="1" x:Name="EventsList" 
+						ItemsSource="{Binding Events}" 
+						SelectionChanged="EventsList_SelectionChanged">
+						<phone:LongListSelector.ItemTemplate>
+							<DataTemplate>
+								<StackPanel>
+									<TextBlock Text="{Binding Title}"
+											   TextWrapping="Wrap"
+											   Style="{StaticResource PhoneTextExtraLargeStyle}"
+											   />
+									<TextBlock 
+										Text="{Binding Description}"
+										TextWrapping="Wrap"
+										Style="{StaticResource PhoneTextSubtleStyle}"
+										/>
+								</StackPanel>
+							</DataTemplate>
+						</phone:LongListSelector.ItemTemplate>
+					</phone:LongListSelector>
+
+				</Grid>
 			</phone:PivotItem>
 
 			<!--Pivot item two-->

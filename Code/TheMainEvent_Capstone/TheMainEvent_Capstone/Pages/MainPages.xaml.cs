@@ -9,6 +9,8 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Collections.ObjectModel;
 using TheMainEvent_Capstone.Model.ViewModels;
+using TheMainEvent_Capstone.DataAccessLayer;
+using TheMainEvent_Capstone.Model;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -17,56 +19,58 @@ namespace TheMainEvent_Capstone.Pages
 		ObservableCollection<EventViewModel> Events = new ObservableCollection<EventViewModel>();
 		public MainPages()
 		{
-
 			InitializeComponent();
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
 			this.LoadEvents();
-			EventsList.ItemsSource = this.Events;
 			//Load all the data:
 			//Contacts, Events, Invites, 
 		}
-		private void LoadEvents()
+		protected override void OnNavigatedFrom(NavigationEventArgs e)
 		{
-			Events.Add(new EventViewModel()
+			base.OnNavigatedFrom(e);
+			this.Events.Clear();
+		}
+		private async void LoadEvents()
+		{
+			EventDAL ed = new EventDAL();
+			List<Event> events = await ed.GetUserEvents("1iQVkxqPGY");
+			foreach (Event e in events)
 			{
-				Address = "143 South Main St",
-				Date = DateTime.Now,
-				Description = "Come have fun",
-				OtherDetails = "BYOD",
-				Title = "Party"
-			});
-			Events.Add(new EventViewModel()
-			{
-				Address = "143 South Main St",
-				Date = DateTime.Now,
-				Description = "Come have fun",
-				OtherDetails = "BYOD",
-				Title = "Party 1"
-			});
-			Events.Add(new EventViewModel()
-			{
-				Address = "143 South Main St",
-				Date = DateTime.Now,
-				Description = "Come have fun",
-				OtherDetails = "BYOD",
-				Title = "Party 2"
-			});
-			Events.Add(new EventViewModel()
-			{
-				Address = "143 South Main St",
-				Date = DateTime.Now,
-				Description = "Come have fun",
-				OtherDetails = "BYOD",
-				Title = "Party 3"
-			});
+				Events.Add(new EventViewModel()
+				{
+					Address = e.Address,
+					Date = e.Date,
+					Description = e.Description,
+					OtherDetails = e.OtherDetails,
+					Title = e.Title,
+					ID=e.ID,
+					City=e.City,
+					Type=e.City,
+					State=e.State,
+				});
+			}
+			
+			
+			EventsList.ItemsSource = this.Events;
 		}
 
 		private void EventsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			//MessageBox.Show(((EventViewModel)EventsList.SelectedItem).Title);
-			NavigationService.Navigate(new Uri("/Pages/MapPage.xaml?msg=" + ((EventViewModel)EventsList.SelectedItem).Address + ", Salt Lake City", UriKind.Relative));
+			EventViewModel evm = (EventViewModel)EventsList.SelectedItem;
+			NavigationService.Navigate(new Uri("/Pages/MapPage.xaml?msg=" + evm.Address + ", " + evm.City + ", " + evm.State , UriKind.Relative));
+		}
+
+		private void FindEvent_Click(object sender, RoutedEventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/FindEvents.xaml", UriKind.Relative));
+		}
+
+		private void CreateEvent_Click(object sender, RoutedEventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/CreateEvent.xaml", UriKind.Relative));
 		}
 	}
 }

@@ -21,7 +21,10 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			   Date = p.Get<DateTime>("date"),
 			   Description = p.Get<string>("description"),
 			   OtherDetails = p.Get<string>("otherDetails"),
-			   ID = p.ObjectId
+			   ID = p.ObjectId,
+			   City = p.Get<string>("city"),
+			   State = p.Get<string>("state"),
+			   Type = p.Get<string>("type")
 		   };
 			return returnEvent;
 		}
@@ -33,26 +36,29 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			temp["description"] = e.Description;
 			temp["otherDetails"] = e.OtherDetails;
 			temp["date"] = e.Date;
+			temp["city"] = e.City;
+			temp["state"] = e.State;
+			temp["type"] = e.Type;
 			await temp.SaveAsync();
 		}
 		public async void SetOwner(string eventId, string ownerId)
 		{
 			ParseObject po = new ParseObject("EventOwner");
-			po["ownerId"] = ownerId;
-			po["eventId"] = eventId;
+			po["owner"] = ownerId;
+			po["event"] = eventId;
 			await po.SaveAsync();
 		}
 		public async void AddAttendee(string eventId, string userId)
 		{
 			ParseObject po = new ParseObject("EventAttendee");
-			po["userId"] = userId;
-			po["eventId"] = eventId;
+			po["user"] = userId;
+			po["event"] = eventId;
 
 
 
 			var query = (from accept in ParseObject.GetQuery("UserInvites")
-						 where accept.Get<string>("userId").Equals(userId)
-						 where accept.Get<string>("eventId").Equals(eventId)
+						 where accept.Get<string>("user").Equals(userId)
+						 where accept.Get<string>("event").Equals(eventId)
 						 select accept);
 			IEnumerable<ParseObject> events = await query.FindAsync();
 			ParseObject invite = events.FirstOrDefault();
@@ -73,13 +79,16 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			temp["description"] = e.Description;
 			temp["otherDetails"] = e.OtherDetails;
 			temp["date"] = e.Date;
+			temp["city"] = e.City;
+			temp["state"] = e.State;
+			temp["type"] = e.Type;
 			await temp.SaveAsync();
 
 		}
 		public async Task<List<User>> GetAttendees(string eventId)
 		{
 			var query = (from attendee in ParseObject.GetQuery("EventAttendee")
-						 where attendee.Get<string>("userId") == eventId
+						 where attendee.Get<string>("user") == eventId
 						 select attendee);
 			IEnumerable<ParseObject> ids = await query.FindAsync();
 			List<User> users = new List<User>();
@@ -99,41 +108,49 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		private async Task<User> GetOwner(string eventId)
 		{
 			var query = (from owner in ParseObject.GetQuery("EventOwner")
-						 where owner.Get<string>("eventId") == eventId
+						 where owner.Get<string>("event") == eventId
 						 select owner);
 			ParseObject last = await query.FirstAsync();
 			UserDAL ud = new UserDAL();
-			User u = await ud.RetrieveUser(last.Get<string>("ownerId"));
+			User u = await ud.RetrieveUser(last.Get<string>("owner"));
 			return u;
 		}
-		public async void InviteUser(string userId, string eventId)
+		public async void InviteUser(string userId, string eventId, string inviterId)
 		{
 			ParseObject p = new ParseObject("UserInvites");
-			p["userId"] = userId;
-			p["eventId"] = eventId;
+			p["user"] = userId;
+			p["event"] = eventId;
+			p["inviter"] = inviterId;
 			p["isAccepted"] = "false";
 			await p.SaveAsync();
 		}
-		public async Task<List<Event>> GetInvitesForUser(string userId)
+		public async Task<List<UserInvite>> GetInvitesForUser(string userId)
 		{
 			var query = (from invite in ParseObject.GetQuery("UserInvites")
-						 where invite.Get<string>("userId").Equals(userId)
+						 where invite.Get<string>("user").Equals(userId)
 						 where invite.Get<string>("isAccepted").Equals("false")
 						 select invite);
 			IEnumerable<ParseObject> events = await query.FindAsync();
-			List<Event> evs = new List<Event>();
+			List<UserInvite> invites = new List<UserInvite>();
 			foreach (ParseObject o in events)
 			{
-				string id = o.Get<string>("eventId");
+				string id = o.Get<string>("event");
 				Event e = await this.RetrieveEvent(id);
-				evs.Add(e);
+				UserInvite i = new UserInvite()
+				{
+					InviteeId = o.Get<string>("user"),
+					InviterId = o.Get<string>("inviter"),
+					IsAccepted = o.Get<string>("isAccepted"),
+					Event = e
+				};
+				invites.Add(i);
 			}
-			return evs;
+			return invites;
 		}
 		public async Task<List<User>> GetInvitees(string eventId)
 		{
 			var query = (from invite in ParseObject.GetQuery("UserInvites")
-						 where invite.Get<string>("eventId").Equals(eventId)
+						 where invite.Get<string>("event").Equals(eventId)
 						 where invite.Get<string>("isAccepted").Equals("false")
 						 select invite);
 			IEnumerable<ParseObject> invites = await query.FindAsync();
@@ -141,7 +158,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			foreach (ParseObject o in invites)
 			{
 				UserDAL ud = new UserDAL();
-				User u = await ud.RetrieveUser(o.Get<string>("userId"));
+				User u = await ud.RetrieveUser(o.Get<string>("user"));
 				users.Add(u);
 			}
 			return users;
@@ -149,12 +166,34 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		public async void RejectInvitation(string userId, string eventId)
 		{
 			var query = (from accept in ParseObject.GetQuery("UserInvites")
-						 where accept.Get<string>("userId").Equals(userId)
-						 where accept.Get<string>("eventId").Equals(eventId)
+						 where accept.Get<string>("user").Equals(userId)
+						 where accept.Get<string>("event").Equals(eventId)
 						 select accept);
 			IEnumerable<ParseObject> events = await query.FindAsync();
 			ParseObject invite = events.FirstOrDefault();
 			await invite.DeleteAsync();
+		}
+		public async Task<List<Event>> GetUserEvents(string userId)
+		{
+			List<Event> evs = new List<Event>();
+			try
+			{
+				var query = (from accept in ParseObject.GetQuery("eventAttendee")
+							 where accept.Get<string>("user").Equals(userId)
+							 select accept);
+				IEnumerable<ParseObject> events = await query.FindAsync();
+				foreach (ParseObject p in events)
+				{
+					Event e = await this.RetrieveEvent(p.Get<string>("event"));
+					
+					evs.Add(e);
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+			return evs;
 		}
 
 	}

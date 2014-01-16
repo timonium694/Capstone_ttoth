@@ -33,10 +33,16 @@ namespace TheMainEvent_Capstone
 			NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
 		}
 
-		private void Update_Click(object sender, RoutedEventArgs e)
+		private void usernameBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
 		{
-
+			TextBox box = (TextBox)sender;
+			if (box.Text.Equals("Username"))
+			{
+				box.Text = "";
+			}
 		}
+
+		
 
 
 

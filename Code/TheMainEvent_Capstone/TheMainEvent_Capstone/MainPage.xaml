@@ -33,9 +33,8 @@
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 			<Button x:Name="Login" Content="Login" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Login_Click" Margin="174,376,174,0"/>
-
-			<PasswordBox HorizontalAlignment="Center" VerticalAlignment="Center" Width="255"/>
-			<TextBox HorizontalAlignment="Left" Height="72" Margin="100,196,0,0" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="256"/>
+			<PasswordBox x:Name="passwordBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="255"/>
+			<TextBox x:Name="usernameBox" HorizontalAlignment="Left" Height="72" Margin="100,196,0,0" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="256" Tap="usernameBox_Tap"/>
 			<TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontSize="49" Margin="101,34,0,0" TextWrapping="Wrap" Text="Welcome!" VerticalAlignment="Top" Width="255" Height="91"/>
 		</Grid>
 
