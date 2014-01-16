@@ -17,9 +17,11 @@ C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\D
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\TheMainEvent_Capstone.dll
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\TheMainEvent_Capstone.pdb
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\XapCacheFile.xml
-C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\MapPage.g.cs
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\Bin\Debug\Parse.dll
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\Bin\Debug\Parse.Phone.dll
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\Bin\Debug\Parse.xml
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\Bin\Debug\Parse.Phone.xml
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\TheMainEvent_Capstone.csprojResolveAssemblyReference.cache
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\Bin\Debug\Microsoft.Phone.Controls.dll
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\Pages\MainPages.g.cs
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\Pages\MapPage.g.cs

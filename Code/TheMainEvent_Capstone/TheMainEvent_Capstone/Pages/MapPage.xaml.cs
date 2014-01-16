@@ -42,7 +42,7 @@ namespace TheMainEvent_Capstone
 		}
 		void MapPage_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.FindMultipleLocations(this.TestCoordinates);
+			//this.FindMultipleLocations(this.TestCoordinates);
 			//this.FindLocation("London");
 			//Route between the Transamerica Pyramid and the ferry building in San Francisco
 			//this.FindRoute(new GeoCoordinate(37.79547, -122.393129), new GeoCoordinate(37.794911, -122.402871));
@@ -50,6 +50,13 @@ namespace TheMainEvent_Capstone
 
 		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
 		{
+			base.OnNavigatedTo(e);
+			string msg = "";
+			if (NavigationContext.QueryString.TryGetValue("msg", out msg))
+			{
+				//MessageBox.Show(msg);
+				this.FindLocation(msg);
+			}
 			if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
 			{
 				// User has opted in or out of Location
@@ -73,6 +80,7 @@ namespace TheMainEvent_Capstone
 
 				IsolatedStorageSettings.ApplicationSettings.Save();
 			}
+			
 		}
 
 		protected override void OnNavigatedFrom(NavigationEventArgs e)

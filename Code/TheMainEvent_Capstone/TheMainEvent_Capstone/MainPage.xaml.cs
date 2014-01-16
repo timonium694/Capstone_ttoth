@@ -27,22 +27,10 @@ namespace TheMainEvent_Capstone
 			//BuildLocalizedApplicationBar();
 		}
 
-		private async void Login_Click(object sender, RoutedEventArgs e)
+		private void Login_Click(object sender, RoutedEventArgs e)
 		{
-			try
-			{
-				//UserDAL u = new UserDAL();
-				User user = new User() { Username = "Timonium", Password = "password", Email = "this@email.com" };
-				//u.CreateUser(user);
-				EventDAL ed = new EventDAL();
-				Event ev = await ed.RetrieveEvent("AMO92Ltaf3");
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message);
-			}
 			//this.InsertTest(test);
-			//NavigationService.Navigate(new Uri("/MapPage.xaml", UriKind.Relative));
+			NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
 		}
 
 		private void Update_Click(object sender, RoutedEventArgs e)

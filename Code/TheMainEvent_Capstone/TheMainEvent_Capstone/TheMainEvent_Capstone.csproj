@@ -102,7 +102,12 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MapPage.xaml.cs">
+    <Compile Include="Model\ViewModels\ContactViewModel.cs" />
+    <Compile Include="Model\ViewModels\EventViewModel.cs" />
+    <Compile Include="Pages\MainPages.xaml.cs">
+      <DependentUpon>MainPages.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MapPage.xaml.cs">
       <DependentUpon>MapPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\EventAttendee.cs" />
@@ -123,7 +128,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MapPage.xaml">
+    <Page Include="Pages\MainPages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MapPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -166,6 +175,7 @@
     <Folder Include="Model\Interface\" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Parse">
       <HintPath>..\packages\Parse.1.2.12\lib\wp8\Parse.dll</HintPath>
     </Reference>
