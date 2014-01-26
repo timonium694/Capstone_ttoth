@@ -14,17 +14,16 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 
 		public async Task<User> RetrieveUser(string id)
 		{
-			var query = (from user in ParseUser.Query
-						 where user.ObjectId == id
-						 select user);
-			IEnumerable<ParseUser> ids = await query.FindAsync();
+			var query = await (from user in ParseUser.Query
+							   where user.Username.Equals(id)
+							   select user).FindAsync();
+			IEnumerable<ParseUser> ids = query.ToList();
 			ParseUser last = ids.FirstOrDefault();
 			this.u = new User()
 			{
-				Email = last.Get<string>("email"),
+				Email = last.Email,
 				Id = last.ObjectId,
-				Password = last.Get<string>("password"),
-				Username = last.Get<string>("username")
+				Username = last.Username
 			};
 			return this.u;
 		}
@@ -32,26 +31,10 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		{
 			try
 			{
-				//Get the highest valid number
-				var query = from id in ParseObject.GetQuery("")
-							where id.Get<int>("number") > 1
-							select id;
-				IEnumerable<ParseObject> ids = await query.FindAsync();
-				ParseObject last = ids.Last();
-				int tempId = last.Get<int>("number");
-				//Finish getting the number
-
 				//Sign up user
-				var user = new ParseUser() { Username = u.Username, Email = u.Email, Password = u.Password };
-				user["number"] = tempId;
+				var user = new ParseUser() { Username = u.Username, Email = u.Email, Password = u.Password, };
+				user["phone"] = u.Phone;
 				await user.SignUpAsync();
-
-
-				//save next id
-				tempId++;
-				ParseObject temp = new ParseObject("");
-				temp["number"] = tempId;
-				await temp.SaveAsync();
 			}
 			catch (Exception ex)
 			{

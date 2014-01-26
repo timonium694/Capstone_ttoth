@@ -10,6 +10,11 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 {
 	public class EventDAL
 	{
+		/// <summary>
+		/// Input the eventId to receive the event code.
+		/// </summary>
+		/// <param name="objectId"></param>
+		/// <returns></returns>
 		public async Task<Event> RetrieveEvent(string objectId)
 		{
 			ParseQuery<ParseObject> query = ParseObject.GetQuery("Event");
@@ -28,17 +33,23 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		   };
 			return returnEvent;
 		}
+
+		/// <summary>
+		/// Input the event in order to add it to the Parse DB.
+		/// </summary>
+		/// <param name="e"></param>
 		public async void CreateEvent(Event e)
 		{
 			ParseObject temp = new ParseObject("Event");
 			temp["title"] = e.Title;
-			temp["address"] = e.Title;
+			temp["address"] = e.Address;
 			temp["description"] = e.Description;
 			temp["otherDetails"] = e.OtherDetails;
 			temp["date"] = e.Date;
 			temp["city"] = e.City;
 			temp["state"] = e.State;
 			temp["type"] = e.Type;
+			temp["cost"] = e.Cost;
 			await temp.SaveAsync();
 		}
 		public async void SetOwner(string eventId, string ownerId)

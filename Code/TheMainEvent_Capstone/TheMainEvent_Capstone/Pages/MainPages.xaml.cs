@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using TheMainEvent_Capstone.Model.ViewModels;
 using TheMainEvent_Capstone.DataAccessLayer;
 using TheMainEvent_Capstone.Model;
+using Parse;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -23,7 +24,31 @@ namespace TheMainEvent_Capstone.Pages
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
-			this.LoadEvents();
+			UserDAL ud = new UserDAL();
+			ud.CreateUser(new User() 
+			{
+				Username = "Test Adding",
+				Email = "timonium694@gmail.com",
+				Password = "CorrectHorse1",
+				Phone = "330-766-0092"
+			});
+
+
+			//EventDAL ed = new EventDAL();
+			//Event ev = new Event()
+			//{
+			//	Address = "Here",
+			//	Date = DateTime.Now,
+			//	Description = "Test Event",
+			//	Title = "Test Event 2",
+			//	OtherDetails = "This is a test event",
+			//	City = "Salt Lake City",
+			//	State = "Utah",
+			//	Type = "Concert",
+			//	Cost = 30.00
+			//};
+			//ed.CreateEvent(ev);
+			//this.LoadEvents();
 			//Load all the data:
 			//Contacts, Events, Invites, 
 		}
@@ -45,14 +70,14 @@ namespace TheMainEvent_Capstone.Pages
 					Description = e.Description,
 					OtherDetails = e.OtherDetails,
 					Title = e.Title,
-					ID=e.ID,
-					City=e.City,
-					Type=e.City,
-					State=e.State,
+					ID = e.ID,
+					City = e.City,
+					Type = e.City,
+					State = e.State,
 				});
 			}
-			
-			
+
+
 			EventsList.ItemsSource = this.Events;
 		}
 
@@ -60,7 +85,7 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			//MessageBox.Show(((EventViewModel)EventsList.SelectedItem).Title);
 			EventViewModel evm = (EventViewModel)EventsList.SelectedItem;
-			NavigationService.Navigate(new Uri("/Pages/MapPage.xaml?msg=" + evm.Address + ", " + evm.City + ", " + evm.State , UriKind.Relative));
+			NavigationService.Navigate(new Uri("/Pages/MapPage.xaml?msg=" + evm.Address + ", " + evm.City + ", " + evm.State, UriKind.Relative));
 		}
 
 		private void FindEvent_Click(object sender, RoutedEventArgs e)
