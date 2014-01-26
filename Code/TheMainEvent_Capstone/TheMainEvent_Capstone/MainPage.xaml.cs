@@ -42,6 +42,11 @@ namespace TheMainEvent_Capstone
 			}
 		}
 
+		private void registrationButton_Click(object sender, RoutedEventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/RegistrationPage.xaml", UriKind.Relative));
+		}
+
 		
 
 

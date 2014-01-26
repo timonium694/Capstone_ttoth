@@ -39,18 +39,12 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			info["user"] = ParseUser.CurrentUser;
 			await info.SaveAsync();
 		}
-		public async void CreateUser(User u, UserInfo ui)
+		public async void CreateUser(User u)
 		{
-			try
-			{
-				//Sign up user
-				var user = new ParseUser() { Username = u.Username, Email = u.Email, Password = u.Password, };
-				await user.SignUpAsync();
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.Message);
-			}
+			//Sign up user
+			var user = new ParseUser() { Username = u.Username, Email = u.Email, Password = u.Password, };
+			await user.SignUpAsync();
+			
 		}
 		public async void AddContact(string userId, string ContactId)
 		{

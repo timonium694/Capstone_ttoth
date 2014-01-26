@@ -24,14 +24,6 @@ namespace TheMainEvent_Capstone.Pages
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
-			UserDAL ud = new UserDAL();
-			ud.CreateUser(new User()
-			{
-				Username = "Testing New Users",
-				Email = "timonium@gmail.com",
-				Password = "CorrectHorse1",
-			}, new UserInfo() { Active ="true", Bio ="new Bio", Birthday = DateTime.Now, FirstName ="Tim", LastName="Toth" });
-
 
 			//EventDAL ed = new EventDAL();
 			//Event ev = new Event()
