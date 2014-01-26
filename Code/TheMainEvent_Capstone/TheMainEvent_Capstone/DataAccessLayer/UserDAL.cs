@@ -27,13 +27,24 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			};
 			return this.u;
 		}
-		public async void CreateUser(User u)
+		public async void CreateUserInfo(UserInfo ui)
+		{
+			ParseObject info = new ParseObject("UserInfo");
+			info["firstName"] = ui.FirstName;
+			info["lastName"] = ui.LastName;
+			info["phone"] = ui.Phone;
+			info["bio"] = ui.Bio;
+			info["birthday"] = ui.Birthday;
+			info["active"] = ui.Active;
+			info["user"] = ParseUser.CurrentUser;
+			await info.SaveAsync();
+		}
+		public async void CreateUser(User u, UserInfo ui)
 		{
 			try
 			{
 				//Sign up user
 				var user = new ParseUser() { Username = u.Username, Email = u.Email, Password = u.Password, };
-				user["phone"] = u.Phone;
 				await user.SignUpAsync();
 			}
 			catch (Exception ex)
@@ -48,17 +59,16 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			contact["contact"] = ContactId;
 			await contact.SaveAsync();
 		}
-		public async Task<List<User>> GetContacts(string userId)
+		public async Task<List<string>> GetContacts(string userId)
 		{
 			var query = from contact in ParseObject.GetQuery("Contact")
 						where contact.Get<string>("user").Equals("user")
 						select contact;
 			IEnumerable<ParseObject> cons = await query.FindAsync();
-			List<User> contacts = new List<User>();
+			List<string> contacts = new List<string>();
 			foreach (ParseObject p in cons)
 			{
-				User u = await this.RetrieveUser(p.Get<string>("contact"));
-				contacts.Add(u);
+				contacts.Add(p.Get<string>("contact"));
 			}
 			return contacts;
 		}

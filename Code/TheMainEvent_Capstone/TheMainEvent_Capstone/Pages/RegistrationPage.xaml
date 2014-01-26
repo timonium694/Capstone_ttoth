@@ -1,0 +1,54 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="TheMainEvent_Capstone.Pages.RegistrationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="Registration" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+			<StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock VerticalAlignment="Center" FontSize="28" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" Text="Username"/>
+					<TextBox x:Name="usernameBox" Height="72" Width="250" TextWrapping="Wrap" Text=""/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock VerticalAlignment="Center" FontSize="28" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" Text="Email"/>
+					<TextBox x:Name="emailBox" Margin="59,0,0,0" Height="72" Width="250" TextWrapping="Wrap" Text=""/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock VerticalAlignment="Center" FontSize="28" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" Text="Password "/>
+					<PasswordBox x:Name="passwordBox" Width="250" Margin="3,0,0,0"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock VerticalAlignment="Center" FontSize="28" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" Text="Confirm"/>
+					<PasswordBox x:Name="confirmPasswordBox" Width="250" Margin="27,0,0,0"/>
+				</StackPanel>
+				<Button Content="Continue" Width="175" x:Name="Continue" Click="Continue_Click"/>
+				<TextBlock HorizontalAlignment="Center" Text="*Validation errors go here*"/>
+			</StackPanel>
+		</Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>

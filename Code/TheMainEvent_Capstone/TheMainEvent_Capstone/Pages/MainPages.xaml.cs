@@ -25,13 +25,12 @@ namespace TheMainEvent_Capstone.Pages
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
 			UserDAL ud = new UserDAL();
-			ud.CreateUser(new User() 
+			ud.CreateUser(new User()
 			{
-				Username = "Test Adding",
-				Email = "timonium694@gmail.com",
+				Username = "Testing New Users",
+				Email = "timonium@gmail.com",
 				Password = "CorrectHorse1",
-				Phone = "330-766-0092"
-			});
+			}, new UserInfo() { Active ="true", Bio ="new Bio", Birthday = DateTime.Now, FirstName ="Tim", LastName="Toth" });
 
 
 			//EventDAL ed = new EventDAL();
