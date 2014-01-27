@@ -33,13 +33,14 @@ namespace TheMainEvent_Capstone
 				NavigationService.Navigate(new Uri("MainPage.xaml", UriKind.Relative));
 			}
 		}
-		private async void Login_Click(object sender, RoutedEventArgs e)
+		//Set this method to async
+		private void Login_Click(object sender, RoutedEventArgs e)
 		{
 			try
 			{
 				string username = usernameBox.Text;
 				string password = passwordBox.Password;
-				await ParseUser.LogInAsync(username, password);
+				//await ParseUser.LogInAsync(username, password);
 			}
 			catch (Exception ex)
 			{

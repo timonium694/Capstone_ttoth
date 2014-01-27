@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Parse;
 using TheMainEvent_Capstone.Model;
+using System.Globalization;
 
 namespace TheMainEvent_Capstone.DataAccessLayer
 {
@@ -205,6 +206,33 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 				Console.WriteLine(ex.Message);
 			}
 			return evs;
+		}
+		public async Task<List<Event>> GetAllEvents(string searchTerm)
+		{
+			CultureInfo c = new CultureInfo("en-EN");
+			List<Event> output = new List<Event>();
+			var query = (from accept in ParseObject.GetQuery("Event")
+						 where c.CompareInfo.IndexOf(accept.Get<string>("user"), searchTerm, CompareOptions.IgnoreCase)>0
+						 select accept);
+			IEnumerable<ParseObject> events = await query.FindAsync();
+			foreach (ParseObject p in events)
+			{
+				Event returnEvent = new Event()
+				{
+					Title = p.Get<string>("title"),
+					Address = p.Get<string>("address"),
+					Date = p.Get<DateTime>("date"),
+					Description = p.Get<string>("description"),
+					OtherDetails = p.Get<string>("otherDetails"),
+					ID = p.ObjectId,
+					City = p.Get<string>("city"),
+					State = p.Get<string>("state"),
+					Type = p.Get<string>("type"),
+					Cost = p.Get<double>("cost")
+				};
+				output.Add(returnEvent);
+			}
+			return output;
 		}
 
 	}
