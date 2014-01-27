@@ -27,6 +27,7 @@ namespace TheMainEvent_Capstone.Pages
 				string confirmPassword = confirmPasswordBox.Password;
 
 				if (!password.Equals(confirmPassword)) throw new Exception("Passwords must match.");
+				if (password.Equals("password", StringComparison.OrdinalIgnoreCase)) throw new Exception("Your password must not be \"password\".");
 
 				string email = emailBox.Text;
 				string username = usernameBox.Text;

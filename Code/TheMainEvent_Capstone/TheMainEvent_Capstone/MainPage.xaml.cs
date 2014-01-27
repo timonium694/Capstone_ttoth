@@ -26,10 +26,25 @@ namespace TheMainEvent_Capstone
 			// Sample code to localize the ApplicationBar
 			//BuildLocalizedApplicationBar();
 		}
-
-		private void Login_Click(object sender, RoutedEventArgs e)
+		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
-			//this.InsertTest(test);
+			if (ParseUser.CurrentUser != null)
+			{
+				NavigationService.Navigate(new Uri("MainPage.xaml", UriKind.Relative));
+			}
+		}
+		private async void Login_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				string username = usernameBox.Text;
+				string password = passwordBox.Password;
+				await ParseUser.LogInAsync(username, password);
+			}
+			catch (Exception ex)
+			{
+				NavigationService.Navigate(new Uri("MainPage.xaml?msg="+ex.Message, UriKind.Relative));
+			}
 			NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
 		}
 
