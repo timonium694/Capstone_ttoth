@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Parse;
 using TheMainEvent_Capstone.Model;
 using System.Globalization;
+using TheMainEvent_Capstone.Model.ViewModels;
 
 namespace TheMainEvent_Capstone.DataAccessLayer
 {
@@ -207,12 +208,13 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			}
 			return evs;
 		}
-		public async Task<List<Event>> GetAllEvents(string searchTerm)
+		public async Task<List<Event>> BasicEventFilter(string searchTerm)
 		{
 			CultureInfo c = new CultureInfo("en-EN");
 			List<Event> output = new List<Event>();
 			var query = (from accept in ParseObject.GetQuery("Event")
-						 where c.CompareInfo.IndexOf(accept.Get<string>("user"), searchTerm, CompareOptions.IgnoreCase)>0
+						 where c.CompareInfo.IndexOf(accept.Get<string>("user"), searchTerm, CompareOptions.IgnoreCase) > 0 || 
+						 c.CompareInfo.IndexOf(accept.Get<string>("type"), searchTerm, CompareOptions.IgnoreCase) > 0
 						 select accept);
 			IEnumerable<ParseObject> events = await query.FindAsync();
 			foreach (ParseObject p in events)
@@ -234,6 +236,28 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			}
 			return output;
 		}
+		public List<EventViewModel> BasicSort(List<EventViewModel> events, int sort)
+		{
+			List<EventViewModel> sorted = new List<EventViewModel>();
+			switch (sort)
+			{
+					//title
+				case 0:
+					sorted = events.OrderBy(x => x.Title).ToList();
+					break;
+
+				//date
+				case 1:
+					sorted = events.OrderBy(x => x.Date).ToList();
+					break;
+
+				case 2:
+					sorted = events.OrderBy(x => x.DistanceInMeters).ToList();
+					break;
+			}
+			return sorted;
+		}
+
 
 	}
 }
