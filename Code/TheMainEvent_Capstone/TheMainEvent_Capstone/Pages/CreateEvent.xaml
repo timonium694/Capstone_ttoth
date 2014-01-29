@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     x:Class="TheMainEvent_Capstone.Pages.CreateEvent"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -27,14 +28,21 @@
 			<TextBlock Text="New Event" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
 		</StackPanel>
 
-		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-			<TextBlock Text="Event Title" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
-			<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="275" Margin="55,82,55,0"/>
-			<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Street Address" VerticalAlignment="Top" Width="275" Margin="91,151,90,0"/>
-			<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Width="275" Margin="91,219,90,0"/>
-			<!--The rest of the elements go here-->
-			<Button HorizontalAlignment="Center" Width="125" Height="70" Content="Done" Margin="166,296,165,241"/>
-		</Grid>
+		<ScrollViewer Grid.Row="1">
+			<StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
+				<TextBlock Text="Event Title" HorizontalAlignment="Center" Style="{StaticResource PhoneTextTitle2Style}"/>
+				<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="275" Tap="TextBox_Tap"/>
+				<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Street Address" VerticalAlignment="Top" Width="275"/>
+				<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="State" VerticalAlignment="Top" Width="275"/>
+				<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Width="275"/>
+				<ScrollViewer x:Name="scrollViewer" Height="200" VerticalScrollBarVisibility="Auto">
+					<toolkit:PhoneTextBox x:Name="description" Text="Description" Width="275" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
+				</ScrollViewer>
+				<toolkit:DatePicker HorizontalAlignment="Center"	/>
+				<toolkit:TimePicker HorizontalAlignment="Center"/>
+				<Button HorizontalAlignment="Center" Width="125" Height="70" Content="Done"/>
+			</StackPanel>
+		</ScrollViewer>
 	</Grid>
 
 </phone:PhoneApplicationPage>

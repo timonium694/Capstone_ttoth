@@ -30,23 +30,24 @@ namespace TheMainEvent_Capstone
 		{
 			if (ParseUser.CurrentUser != null)
 			{
-				NavigationService.Navigate(new Uri("MainPage.xaml", UriKind.Relative));
+				NavigationService.Navigate(new Uri("Pages/MainPages.xaml", UriKind.Relative));
 			}
 		}
 		//Set this method to async
 		private void Login_Click(object sender, RoutedEventArgs e)
 		{
-			try
-			{
-				string username = usernameBox.Text;
-				string password = passwordBox.Password;
-				//await ParseUser.LogInAsync(username, password);
-			}
-			catch (Exception ex)
-			{
-				NavigationService.Navigate(new Uri("MainPage.xaml?msg="+ex.Message, UriKind.Relative));
-			}
-			NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
+			NavigationService.Navigate(new Uri("/Pages/CreateEvent.xaml", UriKind.Relative));
+			//try
+			//{
+			//	string username = usernameBox.Text;
+			//	string password = passwordBox.Password;
+			//	//await ParseUser.LogInAsync(username, password);
+			//}
+			//catch (Exception ex)
+			//{
+			//	NavigationService.Navigate(new Uri("MainPage.xaml?msg="+ex.Message, UriKind.Relative));
+			//}
+			//NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
 		}
 
 		private void usernameBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -64,8 +65,6 @@ namespace TheMainEvent_Capstone
 		}
 
 		
-
-
 
 
 
