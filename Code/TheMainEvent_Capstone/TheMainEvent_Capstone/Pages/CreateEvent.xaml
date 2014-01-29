@@ -15,14 +15,14 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
-	<!--LayoutRoot is the root grid where all page content is placed-->
+	
 	<Grid x:Name="LayoutRoot" Background="Transparent">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<!--TitlePanel contains the name of the application and page title-->
+		
 		<StackPanel Grid.Row="0" Margin="12,17,0,28">
 			<TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}"/>
 			<TextBlock Text="New Event" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
@@ -30,16 +30,46 @@
 
 		<ScrollViewer Grid.Row="1">
 			<StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
+				
+				
 				<TextBlock Text="Event Title" HorizontalAlignment="Center" Style="{StaticResource PhoneTextTitle2Style}"/>
-				<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="275" Tap="TextBox_Tap"/>
-				<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Street Address" VerticalAlignment="Top" Width="275"/>
-				<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="State" VerticalAlignment="Top" Width="275"/>
-				<TextBox HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Width="275"/>
-				<ScrollViewer x:Name="scrollViewer" Height="200" VerticalScrollBarVisibility="Auto">
+				<TextBox x:Name="title" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="275" Tap="TextBox_Tap"/>
+				<TextBox x:Name="address" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Street Address" VerticalAlignment="Top" Width="275"/>
+				
+				<TextBox x:Name="state" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="State" VerticalAlignment="Top" Width="275"/>
+				<TextBox x:Name="city" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Width="275"/>
+				<ScrollViewer x:Name="scrollViewer" Height="200" Width="290" VerticalScrollBarVisibility="Auto">
 					<toolkit:PhoneTextBox x:Name="description" Text="Description" Width="275" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
 				</ScrollViewer>
-				<toolkit:DatePicker HorizontalAlignment="Center"	/>
-				<toolkit:TimePicker HorizontalAlignment="Center"/>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<toolkit:DatePicker x:Name="date"/>
+					<toolkit:TimePicker x:Name="time"/>
+				</StackPanel>
+				<ScrollViewer x:Name="scrollViewerOtherDetails" Height="200" Width="290" VerticalScrollBarVisibility="Auto">
+					<toolkit:PhoneTextBox x:Name="otherDetails" Text="Description" Width="275" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
+				</ScrollViewer>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="260">
+					<TextBlock Text="Cost $" Margin="0,0,-5,0" FontSize="35" VerticalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+					<TextBox x:Name="cost" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" Width="174"/>
+				</StackPanel>
+				<toolkit:ExpanderView FontSize="25" x:Name="inviteExpander" Header="Invite" HorizontalAlignment="Center" Width="350">
+					<toolkit:ExpanderView.Items>
+						<toolkit:LongListMultiSelector x:Name="contacts" ItemsSource="{Binding Users}" Height="450" LayoutMode="List" EnforceIsSelectionEnabled="True">
+							<toolkit:LongListMultiSelector.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding Name}"
+											   TextWrapping="Wrap"
+											   Style="{StaticResource PhoneTextNormalStyle}"
+											   FontSize="25"
+											   />
+								</DataTemplate>
+							</toolkit:LongListMultiSelector.ItemTemplate>
+						</toolkit:LongListMultiSelector>
+					</toolkit:ExpanderView.Items>
+					<toolkit:ExpanderView.Expander>
+						<TextBlock Width="250" Text="Contacts"/>
+					</toolkit:ExpanderView.Expander>
+				</toolkit:ExpanderView>
 				<Button HorizontalAlignment="Center" Width="125" Height="70" Content="Done"/>
 			</StackPanel>
 		</ScrollViewer>

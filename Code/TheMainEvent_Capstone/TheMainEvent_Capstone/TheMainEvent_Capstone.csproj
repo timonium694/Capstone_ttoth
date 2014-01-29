@@ -106,8 +106,14 @@
     <Compile Include="Model\UserInvite.cs" />
     <Compile Include="Model\ViewModels\ContactViewModel.cs" />
     <Compile Include="Model\ViewModels\EventViewModel.cs" />
+    <Compile Include="Pages\Contact.xaml.cs">
+      <DependentUpon>Contact.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\CreateEvent.xaml.cs">
       <DependentUpon>CreateEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EventPage.xaml.cs">
+      <DependentUpon>EventPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FindEvents.xaml.cs">
       <DependentUpon>FindEvents.xaml</DependentUpon>
@@ -142,7 +148,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Contact.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\CreateEvent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\EventPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
