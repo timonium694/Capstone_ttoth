@@ -32,25 +32,25 @@
 			<StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
 				
 				
-				<TextBlock Text="Event Title" HorizontalAlignment="Center" Style="{StaticResource PhoneTextTitle2Style}"/>
-				<TextBox x:Name="title" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="275" Tap="TextBox_Tap"/>
-				<TextBox x:Name="address" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Street Address" VerticalAlignment="Top" Width="275"/>
+				<TextBlock x:Name="titleBlock" Text="Event Title" HorizontalAlignment="Center" Style="{StaticResource PhoneTextTitle2Style}"/>
+				<TextBox x:Name="titleBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="275" TextChanged="title_TextChanged"/>
+				<TextBox x:Name="addressBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="Street Address" VerticalAlignment="Top" Width="275"/>
 				
-				<TextBox x:Name="state" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="State" VerticalAlignment="Top" Width="275"/>
-				<TextBox x:Name="city" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Width="275"/>
+				<TextBox x:Name="stateBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="State" VerticalAlignment="Top" Width="275"/>
+				<TextBox x:Name="cityBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Width="275"/>
 				<ScrollViewer x:Name="scrollViewer" Height="200" Width="290" VerticalScrollBarVisibility="Auto">
-					<toolkit:PhoneTextBox x:Name="description" Text="Description" Width="275" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
+					<toolkit:PhoneTextBox x:Name="descriptionBox" Text="Description" Width="275" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
 				</ScrollViewer>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-					<toolkit:DatePicker x:Name="date"/>
-					<toolkit:TimePicker x:Name="time"/>
+					<toolkit:DatePicker x:Name="datePicker"/>
+					<toolkit:TimePicker x:Name="timePicker"/>
 				</StackPanel>
 				<ScrollViewer x:Name="scrollViewerOtherDetails" Height="200" Width="290" VerticalScrollBarVisibility="Auto">
-					<toolkit:PhoneTextBox x:Name="otherDetails" Text="Description" Width="275" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
+					<toolkit:PhoneTextBox x:Name="otherDetailsBox" Text="Description" Width="275" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
 				</ScrollViewer>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="260">
 					<TextBlock Text="Cost $" Margin="0,0,-5,0" FontSize="35" VerticalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
-					<TextBox x:Name="cost" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" Width="174"/>
+					<TextBox x:Name="costBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" Width="174"/>
 				</StackPanel>
 				<toolkit:ExpanderView FontSize="25" x:Name="inviteExpander" Header="Invite" HorizontalAlignment="Center" Width="350">
 					<toolkit:ExpanderView.Items>

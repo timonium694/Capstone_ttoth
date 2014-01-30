@@ -29,9 +29,15 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		}
 		public async Task<UserInfo> GetUserInfo(string id)
 		{
+
+			var query1 = await (from user in ParseUser.Query
+								where user.Username.Equals(id)
+								select user).FindAsync();
+			IEnumerable<ParseUser> iuds = query1.ToList();
+			ParseUser last = iuds.FirstOrDefault();
 			var query = await (from post in ParseObject.GetQuery("UserInfo")
-									where post.Get<ParseUser>("user").ObjectId.Equals(id)
-									select post).FindAsync();
+							   where post.Get<ParseUser>("user") == last
+							   select post).FindAsync();
 			IEnumerable<ParseObject> ids = query.ToList();
 			ParseObject p = ids.FirstOrDefault();
 			UserInfo output = new UserInfo();
@@ -76,7 +82,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		public async Task<List<string>> GetContacts(string userId)
 		{
 			var query = from contact in ParseObject.GetQuery("Contact")
-						where contact.Get<string>("user").Equals("user")
+						where contact.Get<string>("user").Equals(userId)
 						select contact;
 			IEnumerable<ParseObject> cons = await query.FindAsync();
 			List<string> contacts = new List<string>();

@@ -13,6 +13,7 @@ using TheMainEvent_Capstone.Model.ViewModels;
 using TheMainEvent_Capstone.DataAccessLayer;
 using Parse;
 using TheMainEvent_Capstone.Model;
+using System.Collections;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -33,30 +34,38 @@ namespace TheMainEvent_Capstone.Pages
 			{
 				user = ParseUser.CurrentUser;
 			}
-			city.Tap += this.TextBox_Tap;
-			address.Tap += this.TextBox_Tap;
-			state.Tap += this.TextBox_Tap;
-			cost.Tap += this.TextBox_Tap;
-			description.Tap += this.TextBox_Tap;
-			otherDetails.Tap += this.TextBox_Tap;
-			title.Tap += this.TextBox_Tap;
+			cityBox.Tap += this.TextBox_Tap;
+			addressBox.Tap += this.TextBox_Tap;
+			stateBox.Tap += this.TextBox_Tap;
+			costBox.Tap += this.TextBox_Tap;
+			descriptionBox.Tap += this.TextBox_Tap;
+			otherDetailsBox.Tap += this.TextBox_Tap;
+			titleBox.Tap += this.TextBox_Tap;
 		}
 		private async void AddUsers()
 		{
 			UserDAL ud = new UserDAL();
 			List<string> ids = new List<string>();
-			ids = await ud.GetContacts(user.ObjectId);
+			ids = await ud.GetContacts("1iQVkxqPGY");
 			foreach (string id in ids)
 			{
-				UserInfo ui = await ud.GetUserInfo(id);
-				Users.Add(new ContactViewModel()
+				try
 				{
-					Name = ui.FirstName + " " + ui.LastName,
-					Id = ui.Id,
-					Bio = ui.Bio,
-					Birthday = ui.Birthday,
-					Phone = ui.Phone,
-				});
+					UserInfo ui = await ud.GetUserInfo(id);
+					Users.Add(new ContactViewModel()
+					{
+						Name = ui.FirstName + " " + ui.LastName,
+						Id = ui.Id,
+						Bio = ui.Bio,
+						Birthday = ui.Birthday,
+						Phone = ui.Phone,
+					});
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+				}
+				
 			}
 
 			contacts.ItemsSource = Users;
@@ -66,7 +75,9 @@ namespace TheMainEvent_Capstone.Pages
 		private void OnTextInputStart(object sender, TextCompositionEventArgs e)
 		{
 			scrollViewer.UpdateLayout();
-			scrollViewer.ScrollToVerticalOffset(description.ActualHeight);
+			scrollViewer.ScrollToVerticalOffset(descriptionBox.ActualHeight);
+			//scrollViewerOtherDetails.UpdateLayout();
+			//scrollViewerOtherDetails.ScrollToVerticalOffset(descriptionBox.ActualHeight);
 		}
 
 		private void TextBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -80,11 +91,28 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void createButton_Click(object sender, RoutedEventArgs e)
 		{
-			Event ev = new Event();
+			Event ev = new Event()
+			{
+				City = cityBox.Text,
+				Address = addressBox.Text,
+				State = stateBox.Text,
+				Description = descriptionBox.Text,
+				OtherDetails = otherDetailsBox.Text,
+				Title = titleBox.Text
+			};
 			List<ContactViewModel> invitees = new List<ContactViewModel>();
+			IList data = contacts.SelectedItems;
 			foreach (Object i in contacts.SelectedItems)
 			{
+				invitees.Add((ContactViewModel)i);
 			}
+			EventDAL ed = new EventDAL();
+			ed.CreateEvent(ev);
+		}
+
+		private void title_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			titleBlock.Text = titleBox.Text;
 		}
 		
 	}
