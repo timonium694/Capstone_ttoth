@@ -80,7 +80,11 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void createButton_Click(object sender, RoutedEventArgs e)
 		{
-			contacts.s
+			Event ev = new Event();
+			List<ContactViewModel> invitees = new List<ContactViewModel>();
+			foreach (Object i in contacts.SelectedItems)
+			{
+			}
 		}
 		
 	}
