@@ -10,17 +10,29 @@ using Microsoft.Phone.Shell;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using TheMainEvent_Capstone.Model.ViewModels;
+using TheMainEvent_Capstone.DataAccessLayer;
+using Parse;
+using TheMainEvent_Capstone.Model;
 
 namespace TheMainEvent_Capstone.Pages
 {
 	public partial class CreateEvent : PhoneApplicationPage
 	{
 		ObservableCollection<ContactViewModel> Users = new ObservableCollection<ContactViewModel>();
+		ParseUser user;
 		public CreateEvent()
 		{
 			InitializeComponent();
 			this.AddUsers();
-			contacts.ItemsSource = Users;
+			this.SetupPage();
+		}
+
+		private void SetupPage()
+		{
+			if (ParseUser.CurrentUser != null)
+			{
+				user = ParseUser.CurrentUser;
+			}
 			city.Tap += this.TextBox_Tap;
 			address.Tap += this.TextBox_Tap;
 			state.Tap += this.TextBox_Tap;
@@ -29,33 +41,25 @@ namespace TheMainEvent_Capstone.Pages
 			otherDetails.Tap += this.TextBox_Tap;
 			title.Tap += this.TextBox_Tap;
 		}
-		private void AddUsers()
+		private async void AddUsers()
 		{
-			Users.Add(new ContactViewModel()
+			UserDAL ud = new UserDAL();
+			List<string> ids = new List<string>();
+			ids = await ud.GetContacts(user.ObjectId);
+			foreach (string id in ids)
 			{
-				Name = "John",
-				Phone = "330-766-0092",
-			});
-			Users.Add(new ContactViewModel()
-			{
-				Name = "John 1",
-				Phone = "330-766-0092",
-			});
-			Users.Add(new ContactViewModel()
-			{
-				Name = "John 2",
-				Phone = "330-766-0092",
-			});
-			Users.Add(new ContactViewModel()
-			{
-				Name = "John 3",
-				Phone = "330-766-0092",
-			});
-			Users.Add(new ContactViewModel()
-			{
-				Name = "John 4",
-				Phone = "330-766-0092",
-			});
+				UserInfo ui = await ud.GetUserInfo(id);
+				Users.Add(new ContactViewModel()
+				{
+					Name = ui.FirstName + " " + ui.LastName,
+					Id = ui.Id,
+					Bio = ui.Bio,
+					Birthday = ui.Birthday,
+					Phone = ui.Phone,
+				});
+			}
+
+			contacts.ItemsSource = Users;
 		}
 
 
@@ -72,6 +76,11 @@ namespace TheMainEvent_Capstone.Pages
 			{
 				box.Text = "";
 			}
+		}
+
+		private void createButton_Click(object sender, RoutedEventArgs e)
+		{
+			contacts.s
 		}
 		
 	}

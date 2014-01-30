@@ -27,6 +27,26 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			};
 			return this.u;
 		}
+		public async Task<UserInfo> GetUserInfo(string id)
+		{
+			var query = await (from post in ParseObject.GetQuery("UserInfo")
+									where post.Get<ParseUser>("user").ObjectId.Equals(id)
+									select post).FindAsync();
+			IEnumerable<ParseObject> ids = query.ToList();
+			ParseObject p = ids.FirstOrDefault();
+			UserInfo output = new UserInfo();
+			if (p != null)
+			{
+				output.FirstName = p.Get<string>("firstName");
+				output.LastName = p.Get<string>("lastName");
+				output.Phone = p.Get<string>("phone");
+				output.Bio = p.Get<string>("bio");
+				output.Birthday = p.Get<DateTime>("birthday");
+				output.Active = p.Get<string>("active");
+				output.Id = p.Get<ParseUser>("user").ObjectId;
+			}
+			return output;
+		}
 		public async void CreateUserInfo(UserInfo ui)
 		{
 			ParseObject info = new ParseObject("UserInfo");

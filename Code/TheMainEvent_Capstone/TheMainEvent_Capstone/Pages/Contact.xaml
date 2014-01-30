@@ -22,14 +22,26 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="nameBlock" Text="Name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
-        </Grid>
+			<StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock x:Name="bioblock" HorizontalAlignment="Left" Width="260" FontSize="24" TextWrapping="Wrap" Text="Bio Section. This is where the user bio is supposed to go whenever it is implemented. It simply needs to be bound. " VerticalAlignment="Top" />
+					<Grid HorizontalAlignment="Right">
+						<StackPanel HorizontalAlignment="Left">
+							<TextBlock x:Name="emailBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource PhoneTextSubtleStyle}" Width="175" TextWrapping="Wrap" Text="eMailaddressoftheperson"/>
+							<TextBlock x:Name="phoneBlock" HorizontalAlignment="Left" VerticalAlignment="Bottom" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Text="330-766-0092"/>
+						</StackPanel>
+					</Grid>
+				</StackPanel>
+				<Button x:Name="addContact" Content="Add as Contact" Width="250" HorizontalAlignment="Left"/>
+				<Button x:Name="setupMeeting" Content="Setup Meeting" Width="250" HorizontalAlignment="Left"/>
+			</StackPanel>
+		</Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>

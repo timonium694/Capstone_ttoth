@@ -70,7 +70,7 @@
 						<TextBlock Width="250" Text="Contacts"/>
 					</toolkit:ExpanderView.Expander>
 				</toolkit:ExpanderView>
-				<Button HorizontalAlignment="Center" Width="125" Height="70" Content="Done"/>
+				<Button x:Name="createButton" Click="createButton_Click" HorizontalAlignment="Center" Width="125" Height="70" Content="Done"/>
 			</StackPanel>
 		</ScrollViewer>
 	</Grid>
