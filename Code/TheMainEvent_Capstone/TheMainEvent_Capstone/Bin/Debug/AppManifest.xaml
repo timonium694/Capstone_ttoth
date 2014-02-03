@@ -2,6 +2,7 @@
   <Deployment.Parts>
     <AssemblyPart x:Name="TheMainEvent_Capstone" Source="TheMainEvent_Capstone.dll" />
     <AssemblyPart x:Name="Microsoft.Phone.Controls" Source="Microsoft.Phone.Controls.dll" />
+    <AssemblyPart x:Name="Microsoft.Phone.Controls.Toolkit" Source="Microsoft.Phone.Controls.Toolkit.dll" />
     <AssemblyPart x:Name="Parse" Source="Parse.dll" />
     <AssemblyPart x:Name="Parse.Phone" Source="Parse.Phone.dll" />
   </Deployment.Parts>

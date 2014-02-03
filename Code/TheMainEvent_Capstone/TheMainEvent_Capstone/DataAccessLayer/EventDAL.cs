@@ -5,11 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Parse;
 using TheMainEvent_Capstone.Model;
+using System.Globalization;
+using TheMainEvent_Capstone.Model.ViewModels;
 
 namespace TheMainEvent_Capstone.DataAccessLayer
 {
 	public class EventDAL
 	{
+		/// <summary>
+		/// Input the eventId to receive the event code.
+		/// </summary>
+		/// <param name="objectId"></param>
+		/// <returns></returns>
 		public async Task<Event> RetrieveEvent(string objectId)
 		{
 			ParseQuery<ParseObject> query = ParseObject.GetQuery("Event");
@@ -28,17 +35,23 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		   };
 			return returnEvent;
 		}
+
+		/// <summary>
+		/// Input the event in order to add it to the Parse DB.
+		/// </summary>
+		/// <param name="e"></param>
 		public async void CreateEvent(Event e)
 		{
 			ParseObject temp = new ParseObject("Event");
 			temp["title"] = e.Title;
-			temp["address"] = e.Title;
+			temp["address"] = e.Address;
 			temp["description"] = e.Description;
 			temp["otherDetails"] = e.OtherDetails;
 			temp["date"] = e.Date;
 			temp["city"] = e.City;
 			temp["state"] = e.State;
 			temp["type"] = e.Type;
+			temp["cost"] = e.Cost;
 			await temp.SaveAsync();
 		}
 		public async void SetOwner(string eventId, string ownerId)
@@ -185,7 +198,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 				foreach (ParseObject p in events)
 				{
 					Event e = await this.RetrieveEvent(p.Get<string>("event"));
-					
+
 					evs.Add(e);
 				}
 			}
@@ -195,6 +208,67 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			}
 			return evs;
 		}
+		public async Task<List<Event>> BasicEventFilter(string searchTerm)
+		{
+			CultureInfo c = new CultureInfo("en-EN");
+			List<Event> output = new List<Event>();
+			var query = (from accept in ParseObject.GetQuery("Event")
+						 where c.CompareInfo.IndexOf(accept.Get<string>("user"), searchTerm, CompareOptions.IgnoreCase) > 0 ||
+						 c.CompareInfo.IndexOf(accept.Get<string>("type"), searchTerm, CompareOptions.IgnoreCase) > 0
+						 select accept);
+			IEnumerable<ParseObject> events = await query.FindAsync();
+			foreach (ParseObject p in events)
+			{
+				Event returnEvent = new Event()
+				{
+					Title = p.Get<string>("title"),
+					Address = p.Get<string>("address"),
+					Date = p.Get<DateTime>("date"),
+					Description = p.Get<string>("description"),
+					OtherDetails = p.Get<string>("otherDetails"),
+					ID = p.ObjectId,
+					City = p.Get<string>("city"),
+					State = p.Get<string>("state"),
+					Type = p.Get<string>("type"),
+					Cost = p.Get<double>("cost")
+				};
+				output.Add(returnEvent);
+			}
+			return output;
+		}
+		public List<EventViewModel> BasicSort(List<EventViewModel> events, int sort)
+		{
+			List<EventViewModel> sorted = new List<EventViewModel>();
+			switch (sort)
+			{
+				//title
+				case 0:
+					sorted = events.OrderBy(x => x.Title).ToList();
+					break;
 
+				//date
+				case 1:
+					sorted = events.OrderBy(x => x.Date).ToList();
+					break;
+
+				case 2:
+					sorted = events.OrderBy(x => x.DistanceInMeters).ToList();
+					break;
+			}
+			return sorted;
+		}
+
+
+
+		public async Task<string> NewestEventFromUser(string owner)
+		{
+			var query = (from ev in ParseObject.GetQuery("EventOwner")
+						 where ev.Get<string>("owner") == owner
+						select ev);
+			IEnumerable<ParseObject> events = await query.FindAsync();
+			ParseObject e = events.Last();
+			string id = e.Get<string>("event");
+			return id;
+		}
 	}
 }

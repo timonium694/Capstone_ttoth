@@ -1,38 +1,30 @@
 ﻿using Microsoft.Phone.Maps.Services;
 using System;
 using System.Collections.Generic;
+using System.Device.Location;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
+using Windows.Devices.Geolocation;
 
 namespace TheMainEvent_Capstone
 {
-	static class GeocodeQueryHandler
+	public class GeocodeQueryHandler
 	{
-		public static Task<IList<MapLocation>> ExecuteAsync(this GeocodeQuery query)
+		public GeocodeQuery gquery { get; set; }
+		public GeoCoordinate currentLoc { get; set; }
+		private double accuracy = 0.0;
+
+		public void ReturnCoordinates(string address)
 		{
-			var taskSource = new TaskCompletionSource<IList<MapLocation>>();
-
-			EventHandler<QueryCompletedEventArgs<IList<MapLocation>>> handler = null;
-
-			handler = (s, e) =>
-			{
-				query.QueryCompleted -= handler;
-
-				if (e.Cancelled)
-					taskSource.SetCanceled();
-				else if (e.Error != null)
-					taskSource.SetException(e.Error);
-				else
-					taskSource.SetResult(e.Result);
-			};
-
-			query.QueryCompleted += handler;
-
-			query.QueryAsync();
-
-			return taskSource.Task;
+			gquery = new GeocodeQuery()
+		   {
+			   SearchTerm = address,
+			   GeoCoordinate = new GeoCoordinate(0, 0)
+		   };
 		}
-		
+
 	}
 }

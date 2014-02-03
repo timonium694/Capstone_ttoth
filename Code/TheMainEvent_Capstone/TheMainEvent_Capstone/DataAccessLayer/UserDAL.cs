@@ -14,49 +14,63 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 
 		public async Task<User> RetrieveUser(string id)
 		{
-			var query = (from user in ParseUser.Query
-						 where user.ObjectId == id
-						 select user);
-			IEnumerable<ParseUser> ids = await query.FindAsync();
+			var query = await (from user in ParseUser.Query
+							   where user.Username.Equals(id)
+							   select user).FindAsync();
+			IEnumerable<ParseUser> ids = query.ToList();
 			ParseUser last = ids.FirstOrDefault();
 			this.u = new User()
 			{
-				Email = last.Get<string>("email"),
+				Email = last.Email,
 				Id = last.ObjectId,
-				Password = last.Get<string>("password"),
-				Username = last.Get<string>("username")
+				Username = last.Username
 			};
 			return this.u;
 		}
+		public async Task<UserInfo> GetUserInfo(string id)
+		{
+			var query = await (from post in ParseObject.GetQuery("UserInfo")
+							   where post.Get<string>("user") == id
+							   select post).FindAsync();
+
+			IEnumerable<ParseObject> ids = query.ToList();
+			ParseObject p = ids.FirstOrDefault();
+			UserInfo output = new UserInfo();
+			if (p != null)
+			{
+				output.FirstName = p.Get<string>("firstName");
+				output.LastName = p.Get<string>("lastName");
+				output.Phone = p.Get<string>("phone");
+				output.Bio = p.Get<string>("bio");
+				output.Birthday = p.Get<DateTime>("birthday");
+				output.Active = p.Get<string>("active");
+				output.Id = p.Get<string>("user");
+			}
+			return output;
+		}
+		private bool CompareParseUsers(ParseUser user, ParseUser contact)
+		{
+			return user.Username.Equals(contact.Username);
+			
+		}
+		public async void CreateUserInfo(UserInfo ui)
+		{
+			ParseObject info = new ParseObject("UserInfo");
+			info["firstName"] = ui.FirstName;
+			info["lastName"] = ui.LastName;
+			info["phone"] = ui.Phone;
+			info["bio"] = ui.Bio;
+			info["birthday"] = ui.Birthday;
+			info["active"] = ui.Active;
+			info["user"] = ui.User;
+			await info.SaveAsync();
+		}
 		public async void CreateUser(User u)
 		{
-			try
-			{
-				//Get the highest valid number
-				var query = from id in ParseObject.GetQuery("")
-							where id.Get<int>("number") > 1
-							select id;
-				IEnumerable<ParseObject> ids = await query.FindAsync();
-				ParseObject last = ids.Last();
-				int tempId = last.Get<int>("number");
-				//Finish getting the number
-
-				//Sign up user
-				var user = new ParseUser() { Username = u.Username, Email = u.Email, Password = u.Password };
-				user["number"] = tempId;
-				await user.SignUpAsync();
-
-
-				//save next id
-				tempId++;
-				ParseObject temp = new ParseObject("");
-				temp["number"] = tempId;
-				await temp.SaveAsync();
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.Message);
-			}
+			//Sign up user
+			var user = new ParseUser() { Username = u.Username, Email = u.Email, Password = u.Password, };
+			await user.SignUpAsync();
+			
 		}
 		public async void AddContact(string userId, string ContactId)
 		{
@@ -65,17 +79,16 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			contact["contact"] = ContactId;
 			await contact.SaveAsync();
 		}
-		public async Task<List<User>> GetContacts(string userId)
+		public async Task<List<string>> GetContacts(string userId)
 		{
 			var query = from contact in ParseObject.GetQuery("Contact")
-						where contact.Get<string>("user").Equals("user")
+						where contact.Get<string>("user").Equals(userId)
 						select contact;
 			IEnumerable<ParseObject> cons = await query.FindAsync();
-			List<User> contacts = new List<User>();
+			List<string> contacts = new List<string>();
 			foreach (ParseObject p in cons)
 			{
-				User u = await this.RetrieveUser(p.Get<string>("contact"));
-				contacts.Add(u);
+				contacts.Add(p.Get<string>("contact"));
 			}
 			return contacts;
 		}
