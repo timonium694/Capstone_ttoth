@@ -22,13 +22,25 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="Type of Event" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="Event Title" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" TextWrapping="Wrap"/>
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Date" Style="{StaticResource PhoneTextSubtleStyle}"/>
+				<TextBlock Text="Time" Style="{StaticResource PhoneTextSubtleStyle}"/>
+				<TextBlock Text="$" Style="{StaticResource PhoneTextSubtleStyle}"/>
+				<TextBlock Text="5.00" Margin="-13,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+			</StackPanel>
+			<TextBlock Text="Location should go here" Style="{StaticResource PhoneTextSubtleStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
+			<StackPanel>
+				<TextBlock x:Name="descriptionBlock" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Margin="9,0,0,0" TextWrapping="Wrap" Text="Bio Section. This is where the user bio is supposed to go whenever it is implemented. I tsimply need sto be bound to " VerticalAlignment="Top" />
+				<TextBlock x:Name="detailsBlock" HorizontalAlignment="Left" Margin="9,0,0,0" FontSize="18" TextWrapping="Wrap" Text="Details: Here are some details one may need to know" VerticalAlignment="Top" />
+				<Button Content="Attend" Width="135"/>
+			</StackPanel>
+			
         </Grid>
     </Grid>
 
