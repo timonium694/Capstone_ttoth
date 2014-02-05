@@ -198,7 +198,15 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 				foreach (ParseObject p in events)
 				{
 					Event e = await this.RetrieveEvent(p.Get<string>("event"));
-
+					evs.Add(e);
+				}
+				var query1 = (from accept in ParseObject.GetQuery("EventOwner")
+							 where accept.Get<string>("owner").Equals(userId)
+							 select accept);
+				IEnumerable<ParseObject> moreEvents = await query1.FindAsync();
+				foreach (ParseObject p in events)
+				{
+					Event e = await this.RetrieveEvent(p.Get<string>("event"));
 					evs.Add(e);
 				}
 			}

@@ -76,8 +76,6 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			scrollViewer.UpdateLayout();
 			scrollViewer.ScrollToVerticalOffset(descriptionBox.ActualHeight);
-			//scrollViewerOtherDetails.UpdateLayout();
-			//scrollViewerOtherDetails.ScrollToVerticalOffset(descriptionBox.ActualHeight);
 		}
 
 		private void TextBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -91,25 +89,44 @@ namespace TheMainEvent_Capstone.Pages
 
 		private async void createButton_Click(object sender, RoutedEventArgs e)
 		{
-			Event ev = new Event()
+			try
 			{
-				City = cityBox.Text,
-				Address = addressBox.Text,
-				State = stateBox.Text,
-				Description = descriptionBox.Text,
-				OtherDetails = otherDetailsBox.Text,
-				Title = titleBox.Text
-			};
-			
-			EventDAL ed = new EventDAL();
-			ed.CreateEvent(ev);
-			string eventToAdd = await ed.NewestEventFromUser("1iQVkxqPGY");
-			string inviter = ParseUser.CurrentUser.ObjectId;
-			foreach (Object i in contacts.SelectedItems)
-			{
-				ContactViewModel con = (ContactViewModel)i;
-				ed.InviteUser(con.Id, eventToAdd, inviter);
+				Event ev = new Event()
+				{
+					City = cityBox.Text,
+					Address = addressBox.Text,
+					State = stateBox.Text,
+					Description = descriptionBox.Text,
+					OtherDetails = otherDetailsBox.Text,
+					Title = titleBox.Text,
+					Date = (DateTime)datePicker.Value
+				};
+				double cost = 0;
+				if (double.TryParse(costBox.Text, out cost))
+				{
+					ev.Cost = cost;
+				}
+				else
+				{
+					throw new Exception("Make sure the cost follows the format of a price e.g.: 9.00");
+				}
+
+				EventDAL ed = new EventDAL();
+				ed.CreateEvent(ev);
+				string creatorId = ParseUser.CurrentUser.ObjectId;
+				string eventToAdd = await ed.NewestEventFromUser("1iQVkxqPGY");
+				ed.SetOwner(eventToAdd, creatorId);
+				foreach (Object i in contacts.SelectedItems)
+				{
+					ContactViewModel con = (ContactViewModel)i;
+					ed.InviteUser(con.Id, eventToAdd, creatorId);
+				}
 			}
+			catch (Exception ex)
+			{
+				NavigationService.Navigate(new Uri("/Pages/MapPage.xaml?msg=" + ex.Message, UriKind.Relative));
+			}
+			NavigationService.Navigate(new Uri("/Pages/MapPage.xaml", UriKind.Relative));
 		}
 
 		private void title_TextChanged(object sender, TextChangedEventArgs e)
