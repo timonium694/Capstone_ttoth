@@ -53,11 +53,32 @@
 			</phone:PivotItem>
 
 			<!--Pivot item two-->
-			<phone:PivotItem Header="Contancts">
+			<phone:PivotItem Header="Contacts">
 				<Grid/>
 			</phone:PivotItem>
 			<phone:PivotItem Header="Invites">
-				<Grid/>
+				<Grid>
+					<phone:LongListSelector
+						x:Name="InviteList" 
+						ItemsSource="{Binding Invites}" 
+						SelectionChanged="InviteList_SelectionChanged">
+						<phone:LongListSelector.ItemTemplate>
+							<DataTemplate>
+								<StackPanel>
+									<TextBlock Text="{Binding Title}"
+											   TextWrapping="Wrap"
+											   Style="{StaticResource PhoneTextExtraLargeStyle}"
+											   />
+									<TextBlock 
+										Text="{Binding Description}"
+										TextWrapping="Wrap"
+										Style="{StaticResource PhoneTextSubtleStyle}"
+										/>
+								</StackPanel>
+							</DataTemplate>
+						</phone:LongListSelector.ItemTemplate>
+					</phone:LongListSelector>
+				</Grid>
 			</phone:PivotItem>
 			<phone:PivotItem Header="Profile" x:Name="ProfilePage">
 				<StackPanel>

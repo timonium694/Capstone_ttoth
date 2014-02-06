@@ -127,29 +127,18 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			p["user"] = userId;
 			p["event"] = eventId;
 			p["inviter"] = inviterId;
-			p["isAccepted"] = "false";
 			await p.SaveAsync();
 		}
-		public async Task<List<UserInvite>> GetInvitesForUser(string userId)
+		public async Task<List<string>> GetInvitesForUser(string userId)
 		{
 			var query = (from invite in ParseObject.GetQuery("UserInvites")
 						 where invite.Get<string>("user").Equals(userId)
-						 where invite.Get<string>("isAccepted").Equals("false")
 						 select invite);
 			IEnumerable<ParseObject> events = await query.FindAsync();
-			List<UserInvite> invites = new List<UserInvite>();
+			List<string> invites = new List<string>();
 			foreach (ParseObject o in events)
 			{
-				string id = o.Get<string>("event");
-				Event e = await this.RetrieveEvent(id);
-				UserInvite i = new UserInvite()
-				{
-					InviteeId = o.Get<string>("user"),
-					InviterId = o.Get<string>("inviter"),
-					IsAccepted = o.Get<string>("isAccepted"),
-					Event = e
-				};
-				invites.Add(i);
+				invites.Add(o.Get<string>("event"));
 			}
 			return invites;
 		}

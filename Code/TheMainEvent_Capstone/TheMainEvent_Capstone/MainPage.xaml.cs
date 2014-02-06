@@ -30,7 +30,8 @@ namespace TheMainEvent_Capstone
 		{
 			if (ParseUser.CurrentUser != null)
 			{
-				NavigationService.Navigate(new Uri("Pages/MainPages.xaml", UriKind.Relative));
+				ParseUser.LogOut();
+				//NavigationService.Navigate(new Uri("Pages/MainPages.xaml", UriKind.Relative));
 			}
 		}
 		//Set this method to async
@@ -40,7 +41,7 @@ namespace TheMainEvent_Capstone
 			{
 				string username = usernameBox.Text;
 				string password = passwordBox.Password;
-				await ParseUser.LogInAsync("Timonium", "CorrectHorse1");
+				await ParseUser.LogInAsync(username, password);
 			}
 			catch (Exception ex)
 			{

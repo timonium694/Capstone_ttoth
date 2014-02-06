@@ -37,7 +37,7 @@
 			<StackPanel>
 				<TextBlock x:Name="descriptionBlock" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Margin="9,0,0,0" TextWrapping="Wrap" Text="Bio Section. This is where the user bio is supposed to go whenever it is implemented. I tsimply need sto be bound to " VerticalAlignment="Top" />
 				<TextBlock x:Name="detailsBlock" HorizontalAlignment="Left" Margin="9,0,0,0" FontSize="18" TextWrapping="Wrap" Text="Details: Here are some details one may need to know" VerticalAlignment="Top" />
-				<TextBlock x:Name="statusBlock" HorizontalAlignment="Center" Width="250" Margin="9,0,0,0" FontSize="18" TextWrapping="Wrap" VerticalAlignment="Top" />
+				<TextBlock x:Name="statusBlock" HorizontalAlignment="Center" Margin="9,0,0,0" FontSize="16" TextWrapping="Wrap" VerticalAlignment="Top" />
 				<Button x:Name="attendButton" Content="Attend" Width="135" Click="attendButton_Click"/>
 			</StackPanel>
 			

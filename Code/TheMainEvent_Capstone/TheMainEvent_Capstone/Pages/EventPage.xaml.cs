@@ -88,6 +88,7 @@ namespace TheMainEvent_Capstone.Pages
 				{
 					this.attendButton.Visibility = Visibility.Collapsed;
 				}
+				evm.Cost = 30;
 			}
 		}
 		private void attendButton_Click(object sender, RoutedEventArgs e)
@@ -97,7 +98,7 @@ namespace TheMainEvent_Capstone.Pages
 				EventDAL ed = new EventDAL();
 				ed.AddAttendee(evm.ID, currentUser.User);
 			}
-			else if (evm.Cost != 0.00 && !owner.MerchantEmail.Equals("none"))
+			else if (!owner.MerchantEmail.Equals("none"))
 			{
 				this.PayForEvent(owner.MerchantEmail);
 				EventDAL ed = new EventDAL();
@@ -118,6 +119,7 @@ namespace TheMainEvent_Capstone.Pages
 				bn.UseSandbox = true;
 
 				ItemBuilder builder = new ItemBuilder(evm.Title).Description(evm.Description).Price(evm.Cost.ToString());
+				bn.AddItem(builder);
 
 				// Attach event handlers. The BuyNow class emits 5 events
 				// start, auth, error, cancel and complete

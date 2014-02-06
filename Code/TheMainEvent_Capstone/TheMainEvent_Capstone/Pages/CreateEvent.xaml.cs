@@ -46,7 +46,7 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			UserDAL ud = new UserDAL();
 			List<string> ids = new List<string>();
-			ids = await ud.GetContacts("1iQVkxqPGY");
+			ids = await ud.GetContacts(ParseUser.CurrentUser.ObjectId);
 			foreach (string id in ids)
 			{
 				try
@@ -115,7 +115,7 @@ namespace TheMainEvent_Capstone.Pages
 				EventDAL ed = new EventDAL();
 				ed.CreateEvent(ev);
 				string creatorId = ParseUser.CurrentUser.ObjectId;
-				string eventToAdd = await ed.NewestEventFromUser("1iQVkxqPGY");
+				string eventToAdd = await ed.NewestEventFromUser(ParseUser.CurrentUser.ObjectId);
 				ed.SetOwner(eventToAdd, creatorId);
 				foreach (Object i in contacts.SelectedItems)
 				{

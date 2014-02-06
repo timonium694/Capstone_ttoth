@@ -97,6 +97,7 @@
     <Compile Include="DataAccessLayer\UserDAL.cs" />
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\EventOwner.cs" />
+    <Compile Include="Model\EventType.cs" />
     <Compile Include="Model\GeoCoder\GeocodeQueryHandler.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -106,6 +107,7 @@
     <Compile Include="Model\UserInvite.cs" />
     <Compile Include="Model\ViewModels\ContactViewModel.cs" />
     <Compile Include="Model\ViewModels\EventViewModel.cs" />
+    <Compile Include="Model\ViewModels\InviteViewModel.cs" />
     <Compile Include="Pages\Contact.xaml.cs">
       <DependentUpon>Contact.xaml</DependentUpon>
     </Compile>

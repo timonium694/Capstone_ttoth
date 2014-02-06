@@ -19,6 +19,7 @@ namespace TheMainEvent_Capstone.Model
 		public string Description { get; set; }
 		public string Type { get; set; }
 		public double Cost { get; set; }
+		public bool IsDonatable { get; set; }
 
 
 		public override bool Equals(Object obj)

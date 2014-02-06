@@ -18,6 +18,7 @@ namespace TheMainEvent_Capstone.Pages
 	public partial class MainPages : PhoneApplicationPage
 	{
 		ObservableCollection<EventViewModel> Events = new ObservableCollection<EventViewModel>();
+		ObservableCollection<InviteViewModel> Invites = new ObservableCollection<InviteViewModel>();
 		public MainPages()
 		{
 			InitializeComponent();
@@ -25,6 +26,7 @@ namespace TheMainEvent_Capstone.Pages
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
 			this.LoadEvents();
+			this.LoadInvites();
 			//EventDAL ed = new EventDAL();
 			//Event ev = new Event()
 			//{
@@ -71,6 +73,28 @@ namespace TheMainEvent_Capstone.Pages
 
 			EventsList.ItemsSource = this.Events;
 		}
+		private async void LoadInvites()
+		{
+			EventDAL ed = new EventDAL();
+			List<string> invites = await ed.GetInvitesForUser(ParseUser.CurrentUser.ObjectId);
+			foreach(string id in invites)
+			{
+				Event e = await ed.RetrieveEvent(id);
+				InviteViewModel ivm = new InviteViewModel()
+				{
+					Title = e.Title,
+					Time = e.Time,
+					Address = e.Address + ", "+ e.City +", "+e.State,
+					ID = e.ID,
+					Cost = e.Cost,
+					Date = e.Date,
+					Type = e.Type,
+					Description = e.Description
+				};
+				this.Invites.Add(ivm);
+			}
+			InviteList.ItemsSource = this.Invites;
+		}
 
 		private void EventsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
@@ -87,6 +111,12 @@ namespace TheMainEvent_Capstone.Pages
 		private void CreateEvent_Click(object sender, RoutedEventArgs e)
 		{
 			NavigationService.Navigate(new Uri("/Pages/CreateEvent.xaml", UriKind.Relative));
+		}
+
+		private void InviteList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			InviteViewModel evm = (InviteViewModel)InviteList.SelectedItem;
+			NavigationService.Navigate(new Uri("/Pages/EventPage.xaml?msg=" + evm.ID, UriKind.Relative));
 		}
 	}
 }
