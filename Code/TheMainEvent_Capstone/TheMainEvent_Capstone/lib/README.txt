@@ -1,0 +1,1 @@
+The lib folder will be removed once we get Nuget in place

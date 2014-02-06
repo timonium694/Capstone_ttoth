@@ -55,7 +55,7 @@ namespace TheMainEvent_Capstone.Pages
 					Users.Add(new ContactViewModel()
 					{
 						Name = ui.FirstName + " " + ui.LastName,
-						Id = ui.Id,
+						User = ui.User,
 						Bio = ui.Bio,
 						Birthday = ui.Birthday,
 						Phone = ui.Phone,
@@ -99,7 +99,8 @@ namespace TheMainEvent_Capstone.Pages
 					Description = descriptionBox.Text,
 					OtherDetails = otherDetailsBox.Text,
 					Title = titleBox.Text,
-					Date = (DateTime)datePicker.Value
+					Date = (DateTime)datePicker.Value,
+					Time = (DateTime)timePicker.Value
 				};
 				double cost = 0;
 				if (double.TryParse(costBox.Text, out cost))
@@ -108,7 +109,7 @@ namespace TheMainEvent_Capstone.Pages
 				}
 				else
 				{
-					throw new Exception("Make sure the cost follows the format of a price e.g.: 9.00");
+					throw new Exception("Make sure the cost follows the format of a price e.g.: 9.50");
 				}
 
 				EventDAL ed = new EventDAL();
@@ -119,7 +120,7 @@ namespace TheMainEvent_Capstone.Pages
 				foreach (Object i in contacts.SelectedItems)
 				{
 					ContactViewModel con = (ContactViewModel)i;
-					ed.InviteUser(con.Id, eventToAdd, creatorId);
+					ed.InviteUser(con.User, eventToAdd, creatorId);
 				}
 			}
 			catch (Exception ex)

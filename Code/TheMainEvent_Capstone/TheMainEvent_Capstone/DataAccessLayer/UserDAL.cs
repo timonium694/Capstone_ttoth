@@ -44,7 +44,8 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 				output.Bio = p.Get<string>("bio");
 				output.Birthday = p.Get<DateTime>("birthday");
 				output.Active = p.Get<string>("active");
-				output.Id = p.Get<string>("user");
+				output.User = p.Get<string>("user");
+				output.MerchantEmail = p.Get<string>("merchant");
 			}
 			return output;
 		}
@@ -63,6 +64,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			info["birthday"] = ui.Birthday;
 			info["active"] = ui.Active;
 			info["user"] = ui.User;
+			info["merchant"] = "none";
 			await info.SaveAsync();
 		}
 		public async void CreateUser(User u)

@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace TheMainEvent_Capstone.Model
 {
-	class UserInfo
+	public class UserInfo
 	{
 		public string Phone { get; set; }
 		public string Bio { get; set; }
-		public string Id { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Active { get; set; }
 		public string User { get; set; }
 		public DateTime Birthday { get; set; }
+		public string MerchantEmail { get; set; }
+
+		public override bool Equals(Object obj)
+		{
+			return ((UserInfo)obj).User.Equals(this.User);
+		}
 	}
 }

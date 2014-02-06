@@ -24,7 +24,7 @@ namespace TheMainEvent_Capstone.Pages
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
-
+			this.LoadEvents();
 			//EventDAL ed = new EventDAL();
 			//Event ev = new Event()
 			//{
@@ -51,7 +51,7 @@ namespace TheMainEvent_Capstone.Pages
 		private async void LoadEvents()
 		{
 			EventDAL ed = new EventDAL();
-			List<Event> events = await ed.GetUserEvents("1iQVkxqPGY");
+			List<Event> events = await ed.GetUserEvents(ParseUser.CurrentUser.ObjectId);
 			foreach (Event e in events)
 			{
 				Events.Add(new EventViewModel()
@@ -76,7 +76,7 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			//MessageBox.Show(((EventViewModel)EventsList.SelectedItem).Title);
 			EventViewModel evm = (EventViewModel)EventsList.SelectedItem;
-			NavigationService.Navigate(new Uri("/Pages/MapPage.xaml?msg=" + evm.Address + ", " + evm.City + ", " + evm.State, UriKind.Relative));
+			NavigationService.Navigate(new Uri("/Pages/EventPage.xaml?msg=" + evm.ID, UriKind.Relative));
 		}
 
 		private void FindEvent_Click(object sender, RoutedEventArgs e)

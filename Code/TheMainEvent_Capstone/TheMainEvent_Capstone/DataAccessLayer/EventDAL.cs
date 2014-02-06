@@ -98,35 +98,28 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			await temp.SaveAsync();
 
 		}
-		public async Task<List<User>> GetAttendees(string eventId)
+		public async Task<List<string>> GetAttendees(string eventId)
 		{
-			var query = (from attendee in ParseObject.GetQuery("EventAttendee")
-						 where attendee.Get<string>("user") == eventId
+			var query = (from attendee in ParseObject.GetQuery("eventAttendee")
+						 where attendee.Get<string>("event") == eventId
 						 select attendee);
 			IEnumerable<ParseObject> ids = await query.FindAsync();
-			List<User> users = new List<User>();
+			List<string> users = new List<string>();
 			foreach (ParseObject p in ids)
 			{
-				users.Add(new User()
-				{
-					Email = p.Get<string>("email"),
-					Id = p.ObjectId,
-					Password = p.Get<string>("password"),
-					Username = p.Get<string>("username")
-				});
+				users.Add(p.Get<string>("user"));
 			}
 
 			return users;
 		}
-		private async Task<User> GetOwner(string eventId)
+		public async Task<string> GetOwner(string eventId)
 		{
 			var query = (from owner in ParseObject.GetQuery("EventOwner")
 						 where owner.Get<string>("event") == eventId
 						 select owner);
 			ParseObject last = await query.FirstAsync();
-			UserDAL ud = new UserDAL();
-			User u = await ud.RetrieveUser(last.Get<string>("owner"));
-			return u;
+			string output = last.Get<string>("owner");
+			return output;
 		}
 		public async void InviteUser(string userId, string eventId, string inviterId)
 		{
@@ -166,7 +159,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 						 where invite.Get<string>("event").Equals(eventId)
 						 where invite.Get<string>("isAccepted").Equals("false")
 						 select invite);
-			IEnumerable<ParseObject> invites = await query.FindAsync();
+			IEnumerable<ParseObject> invites = await query.FindAsync();	
 			List<User> users = new List<User>();
 			foreach (ParseObject o in invites)
 			{
@@ -207,7 +200,8 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 				foreach (ParseObject p in events)
 				{
 					Event e = await this.RetrieveEvent(p.Get<string>("event"));
-					evs.Add(e);
+					if(!evs.Contains(e)) 
+						evs.Add(e);
 				}
 			}
 			catch (Exception ex)

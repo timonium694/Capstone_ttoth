@@ -14,7 +14,9 @@ namespace TheMainEvent_Capstone.Model.ViewModels
 		public string City { get; set; }
 		public string Title { get; set; }
 		public string Type { get; set; }
+		public double Cost { get; set; }
 		public DateTime Date { get; set; }
+		public DateTime Time { get; set; }
 		public string OtherDetails { get; set; }
 		public string Description { get; set; }
 		public List<User> Invitees { get; set; }
