@@ -115,7 +115,7 @@ namespace TheMainEvent_Capstone.Pages
 				EventDAL ed = new EventDAL();
 				ed.CreateEvent(ev);
 				string creatorId = ParseUser.CurrentUser.ObjectId;
-				string eventToAdd = await ed.NewestEventFromUser(ParseUser.CurrentUser.ObjectId);
+				string eventToAdd = await ed.NewestEventFromUser(ParseUser.CurrentUser.ObjectId );
 				ed.SetOwner(eventToAdd, creatorId);
 				foreach (Object i in contacts.SelectedItems)
 				{
