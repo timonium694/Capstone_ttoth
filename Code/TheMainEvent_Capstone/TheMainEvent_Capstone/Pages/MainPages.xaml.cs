@@ -19,6 +19,7 @@ namespace TheMainEvent_Capstone.Pages
 	{
 		ObservableCollection<EventViewModel> Events = new ObservableCollection<EventViewModel>();
 		ObservableCollection<InviteViewModel> Invites = new ObservableCollection<InviteViewModel>();
+
 		public MainPages()
 		{
 			InitializeComponent();
@@ -94,6 +95,24 @@ namespace TheMainEvent_Capstone.Pages
 				this.Invites.Add(ivm);
 			}
 			InviteList.ItemsSource = this.Invites;
+		}
+
+		private async void LoadUser()
+		{
+			UserDAL ud = new UserDAL();
+			ParseUser p = ParseUser.CurrentUser;
+			UserInfo ui = await ud.GetUserInfo(p.ObjectId);
+			ContactViewModel cvm = new ContactViewModel()
+			{
+				Bio=ui.Bio,
+				Birthday = ui.Birthday,
+				Name = ui.FirstName + " " + ui.LastName,
+				Email = p.Email,
+				Phone = ui.Phone,
+				Username = p.Username
+				   
+			};
+			ProfilePage.DataContext = cvm;
 		}
 
 		private void EventsList_SelectionChanged(object sender, SelectionChangedEventArgs e)

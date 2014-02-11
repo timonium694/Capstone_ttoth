@@ -82,13 +82,13 @@
 			</phone:PivotItem>
 			<phone:PivotItem Header="Profile" x:Name="ProfilePage">
 				<StackPanel>
-					<TextBlock x:Name="nameBlock" HorizontalAlignment="Left" FontSize="49" TextWrapping="Wrap" Text="My Name" VerticalAlignment="Top" />
+					<TextBlock x:Name="nameBlock" HorizontalAlignment="Left" FontSize="49" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" />
 					<StackPanel Orientation="Horizontal">
-						<TextBlock x:Name="bioblock" HorizontalAlignment="Left" Width="260" FontSize="24" TextWrapping="Wrap" Text="Bio Section. This is where the user bio is supposed to go whenever it is implemented. I tsimply need sto be bound to " VerticalAlignment="Top" />
+						<TextBlock x:Name="bioblock" HorizontalAlignment="Left" Width="260" FontSize="24" TextWrapping="Wrap" Text="{Binding Bio}" VerticalAlignment="Top" />
 						<Grid HorizontalAlignment="Right">
 							<StackPanel HorizontalAlignment="Left">
-								<TextBlock x:Name="emailBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource PhoneTextSubtleStyle}" Width="175" TextWrapping="Wrap" Text="eMailaddressoftheperson"/>
-								<TextBlock x:Name="phoneBlock" HorizontalAlignment="Left" VerticalAlignment="Bottom" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Text="330-766-0092"/>
+								<TextBlock x:Name="emailBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource PhoneTextSubtleStyle}" Width="175" TextWrapping="Wrap" Text="{Binding Email}"/>
+								<TextBlock x:Name="phoneBlock" HorizontalAlignment="Left" VerticalAlignment="Bottom" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Text="{Binding Phone}"/>
 							</StackPanel>
 						</Grid>
 					</StackPanel>
