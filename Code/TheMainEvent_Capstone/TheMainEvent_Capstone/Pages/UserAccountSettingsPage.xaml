@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -22,14 +23,36 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="Account Settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
-        </Grid>
-    </Grid>
+		<StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+			<toolkit:ExpanderView FontSize="30" x:Name="paypalExpander" Header="PayPal" HorizontalAlignment="Center" Width="400">
+				<toolkit:ExpanderView.Items>
+					<TextBox x:Name="merchantBox"/>
+				</toolkit:ExpanderView.Items>
+				<toolkit:ExpanderView.Expander>
+					<StackPanel>
+						<TextBlock Text="Merchant Email"/>
+						<TextBlock Text="Setting cost for events" Style="{StaticResource PhoneTextSubtleStyle}"/>
+					</StackPanel>
+				</toolkit:ExpanderView.Expander>
+			</toolkit:ExpanderView>
+			<toolkit:ExpanderView FontSize="30" x:Name="twitterExpander" Header="PayPal" HorizontalAlignment="Center" Width="400">
+				<toolkit:ExpanderView.Items>
+					<TextBox x:Name="twitterBox"/>
+				</toolkit:ExpanderView.Items>
+				<toolkit:ExpanderView.Expander>
+					<StackPanel>
+						<TextBlock Text="Twitter Settings"/>
+						<TextBlock Text="Tweets for events" Style="{StaticResource PhoneTextSubtleStyle}"/>
+					</StackPanel>
+				</toolkit:ExpanderView.Expander>
+			</toolkit:ExpanderView>
+			<Button Width="150" Content="Save"/>
+		</StackPanel>
+	</Grid>
 
 </phone:PhoneApplicationPage>

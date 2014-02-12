@@ -8,8 +8,8 @@ namespace TheMainEvent_Capstone.Model
 {
 	public enum EventType
 	{
-		Private = "Private",
-		Public = "Public",
-		Personal = "Personal",
+		Private,
+		Public,
+		Personal,
 	}
 }

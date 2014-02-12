@@ -16,5 +16,14 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			InitializeComponent();
 		}
+		private void SaveSettings()
+		{
+			string email = this.merchantBox.Text;
+			string twitter = this.twitterBox.Text;
+		}
+		protected override void OnNavigatedFrom(NavigationEventArgs e)
+		{
+			this.SaveSettings();
+		}
 	}
 }
