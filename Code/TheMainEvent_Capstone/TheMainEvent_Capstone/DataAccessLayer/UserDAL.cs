@@ -52,7 +52,6 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		private bool CompareParseUsers(ParseUser user, ParseUser contact)
 		{
 			return user.Username.Equals(contact.Username);
-			
 		}
 		public async void CreateUserInfo(UserInfo ui)
 		{
@@ -93,6 +92,24 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 				contacts.Add(p.Get<string>("contact"));
 			}
 			return contacts;
+		}
+		public async void UpdateUserInfo(UserInfo ui)
+		{
+			var query = await (from post in ParseObject.GetQuery("UserInfo")
+							  where post.Get<string>("user") == ui.User
+							  select post).FindAsync();
+
+			IEnumerable<ParseObject> ids = query.ToList();
+			ParseObject info = ids.FirstOrDefault();
+			info["firstName"] = ui.FirstName;
+			info["lastName"] = ui.LastName;
+			info["phone"] = ui.Phone;
+			info["bio"] = ui.Bio;
+			info["birthday"] = ui.Birthday;
+			info["active"] = ui.Active;
+			info["user"] = ui.User;
+			info["merchant"] = "none";
+			await info.SaveAsync();
 		}
 	}
 }

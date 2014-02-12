@@ -51,7 +51,7 @@
 					</StackPanel>
 				</toolkit:ExpanderView.Expander>
 			</toolkit:ExpanderView>
-			<Button Width="150" Content="Save"/>
+			<Button Width="150" Content="Save" x:Name="saveButton" Click="saveButton_Click"/>
 		</StackPanel>
 	</Grid>
 
