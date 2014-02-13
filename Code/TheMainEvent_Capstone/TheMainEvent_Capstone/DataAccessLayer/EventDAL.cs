@@ -198,13 +198,13 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			}
 			return evs;
 		}
-		public async Task<List<Event>> BasicEventSearcher(string searchTerm)
+		public async Task<List<Event>> BasicEventSearch(string searchTerm)
 		{
 			CultureInfo c = new CultureInfo("en-EN");
 			List<Event> output = new List<Event>();
 			var query = (from accept in ParseObject.GetQuery("Event")
-						 where c.CompareInfo.IndexOf(accept.Get<string>("user"), searchTerm, CompareOptions.IgnoreCase) > 0 ||
-						 c.CompareInfo.IndexOf(accept.Get<string>("type"), searchTerm, CompareOptions.IgnoreCase) > 0
+						 where c.CompareInfo.IndexOf(accept.Get<string>("title"), searchTerm, CompareOptions.IgnoreCase) > 0 ||
+						 c.CompareInfo.IndexOf(accept.Get<string>("description"), searchTerm, CompareOptions.IgnoreCase) > 0
 						 select accept);
 			IEnumerable<ParseObject> events = await query.FindAsync();
 			foreach (ParseObject p in events)
