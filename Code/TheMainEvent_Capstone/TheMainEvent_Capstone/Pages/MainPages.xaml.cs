@@ -19,6 +19,7 @@ namespace TheMainEvent_Capstone.Pages
 	{
 		ObservableCollection<EventViewModel> Events = new ObservableCollection<EventViewModel>();
 		ObservableCollection<InviteViewModel> Invites = new ObservableCollection<InviteViewModel>();
+		private bool isLoaded = false;
 
 		public MainPages()
 		{
@@ -28,6 +29,7 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			this.LoadEvents();
 			this.LoadInvites();
+			this.isLoaded = true;
 			//EventDAL ed = new EventDAL();
 			//Event ev = new Event()
 			//{
@@ -139,8 +141,12 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void optionFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			EventDAL ed = new EventDAL();
-			EventsList.ItemsSource = ed.BasicFilter(Events.ToList(), optionFilter.SelectedIndex);
+			if (isLoaded)
+			{
+				EventDAL ed = new EventDAL();
+				EventsList.ItemsSource = ed.BasicFilter(Events.ToList(), optionFilter.SelectedIndex);
+			}
+			
 		}
 	}
 }

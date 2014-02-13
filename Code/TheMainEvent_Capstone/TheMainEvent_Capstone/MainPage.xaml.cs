@@ -41,7 +41,7 @@ namespace TheMainEvent_Capstone
 			{
 				string username = usernameBox.Text;
 				string password = passwordBox.Password;
-				await ParseUser.LogInAsync(username, password);
+				await ParseUser.LogInAsync("Timonium", "CorrectHorse1");
 			}
 			catch (Exception ex)
 			{
@@ -49,7 +49,7 @@ namespace TheMainEvent_Capstone
 			}
 
 			//NavigationService.Navigate(new Uri("/Pages/CreateEvent.xaml", UriKind.Relative));
-			NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
+			NavigationService.Navigate(new Uri("/Pages/TestPage.xaml", UriKind.Relative));
 		}
 
 		private void usernameBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
