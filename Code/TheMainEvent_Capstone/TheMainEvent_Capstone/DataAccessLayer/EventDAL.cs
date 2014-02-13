@@ -22,7 +22,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			ParseQuery<ParseObject> query = ParseObject.GetQuery("Event");
 			ParseObject p = await query.GetAsync(objectId);
 			Event returnEvent = new Event()
-		   {
+			{
 			   Title = p.Get<string>("title"),
 			   Address = p.Get<string>("address"),
 			   Date = p.Get<DateTime>("date"),
@@ -31,8 +31,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			   ID = p.ObjectId,
 			   City = p.Get<string>("city"),
 			   State = p.Get<string>("state"),
-			   Type = p.Get<string>("type")
-		   };
+			};
 			return returnEvent;
 		}
 
@@ -199,7 +198,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			}
 			return evs;
 		}
-		public async Task<List<Event>> BasicEventFilter(string searchTerm)
+		public async Task<List<Event>> BasicEventSearcher(string searchTerm)
 		{
 			CultureInfo c = new CultureInfo("en-EN");
 			List<Event> output = new List<Event>();
@@ -227,7 +226,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			}
 			return output;
 		}
-		public List<EventViewModel> BasicSort(List<EventViewModel> events, int sort)
+		public List<EventViewModel> BasicFilter(List<EventViewModel> events, int sort, string option = "")
 		{
 			List<EventViewModel> sorted = new List<EventViewModel>();
 			switch (sort)
@@ -243,7 +242,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 					break;
 
 				case 2:
-					sorted = events.OrderBy(x => x.DistanceInMeters).ToList();
+					sorted = events.Where(x => x.Type == option).OrderBy(x => x.Title).ToList();
 					break;
 			}
 			return sorted;

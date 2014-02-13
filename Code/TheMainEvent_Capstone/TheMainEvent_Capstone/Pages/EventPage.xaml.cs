@@ -46,7 +46,7 @@ namespace TheMainEvent_Capstone.Pages
 					Description = ev.Description,
 					OtherDetails = "Details: " + ev.OtherDetails,
 					Date = ev.Date,
-					Type = ev.Type,
+					Type = ev.Type.ToString(),
 					ID = ev.ID,
 					
 				};

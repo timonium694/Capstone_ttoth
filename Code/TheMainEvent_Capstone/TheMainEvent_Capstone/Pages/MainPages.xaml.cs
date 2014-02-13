@@ -66,7 +66,7 @@ namespace TheMainEvent_Capstone.Pages
 					Title = e.Title,
 					ID = e.ID,
 					City = e.City,
-					Type = e.City,
+					Type = e.Type.ToString(),
 					State = e.State,
 				});
 			}
@@ -89,7 +89,6 @@ namespace TheMainEvent_Capstone.Pages
 					ID = e.ID,
 					Cost = e.Cost,
 					Date = e.Date,
-					Type = e.Type,
 					Description = e.Description
 				};
 				this.Invites.Add(ivm);
@@ -136,6 +135,12 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			InviteViewModel evm = (InviteViewModel)InviteList.SelectedItem;
 			NavigationService.Navigate(new Uri("/Pages/EventPage.xaml?msg=" + evm.ID, UriKind.Relative));
+		}
+
+		private void optionFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			EventDAL ed = new EventDAL();
+			EventsList.ItemsSource = ed.BasicFilter(Events.ToList(), optionFilter.SelectedIndex);
 		}
 	}
 }

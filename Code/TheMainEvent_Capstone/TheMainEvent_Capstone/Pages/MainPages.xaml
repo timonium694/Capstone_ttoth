@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -21,12 +22,19 @@
 			<phone:PivotItem Header="Events">
 				<Grid Margin="12,0,-12,0">
 					<Grid.RowDefinitions>
-						<RowDefinition Height="20*"/>
-						<RowDefinition Height="80*"/>
+						<RowDefinition Height="25*"/>
+						<RowDefinition Height="75*"/>
 					</Grid.RowDefinitions>
-					<StackPanel HorizontalAlignment="Center" Grid.Row="0" Orientation="Horizontal">
-						<Button x:Name="FindEvent" Content="Find Events" Height="70" Click="FindEvent_Click" />
-						<Button x:Name="CreateEvent" Content="New Event" Height="70" Click="CreateEvent_Click"/>
+					<StackPanel>
+						<StackPanel HorizontalAlignment="Center"  Orientation="Horizontal">
+							<Button x:Name="FindEvent" Content="Find Events" Height="70" Click="FindEvent_Click" />
+							<Button x:Name="CreateEvent" Content="New Event" Height="70" Click="CreateEvent_Click"/>
+						</StackPanel>
+						<toolkit:ListPicker x:Name="optionFilter" Width="275" SelectionChanged="optionFilter_SelectionChanged">
+							<toolkit:ListPickerItem x:Name="nameOption" Content="Name"/>
+							<toolkit:ListPickerItem x:Name="dateOption" Content="Date"/>
+							<toolkit:ListPickerItem x:Name="typeOption" Content="Type"/>
+						</toolkit:ListPicker>
 					</StackPanel>
 					<phone:LongListSelector
 						Grid.Row="1" x:Name="EventsList" 

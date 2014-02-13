@@ -93,11 +93,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EventSearcher.xaml.cs">
+      <DependentUpon>EventSearcher.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataAccessLayer\EventDAL.cs" />
     <Compile Include="DataAccessLayer\UserDAL.cs" />
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\EventOwner.cs" />
-    <Compile Include="Model\EventType.cs" />
     <Compile Include="Model\GeoCoder\GeocodeQueryHandler.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -125,6 +127,9 @@
     </Compile>
     <Compile Include="Model\EventAttendee.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="Pages\TestPage.xaml.cs">
+      <DependentUpon>TestPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\RegistrationInfoPage.xaml.cs">
       <DependentUpon>RegistrationInfoPage.xaml</DependentUpon>
     </Compile>
@@ -146,6 +151,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\EventSearcher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -167,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MapPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
