@@ -16,5 +16,10 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			InitializeComponent();
 		}
+
+		private void tweet_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }
