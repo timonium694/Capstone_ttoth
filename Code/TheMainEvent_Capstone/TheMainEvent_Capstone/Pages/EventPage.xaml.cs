@@ -13,6 +13,7 @@ using TheMainEvent_Capstone.DataAccessLayer;
 using TheMainEvent_Capstone.Model;
 using Parse;
 using System.Collections.ObjectModel;
+using LinqToTwitter;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -154,6 +155,28 @@ namespace TheMainEvent_Capstone.Pages
 			{
 				this.statusBlock.Text = ex.Message;
 			}
+		}
+
+		private async void TweetButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (SharedState.Authorizer == null)
+				NavigationService.Navigate(new Uri("/OAuth.xaml", UriKind.Relative));
+			IAuthorizer auth = SharedState.Authorizer;
+
+			var twitterCtx = new TwitterContext(auth);
+
+			decimal latitude = 37.78215m;
+			decimal longitude = -122.40060m;
+
+			Status tweet = await twitterCtx.TweetAsync(TweetTextBox.Text, latitude, longitude);
+
+			MessageBox.Show(
+				"User: " + tweet.User.ScreenNameResponse +
+				", Posted Status: " + tweet.Text,
+				"Update Successfully Posted.",
+				MessageBoxButton.OK);
+
+			TweetTextBox.Text = "Windows Phone Test, " + DateTime.Now.ToString() + " #linq2twitter";
 		}
 	}
 }

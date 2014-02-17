@@ -105,6 +105,8 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\SharedState.cs" />
+    <Compile Include="Model\Tweet.cs" />
     <Compile Include="Model\UserInfo.cs" />
     <Compile Include="Model\UserInvite.cs" />
     <Compile Include="Model\ViewModels\ContactViewModel.cs" />
@@ -127,8 +129,8 @@
     </Compile>
     <Compile Include="Model\EventAttendee.cs" />
     <Compile Include="Model\User.cs" />
-    <Compile Include="Pages\TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
+    <Compile Include="Pages\OAuth.xaml.cs">
+      <DependentUpon>OAuth.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\RegistrationInfoPage.xaml.cs">
       <DependentUpon>RegistrationInfoPage.xaml</DependentUpon>
@@ -179,9 +181,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\TestPage.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Pages\OAuth.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\RegistrationInfoPage.xaml">
       <SubType>Designer</SubType>
@@ -242,19 +244,13 @@
     <Folder Include="Model\Interface\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Hammock.WindowsPhone">
-      <HintPath>..\packages\TweetSharp.2.3.1\lib\sl4-wp\Hammock.WindowsPhone.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib.WindowsPhone">
-      <HintPath>..\packages\TweetSharp.2.3.1\lib\sl4-wp\ICSharpCode.SharpZipLib.WindowsPhone.dll</HintPath>
+    <Reference Include="LinqToTwitterPcl">
+      <HintPath>..\packages\LinqToTwitter.3.0.2\lib\portable-win8+net45+wp8\LinqToTwitterPcl.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\TweetSharp.2.3.1\lib\sl4-wp\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Parse">
       <HintPath>..\packages\Parse.1.2.12\lib\wp8\Parse.dll</HintPath>
@@ -263,8 +259,14 @@
       <HintPath>..\packages\Parse.1.2.12\lib\wp8\Parse.Phone.dll</HintPath>
     </Reference>
     <Reference Include="PayPal.Checkout.SDK-WindowsPhone8, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="TweetSharp.WindowsPhone">
-      <HintPath>..\packages\TweetSharp.2.3.1\lib\sl4-wp\TweetSharp.WindowsPhone.dll</HintPath>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
@@ -277,4 +279,9 @@
   </Target>
   -->
   <ProjectExtensions />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
 </Project>

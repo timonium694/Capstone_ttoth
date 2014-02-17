@@ -41,7 +41,7 @@ namespace TheMainEvent_Capstone
 			{
 				string username = usernameBox.Text;
 				string password = passwordBox.Password;
-				await ParseUser.LogInAsync("Timonium", "CorrectHorse1");
+				await ParseUser.LogInAsync(username, password);
 			}
 			catch (Exception ex)
 			{

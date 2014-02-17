@@ -39,6 +39,8 @@
 				<TextBlock x:Name="detailsBlock" HorizontalAlignment="Left" Margin="9,0,0,0" FontSize="18" TextWrapping="Wrap" Text="Details: Here are some details one may need to know" VerticalAlignment="Top" />
 				<TextBlock x:Name="statusBlock" HorizontalAlignment="Center" Margin="9,0,0,0" FontSize="16" TextWrapping="Wrap" VerticalAlignment="Top" />
 				<Button x:Name="attendButton" Content="Attend" Width="135" Click="attendButton_Click"/>
+				<TextBox Height="144" HorizontalAlignment="Center" Margin="0,0,0,0" Name="TweetTextBox" Text="" VerticalAlignment="Top" Width="400" TextWrapping="Wrap" />
+				<Button Content="Tweet" Height="72" HorizontalAlignment="Center" Name="TweetButton" VerticalAlignment="Top" Width="160" Click="TweetButton_Click" />
 			</StackPanel>
 			
         </Grid>
