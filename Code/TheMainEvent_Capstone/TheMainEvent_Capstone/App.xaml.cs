@@ -8,6 +8,8 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using TheMainEvent_Capstone.Resources;
 using Parse;
+using System.Threading.Tasks;
+using System.ServiceModel.Dispatcher;
 
 namespace TheMainEvent_Capstone
 {
@@ -18,13 +20,13 @@ namespace TheMainEvent_Capstone
 		/// </summary>
 		/// <returns>The root frame of the Phone Application.</returns>
 		public static PhoneApplicationFrame RootFrame { get; private set; }
-		
 
 		/// <summary>
 		/// Constructor for the Application object.
 		/// </summary>
 		public App()
 		{
+
 			// Global handler for uncaught exceptions.
 			UnhandledException += Application_UnhandledException;
 
@@ -57,13 +59,6 @@ namespace TheMainEvent_Capstone
 				// and consume battery power when the user is not using the phone.
 				PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
 			}
-
-		}
-		private async void Test()
-		{
-			var testObject = new ParseObject("TestObject");
-			testObject["foo"] = "bar";
-			await testObject.SaveAsync();
 		}
 
 		// Code to execute when the application is launching (eg, from Start)

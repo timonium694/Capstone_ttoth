@@ -12,12 +12,12 @@ using System.Device.Location;
 using TheMainEvent_Capstone.Model;
 using Parse;
 using TheMainEvent_Capstone.DataAccessLayer;
+using System.Threading.Tasks;
 
 namespace TheMainEvent_Capstone
 {
 	public partial class MainPage : PhoneApplicationPage
 	{
-		Event test = new Event() { Title = "test", Address = "London", Date = DateTime.Now, Description = "Come have fun", OtherDetails = "Test event" };
 
 		// Constructor
 		public MainPage()
@@ -37,19 +37,17 @@ namespace TheMainEvent_Capstone
 		//Set this method to async
 		private async void Login_Click(object sender, RoutedEventArgs e)
 		{
-			try
-			{
-				string username = usernameBox.Text;
-				string password = passwordBox.Password;
-				await ParseUser.LogInAsync(username, password);
-			}
-			catch (Exception ex)
-			{
-				NavigationService.Navigate(new Uri("MainPage.xaml?msg=" + ex.Message, UriKind.Relative));
-			}
+			string username = usernameBox.Text;
+			string password = passwordBox.Password;
 
-			//NavigationService.Navigate(new Uri("/Pages/CreateEvent.xaml", UriKind.Relative));
-			NavigationService.Navigate(new Uri("/Pages/TestPage.xaml", UriKind.Relative));
+			if (await this.LoginUser(username, password))
+			{
+				NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
+			}
+			else
+			{
+				NavigationService.Navigate(new Uri("MainPage.xaml?msg=" + "Please provide a valid username and password or Register an Account", UriKind.Relative));
+			}
 		}
 
 		private void usernameBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -64,6 +62,21 @@ namespace TheMainEvent_Capstone
 		private void registrationButton_Click(object sender, RoutedEventArgs e)
 		{
 			NavigationService.Navigate(new Uri("/Pages/RegistrationPage.xaml", UriKind.Relative));
+		}
+		private async Task<bool> LoginUser(string username, string password)
+		{
+			bool output = false;
+			try
+			{
+				await ParseUser.LogInAsync(username, password);
+				output = true;
+			}
+			catch (Exception ex)
+			{
+
+				output = false;
+			}
+			return output;
 		}
 
 		

@@ -5,7 +5,7 @@ using LinqToTwitter;
 using Microsoft.Phone.Controls;
 using TheMainEvent_Capstone;
 
-namespace Linq2TwitterDemos_WindowsPhone
+namespace TheMainEvent_Capstone
 {
     public partial class OAuth : PhoneApplicationPage
     {
