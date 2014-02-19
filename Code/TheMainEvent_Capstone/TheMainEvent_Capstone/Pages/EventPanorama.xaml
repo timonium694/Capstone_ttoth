@@ -5,6 +5,7 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -13,11 +14,11 @@
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
 
-    <!--LayoutRoot contains the root grid where all other page content is placed-->
-    <Grid x:Name="LayoutRoot">
-        <phone:Panorama Title="Event Title">
+	<!--LayoutRoot contains the root grid where all other page content is placed-->
+	<Grid x:Name="LayoutRoot">
+		<phone:Panorama Title="Event Title">
 
-            <phone:PanoramaItem>
+			<phone:PanoramaItem>
 				<Grid Margin="0,-125,0,0">
 					<StackPanel>
 						<StackPanel Orientation="Horizontal">
@@ -34,11 +35,45 @@
 				</Grid>
 			</phone:PanoramaItem>
 
-            <!--Panorama item two-->
-            <phone:PanoramaItem Header="item2">
-                <Grid/>
-            </phone:PanoramaItem>
-        </phone:Panorama>
-    </Grid>
+			<!--Panorama item two-->
+			<phone:PanoramaItem>
+				<Grid Margin="0,-40,0,0">
+					<StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<ScrollViewer x:Name="scrollViewer" Height="75" VerticalScrollBarVisibility="Auto">
+								<toolkit:PhoneTextBox x:Name="tweetBox" Text="Description" Width="320" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
+							</ScrollViewer>
+							<Button Content="Tweet"/>
+						</StackPanel>
+						<phone:LongListSelector
+						x:Name="EventsList" 
+						ItemsSource="{Binding Tweets}" 
+						SelectionChanged="EventsList_SelectionChanged">
+							<phone:LongListSelector.ItemTemplate>
+								<DataTemplate>
+									<StackPanel>
+										<TextBlock Text="{Binding UserName}"
+											   TextWrapping="Wrap"
+											   Style="{StaticResource PhoneTextLargeStyle}"
+											   />
+										<TextBlock 
+										Text="{Binding Message}"
+										TextWrapping="Wrap"
+										Style="{StaticResource PhoneTextSubtleStyle}"
+										/>
+									</StackPanel>
+								</DataTemplate>
+							</phone:LongListSelector.ItemTemplate>
+						</phone:LongListSelector>
+					</StackPanel>
+				</Grid>
+			</phone:PanoramaItem>
+			<phone:PanoramaItem Header="Map">
+				<Grid Margin="0,-37,0,0">
+
+				</Grid>
+			</phone:PanoramaItem>
+		</phone:Panorama>
+	</Grid>
 
 </phone:PhoneApplicationPage>
