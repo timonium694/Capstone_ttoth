@@ -37,6 +37,10 @@ namespace TheMainEvent_Capstone.Pages
 			string msg = "";
 			if (NavigationContext.QueryString.TryGetValue("msg", out msg))
 			{
+				//For Testing
+				msg = "AMO92Ltaf3";
+				//For Testing
+
 				EventDAL ed = new EventDAL();
 				Event ev = await ed.RetrieveEvent(msg);
 				this.evm = new EventViewModel()
