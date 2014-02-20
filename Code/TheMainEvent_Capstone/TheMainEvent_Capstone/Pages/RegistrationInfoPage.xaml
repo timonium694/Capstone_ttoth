@@ -13,8 +13,27 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
-
-    <!--LayoutRoot is the root grid where all page content is placed-->
+	<toolkit:TransitionService.NavigationInTransition>
+		<toolkit:NavigationInTransition>
+			<toolkit:NavigationInTransition.Backward>
+				<toolkit:TurnstileFeatherTransition Mode="BackwardIn"/>
+			</toolkit:NavigationInTransition.Backward>
+			<toolkit:NavigationInTransition.Forward>
+				<toolkit:TurnstileFeatherTransition Mode="ForwardIn"/>
+			</toolkit:NavigationInTransition.Forward>
+		</toolkit:NavigationInTransition>
+	</toolkit:TransitionService.NavigationInTransition>
+	<toolkit:TransitionService.NavigationOutTransition>
+		<toolkit:NavigationOutTransition>
+			<toolkit:NavigationOutTransition.Backward>
+				<toolkit:TurnstileFeatherTransition Mode="BackwardOut"/>
+			</toolkit:NavigationOutTransition.Backward>
+			<toolkit:NavigationOutTransition.Forward>
+				<toolkit:TurnstileFeatherTransition Mode="ForwardOut"/>
+			</toolkit:NavigationOutTransition.Forward>
+		</toolkit:NavigationOutTransition>
+	</toolkit:TransitionService.NavigationOutTransition>
+	<!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -23,24 +42,24 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="Profile Info" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+			<TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}" toolkit:TurnstileFeatherEffect.FeatheringIndex="0"/>
+			<TextBlock Text="Profile Info" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" toolkit:TurnstileFeatherEffect.FeatheringIndex="1"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
 		<ScrollViewer x:Name="ContentScroll" Grid.Row="1" Margin="12,0,12,0">
 			<StackPanel>
-				<TextBox x:Name="firstNameBox" Width="250" Text="First Name" HorizontalAlignment="Center"/>
-				<TextBox x:Name="lastNameBox" Width="250" Text="Last Name" HorizontalAlignment="Center"/>
-				<TextBox x:Name="phoneBox" Width="250" Text="Phone Number" HorizontalAlignment="Center"/>
-				<ScrollViewer HorizontalAlignment="Center" x:Name="scrollViewer" Height="200" Width="350" VerticalScrollBarVisibility="Auto">
+				<TextBox x:Name="firstNameBox" Width="250" Text="First Name" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
+				<TextBox x:Name="lastNameBox" Width="250" Text="Last Name" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
+				<TextBox x:Name="phoneBox" Width="250" Text="Phone Number" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
+				<ScrollViewer HorizontalAlignment="Center" x:Name="scrollViewer" Height="200" Width="350" VerticalScrollBarVisibility="Auto"  toolkit:TurnstileFeatherEffect.FeatheringIndex="5">
 					<toolkit:PhoneTextBox x:Name="bioBox" Text="Bio" Width="250" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
 				</ScrollViewer>
-				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  toolkit:TurnstileFeatherEffect.FeatheringIndex="6">
 					<TextBlock Margin="12,0,0,0" Text="Birthday" VerticalAlignment="Center" FontSize="30"/>
 					<toolkit:DatePicker x:Name="datePicker" HorizontalAlignment="Right" Width="150"/>
 				</StackPanel>
-				<Button x:Name="doneButton" Click="doneButton_Click" Content="Done" Width="150"/>
+				<Button x:Name="doneButton" Click="doneButton_Click" Content="Done" Width="150"  toolkit:TurnstileFeatherEffect.FeatheringIndex="7"/>
 			</StackPanel>
 		</ScrollViewer>
 	</Grid>

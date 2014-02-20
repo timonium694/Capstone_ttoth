@@ -42,5 +42,10 @@ namespace TheMainEvent_Capstone.Pages
 		{
 
 		}
+
+		private void EventsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+
+		}
 	}
 }

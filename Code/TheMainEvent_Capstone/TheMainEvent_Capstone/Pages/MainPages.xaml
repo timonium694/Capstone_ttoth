@@ -14,10 +14,33 @@
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
+
+	<toolkit:TransitionService.NavigationInTransition>
+		<toolkit:NavigationInTransition>
+			<toolkit:NavigationInTransition.Backward>
+				<toolkit:TurnstileFeatherTransition Mode="BackwardIn"/>
+			</toolkit:NavigationInTransition.Backward>
+			<toolkit:NavigationInTransition.Forward>
+				<toolkit:TurnstileFeatherTransition Mode="ForwardIn" BeginTime="0:0:0.7"/>
+			</toolkit:NavigationInTransition.Forward>
+		</toolkit:NavigationInTransition>
+	</toolkit:TransitionService.NavigationInTransition>
+	<toolkit:TransitionService.NavigationOutTransition>
+		<toolkit:NavigationOutTransition>
+			<toolkit:NavigationOutTransition.Backward>
+				<toolkit:TurnstileFeatherTransition Mode="BackwardOut"/>
+			</toolkit:NavigationOutTransition.Backward>
+			<toolkit:NavigationOutTransition.Forward>
+				<toolkit:TurnstileFeatherTransition Mode="ForwardOut"/>
+			</toolkit:NavigationOutTransition.Forward>
+		</toolkit:NavigationOutTransition>
+	</toolkit:TransitionService.NavigationOutTransition>
+	
+	
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot" Background="Transparent">
 		<!--Pivot Control-->
-		<phone:Pivot Title="The Main Event">
+		<phone:Pivot Title="The Main Event" toolkit:TurnstileFeatherEffect.FeatheringIndex="0">
 			<!--Pivot item one-->
 			<phone:PivotItem Header="Events">
 				<Grid Margin="12,0,-12,0">
@@ -27,25 +50,28 @@
 					</Grid.RowDefinitions>
 					<StackPanel>
 						<StackPanel HorizontalAlignment="Center"  Orientation="Horizontal">
-							<Button x:Name="FindEvent" Content="Find Events" Height="70" Click="FindEvent_Click" />
-							<Button x:Name="CreateEvent" Content="New Event" Height="70" Click="CreateEvent_Click"/>
+							<Button x:Name="FindEvent" Content="Find Events" Height="70" Click="FindEvent_Click" toolkit:TurnstileFeatherEffect.FeatheringIndex="1" />
+							<Button x:Name="CreateEvent" Content="New Event" Height="70" Click="CreateEvent_Click" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 						</StackPanel>
-						<toolkit:ListPicker x:Name="optionFilter" Width="275" SelectionChanged="optionFilter_SelectionChanged">
-							<toolkit:ListPickerItem x:Name="nameOption" Content="Name"/>
-							<toolkit:ListPickerItem x:Name="dateOption" Content="Date"/>
-							<toolkit:ListPickerItem x:Name="typeOption" Content="Type"/>
+						<toolkit:ListPicker x:Name="optionFilter" Width="275" SelectionChanged="optionFilter_SelectionChanged"  toolkit:TurnstileFeatherEffect.FeatheringIndex="3">
+							<toolkit:ListPickerItem x:Name="nameOption" Content="Name" toolkit:TiltEffect.IsTiltEnabled="True"/>
+							<toolkit:ListPickerItem x:Name="dateOption" Content="Date" toolkit:TiltEffect.IsTiltEnabled="True"/>
+							<toolkit:ListPickerItem x:Name="typeOption" Content="Type" toolkit:TiltEffect.IsTiltEnabled="True"/>
 						</toolkit:ListPicker>
 					</StackPanel>
 					<phone:LongListSelector
 						Grid.Row="1" x:Name="EventsList" 
 						ItemsSource="{Binding Events}" 
-						SelectionChanged="EventsList_SelectionChanged">
+						SelectionChanged="EventsList_SelectionChanged"
+						toolkit:TurnstileFeatherEffect.FeatheringIndex="4"
+						 toolkit:TiltEffect.IsTiltEnabled="True">
 						<phone:LongListSelector.ItemTemplate>
 							<DataTemplate>
 								<StackPanel>
 									<TextBlock Text="{Binding Title}"
 											   TextWrapping="Wrap"
 											   Style="{StaticResource PhoneTextExtraLargeStyle}"
+											   
 											   />
 									<TextBlock 
 										Text="{Binding Description}"
@@ -69,7 +95,9 @@
 					<phone:LongListSelector
 						x:Name="InviteList" 
 						ItemsSource="{Binding Invites}" 
-						SelectionChanged="InviteList_SelectionChanged">
+						SelectionChanged="InviteList_SelectionChanged"
+						toolkit:TurnstileFeatherEffect.FeatheringIndex="5"
+						 toolkit:TiltEffect.IsTiltEnabled="True">
 						<phone:LongListSelector.ItemTemplate>
 							<DataTemplate>
 								<StackPanel>
@@ -90,17 +118,17 @@
 			</phone:PivotItem>
 			<phone:PivotItem Header="Profile" x:Name="ProfilePage">
 				<StackPanel>
-					<TextBlock x:Name="nameBlock" HorizontalAlignment="Left" FontSize="49" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" />
+					<TextBlock x:Name="nameBlock" HorizontalAlignment="Left" FontSize="49" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" toolkit:TurnstileFeatherEffect.FeatheringIndex="6" />
 					<StackPanel Orientation="Horizontal">
-						<TextBlock x:Name="bioblock" HorizontalAlignment="Left" Width="260" FontSize="24" TextWrapping="Wrap" Text="{Binding Bio}" VerticalAlignment="Top" />
-						<Grid HorizontalAlignment="Right">
+						<TextBlock x:Name="bioblock" HorizontalAlignment="Left" Width="260" FontSize="24" TextWrapping="Wrap" Text="{Binding Bio}" VerticalAlignment="Top" toolkit:TurnstileFeatherEffect.FeatheringIndex="7"/>
+						<Grid HorizontalAlignment="Right" toolkit:TurnstileFeatherEffect.FeatheringIndex="8">
 							<StackPanel HorizontalAlignment="Left">
 								<TextBlock x:Name="emailBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource PhoneTextSubtleStyle}" Width="175" TextWrapping="Wrap" Text="{Binding Email}"/>
 								<TextBlock x:Name="phoneBlock" HorizontalAlignment="Left" VerticalAlignment="Bottom" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Text="{Binding Phone}"/>
 							</StackPanel>
 						</Grid>
 					</StackPanel>
-					<Button x:Name="accountSettings" Content="Account Settings" Width="250" HorizontalAlignment="Left"/>
+					<Button x:Name="accountSettings" Content="Account Settings" Width="250" HorizontalAlignment="Left" toolkit:TurnstileFeatherEffect.FeatheringIndex="9"/>
 				</StackPanel>
 			</phone:PivotItem>
 		</phone:Pivot>
