@@ -34,7 +34,25 @@
 			</toolkit:NavigationOutTransition.Forward>
 		</toolkit:NavigationOutTransition>
 	</toolkit:TransitionService.NavigationOutTransition>
-	
+
+	<phone:PhoneApplicationPage.Resources>
+		<Storyboard x:Name="tweetGotFocusStoryboard">
+			<DoubleAnimation
+            Storyboard.TargetName="tweetBox"
+            Storyboard.TargetProperty="Height"
+            From="72.0" To="100.0" Duration="0:0:1"
+            AutoReverse="True"/>
+		</Storyboard>
+		<Storyboard x:Name="tweetLostFocusStoryboard">
+			<DoubleAnimation
+            Storyboard.TargetName="tweetBox"
+            Storyboard.TargetProperty="Height"
+            From="72.0" To="100.0" Duration="0:0:1"
+            AutoReverse="True"/>
+		</Storyboard>
+
+	</phone:PhoneApplicationPage.Resources>
+
 	<!--LayoutRoot contains the root grid where all other page content is placed-->
 	<Grid x:Name="LayoutRoot">
 		<phone:Panorama Title="Event Title" >
@@ -42,16 +60,16 @@
 			<phone:PanoramaItem>
 				<Grid Margin="0,-40,0,0">
 					<StackPanel>
-						<StackPanel Orientation="Horizontal">
+						<StackPanel Orientation="Horizontal"  toolkit:TurnstileFeatherEffect.FeatheringIndex="0">
 							<TextBlock x:Name="dateBlock" Text="Date" Style="{StaticResource PhoneTextNormalStyle}"/>
 							<TextBlock x:Name="timeBlock" Text="Time" Style="{StaticResource PhoneTextNormalStyle}"/>
 							<TextBlock x:Name="costBlock" Text="$5.00" Margin="10,0,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
 						</StackPanel>
-						<TextBlock x:Name="addressBlock" Text="Location should go here" Style="{StaticResource PhoneTextNormalStyle}"/>
-						<TextBlock x:Name="descriptionBlock" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Margin="9,0,0,0" TextWrapping="Wrap" Text="Bio Section. This is where the user bio is supposed to go whenever it is implemented. I tsimply need sto be bound to " VerticalAlignment="Top" />
-						<TextBlock x:Name="detailsBlock" HorizontalAlignment="Left" Margin="9,0,0,0" FontSize="18" TextWrapping="Wrap" Text="Details: Here are some details one may need to know" VerticalAlignment="Top" />
-						<TextBlock x:Name="statusBlock" HorizontalAlignment="Left" Margin="9,0,0,0" FontSize="16" TextWrapping="Wrap" VerticalAlignment="Top" />
-						<Button x:Name="attendButton" Content="Attend" Width="135" Click="attendButton_Click"/>
+						<TextBlock x:Name="addressBlock" Text="Location should go here" Style="{StaticResource PhoneTextNormalStyle}"  toolkit:TurnstileFeatherEffect.FeatheringIndex="1"/>
+						<TextBlock x:Name="descriptionBlock" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Margin="9,0,0,0" TextWrapping="Wrap" Text="Bio Section. This is where the user bio is supposed to go whenever it is implemented. I tsimply need sto be bound to " VerticalAlignment="Top"  toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
+						<TextBlock x:Name="detailsBlock" HorizontalAlignment="Left" Margin="9,0,0,0" FontSize="18" TextWrapping="Wrap" Text="Details: Here are some details one may need to know" VerticalAlignment="Top"  toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
+						<TextBlock x:Name="statusBlock" HorizontalAlignment="Left" Margin="9,0,0,0" FontSize="16" TextWrapping="Wrap" VerticalAlignment="Top"  toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
+						<Button x:Name="attendButton" Content="Attend" Width="135" Click="attendButton_Click" toolkit:TurnstileFeatherEffect.FeatheringIndex="5"/>
 					</StackPanel>
 				</Grid>
 			</phone:PanoramaItem>
@@ -59,17 +77,17 @@
 			<!--Panorama item two-->
 			<phone:PanoramaItem>
 				<Grid Margin="0,-40,0,0">
-					<StackPanel>
+					<StackPanel >
 						<StackPanel Orientation="Horizontal">
-							<ScrollViewer x:Name="scrollViewer" Height="75" VerticalScrollBarVisibility="Auto">
-								<toolkit:PhoneTextBox x:Name="tweetBox" Text="Description" Width="320" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
-							</ScrollViewer>
+							<toolkit:PhoneTextBox x:Name="tweetBox" Text="Description" Width="320" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
 							<Button Content="Tweet"/>
 						</StackPanel>
 						<phone:LongListSelector
 						x:Name="EventsList" 
 						ItemsSource="{Binding Tweets}" 
-						SelectionChanged="EventsList_SelectionChanged">
+						SelectionChanged="EventsList_SelectionChanged"
+						toolkit:TurnstileFeatherEffect.FeatheringIndex="6"
+						toolkit:TiltEffect.IsTiltEnabled="True">
 							<phone:LongListSelector.ItemTemplate>
 								<DataTemplate>
 									<StackPanel>

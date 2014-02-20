@@ -39,6 +39,8 @@ namespace TheMainEvent_Capstone
 		{
 			string username = usernameBox.Text;
 			string password = passwordBox.Password;
+			username = "Timonium";
+			password = "CorrectHorse1";
 
 			if (await this.LoginUser(username, password))
 			{
@@ -53,7 +55,7 @@ namespace TheMainEvent_Capstone
 		private void usernameBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
 		{
 			TextBox box = (TextBox)sender;
-			if (box.Text.Equals("Username"))
+			if (box.Text.Equals("password"))
 			{
 				box.Text = "";
 			}

@@ -8,11 +8,23 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
+using TheMainEvent_Capstone.Model.ViewModels;
+using TheMainEvent_Capstone.Model;
 
 namespace TheMainEvent_Capstone.Pages
 {
 	public partial class EventPanorama : PhoneApplicationPage
 	{
+
+		private EventViewModel evm;
+		private UserInfo owner;
+		private UserInfo currentUser;
+		private bool IsOwner = false;
+		private bool IsAttending = false;
+		ObservableCollection<ContactViewModel> InvitedUsers = new ObservableCollection<ContactViewModel>();
+		ObservableCollection<ContactViewModel> AttendingUsers = new ObservableCollection<ContactViewModel>();
+
 		public EventPanorama()
 		{
 			InitializeComponent();
@@ -38,6 +50,10 @@ namespace TheMainEvent_Capstone.Pages
 
 		}
 
+		private void tweetBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+
+		}
 		private void tweetBox_LostFocus(object sender, RoutedEventArgs e)
 		{
 

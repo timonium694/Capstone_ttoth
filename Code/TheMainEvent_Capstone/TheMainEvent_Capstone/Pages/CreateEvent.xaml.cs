@@ -34,14 +34,14 @@ namespace TheMainEvent_Capstone.Pages
 			{
 				user = ParseUser.CurrentUser;
 			}
-			cityBox.Tap += this.TextBox_Tap;
-			addressBox.Tap += this.TextBox_Tap;
-			stateBox.Tap += this.TextBox_Tap;
-			costBox.Tap += this.TextBox_Tap;
-			descriptionBox.Tap += this.TextBox_Tap;
-			otherDetailsBox.Tap += this.TextBox_Tap;
-			titleBox.Tap += this.TextBox_Tap;
+			descriptionBox.GotFocus += this.DescriptionBox_GotFocus;
+			otherDetailsBox.GotFocus += this.OtherDetailsBox_GotFocus;
+			descriptionBox.LostFocus += this.DescriptionBox_LostFocus;
+			otherDetailsBox.LostFocus += this.OtherDetailsBox_LostFocus;
+			titleBox.TextChanged += this.title_TextChanged;
 		}
+
+		
 		private async void AddUsers()
 		{
 			UserDAL ud = new UserDAL();
@@ -81,10 +81,7 @@ namespace TheMainEvent_Capstone.Pages
 		private void TextBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
 		{
 			TextBox box = (TextBox)sender;
-			if (box.Text.Equals("Title") || box.Text.Equals("City") || box.Text.Equals("State") || box.Text.Equals("Description") || box.Text.Equals("Street Address") || box.Text.Equals("Other Details") || box.Text.Equals("0.00"))
-			{
-				box.Text = "";
-			}
+			
 		}
 
 		private async void createButton_Click(object sender, RoutedEventArgs e)
@@ -134,6 +131,29 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			titleBlock.Text = titleBox.Text;
 		}
+
+
+		private void DescriptionBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+			this.descGotFocusStoryboard.Begin();
+		}
+		private void DescriptionBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+			this.descLostFocusStoryboard.Begin();
+		}
+
+
+
+		private void OtherDetailsBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+			this.otherGotFocusStoryboard.Begin();
+		}
+		private void OtherDetailsBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+			this.otherLostFocusStoryboard.Begin();
+		}
+
+		
 		
 	}
 }
