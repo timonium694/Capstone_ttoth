@@ -93,8 +93,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EventListControl.xaml.cs">
+      <DependentUpon>EventListControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EventSearcher.xaml.cs">
       <DependentUpon>EventSearcher.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ProfileControl.xaml.cs">
+      <DependentUpon>ProfileControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataAccessLayer\EventDAL.cs" />
     <Compile Include="DataAccessLayer\UserDAL.cs" />
@@ -156,7 +162,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\EventListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\EventSearcher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ProfileControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

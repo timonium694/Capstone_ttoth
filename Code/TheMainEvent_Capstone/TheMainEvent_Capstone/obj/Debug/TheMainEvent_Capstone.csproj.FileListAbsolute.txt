@@ -93,3 +93,5 @@ C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\Bin\D
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\Bin\Debug\System.Net.Http.Extensions.xml
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\Bin\Debug\System.Net.Http.Primitives.xml
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\Pages\EventPanorama.g.cs
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\Controls\EventListControl.g.cs
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\Controls\ProfileControl.g.cs

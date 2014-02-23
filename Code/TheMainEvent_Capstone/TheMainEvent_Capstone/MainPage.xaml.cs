@@ -44,7 +44,8 @@ namespace TheMainEvent_Capstone
 
 			if (await this.LoginUser(username, password))
 			{
-				NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
+				//NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
+				NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml", UriKind.Relative));
 			}
 			else
 			{

@@ -117,19 +117,7 @@
 				</Grid>
 			</phone:PivotItem>
 			<phone:PivotItem Header="Profile" x:Name="ProfilePage">
-				<StackPanel>
-					<TextBlock x:Name="nameBlock" HorizontalAlignment="Left" FontSize="49" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" toolkit:TurnstileFeatherEffect.FeatheringIndex="6" />
-					<StackPanel Orientation="Horizontal">
-						<TextBlock x:Name="bioblock" HorizontalAlignment="Left" Width="260" FontSize="24" TextWrapping="Wrap" Text="{Binding Bio}" VerticalAlignment="Top" toolkit:TurnstileFeatherEffect.FeatheringIndex="7"/>
-						<Grid HorizontalAlignment="Right" toolkit:TurnstileFeatherEffect.FeatheringIndex="8">
-							<StackPanel HorizontalAlignment="Left">
-								<TextBlock x:Name="emailBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource PhoneTextSubtleStyle}" Width="175" TextWrapping="Wrap" Text="{Binding Email}"/>
-								<TextBlock x:Name="phoneBlock" HorizontalAlignment="Left" VerticalAlignment="Bottom" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Text="{Binding Phone}"/>
-							</StackPanel>
-						</Grid>
-					</StackPanel>
-					<Button x:Name="accountSettings" Content="Account Settings" Width="250" HorizontalAlignment="Left" toolkit:TurnstileFeatherEffect.FeatheringIndex="9"/>
-				</StackPanel>
+				
 			</phone:PivotItem>
 		</phone:Pivot>
 	</Grid>
