@@ -45,5 +45,18 @@
 			
         </Grid>
     </Grid>
+	<phone:PhoneApplicationPage.ApplicationBar>
+		
+		<shell:ApplicationBar Mode="Default" Opacity="1.0" IsMenuEnabled="True" IsVisible="True">
 
+			<shell:ApplicationBarIconButton Click="Save_Click" IconUri="/Images/save.png" Text="save" />
+			<shell:ApplicationBarIconButton Click="Settings_Click" IconUri="/Images/settings.png" Text="settings" />
+
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem Click="attendButton_Click" Text="Attend Event" />
+				<shell:ApplicationBarMenuItem x:Name="getDirectionsClick" Click="getDirectionsClick_Click" Text="Get Directions" />
+			</shell:ApplicationBar.MenuItems>
+
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

@@ -109,18 +109,18 @@ namespace TheMainEvent_Capstone.Pages
 		private void attendButton_Click(object sender, RoutedEventArgs e)
 		{
 
-			//Testing 
-			//if (owner.MerchantEmail.Equals("none"))
-			//{
-			//	EventDAL ed = new EventDAL();
-			//	ed.AddAttendee(evm.ID, currentUser.User);
-			//}
-			//else if (!owner.MerchantEmail.Equals("none"))
-			//{
-			//	this.PayForEvent(owner.MerchantEmail);
-			//	EventDAL ed = new EventDAL();
-			//	ed.AddAttendee(evm.ID, currentUser.User);
-			//}
+			//Comment for Testing 
+			if (owner.MerchantEmail.Equals("none"))
+			{
+				EventDAL ed = new EventDAL();
+				ed.AddAttendee(evm.ID, currentUser.User);
+			}
+			else if (!owner.MerchantEmail.Equals("none"))
+			{
+				this.PayForEvent(owner.MerchantEmail);
+				EventDAL ed = new EventDAL();
+				ed.AddAttendee(evm.ID, currentUser.User);
+			}
 
 		}
 

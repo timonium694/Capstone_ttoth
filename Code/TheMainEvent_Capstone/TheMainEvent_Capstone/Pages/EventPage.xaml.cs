@@ -182,5 +182,10 @@ namespace TheMainEvent_Capstone.Pages
 
 			TweetTextBox.Text = "Windows Phone Test, " + DateTime.Now.ToString() + " #linq2twitter";
 		}
+
+		private void getDirectionsClick_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
