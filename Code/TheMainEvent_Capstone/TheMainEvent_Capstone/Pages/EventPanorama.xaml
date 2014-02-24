@@ -114,5 +114,19 @@
 			</phone:PanoramaItem>
 		</phone:Panorama>
 	</Grid>
+	<phone:PhoneApplicationPage.ApplicationBar>
 
+		<shell:ApplicationBar Mode="Default" Opacity="1.0" IsMenuEnabled="True" IsVisible="True">
+
+			<shell:ApplicationBarIconButton Click="Events_Click" IconUri="/Images/save.png" Text="Events" />
+			<shell:ApplicationBarIconButton Click="Contacts_Click" IconUri="/Images/settings.png" Text="settings" />
+			<shell:ApplicationBarIconButton Click="Logout_Click" IconUri="/Images/settings.png" Text="settings" />
+
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem Click="attendButton_Click" Text="Attend Event" />
+				<shell:ApplicationBarMenuItem x:Name="getDirections" Click="getDirectionsClick_Click" Text="Get Directions" />
+			</shell:ApplicationBar.MenuItems>
+
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

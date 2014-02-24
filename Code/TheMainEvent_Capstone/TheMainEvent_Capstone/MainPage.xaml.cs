@@ -55,10 +55,10 @@ namespace TheMainEvent_Capstone
 
 		private void usernameBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
 		{
-			TextBox box = (TextBox)sender;
-			if (box.Text.Equals("password"))
+			PasswordBox box = (PasswordBox)sender;
+			if (box.Password.Equals("Password"))
 			{
-				box.Text = "";
+				box.Password = "";
 			}
 		}
 
@@ -82,7 +82,12 @@ namespace TheMainEvent_Capstone
 			return output;
 		}
 
-		
+		private void usernameBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+			this.descGotFocusStoryboard.Begin();
+		}
+
+
 
 
 

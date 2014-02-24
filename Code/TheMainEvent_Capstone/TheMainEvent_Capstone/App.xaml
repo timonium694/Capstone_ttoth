@@ -8,7 +8,17 @@
     <!--Application Resources-->
     <Application.Resources>
         <local:LocalizedStrings xmlns:local="clr-namespace:TheMainEvent_Capstone" x:Key="LocalizedStrings"/>
-    </Application.Resources>
+		
+		<!--<shell:ApplicationBar x:Key="DefaultAppBar" IsVisible="True" IsMenuEnabled="True">
+		<shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Events" Click="Button1_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Contacts" Click="Button1_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Profile" Click="Button1_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Logout" Click="Button1_Click" />
+			
+	
+		</shell:ApplicationBar>-->
+		
+	</Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->

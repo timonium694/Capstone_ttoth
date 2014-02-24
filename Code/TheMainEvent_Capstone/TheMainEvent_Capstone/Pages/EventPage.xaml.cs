@@ -187,5 +187,16 @@ namespace TheMainEvent_Capstone.Pages
 		{
 
 		}
+
+
+		private void Events_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void Logout_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

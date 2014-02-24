@@ -224,5 +224,13 @@ namespace TheMainEvent_Capstone
 				throw;
 			}
 		}
+
+		private void Button1_Click(object sender, EventArgs e)
+		{
+
+		}
+		public void Test()
+		{
+		}
 	}
 }

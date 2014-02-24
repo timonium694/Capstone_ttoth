@@ -36,14 +36,22 @@
 		</toolkit:NavigationOutTransition>
 	</toolkit:TransitionService.NavigationOutTransition>
 
+
+	<phone:PhoneApplicationPage.Resources>
+		<Storyboard x:Name="descGotFocusStoryboard">
+			<DoubleAnimation
+            Storyboard.TargetName="usernameBox"
+            Storyboard.TargetProperty="Height"
+            From="72.0" To="150.0" Duration="0:0:.1"/>
+		</Storyboard>
+	</phone:PhoneApplicationPage.Resources>
+
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot" Background="Transparent">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-
-
 
 		<!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
 		<!--TitlePanel contains the name of the application and page title-->
@@ -58,7 +66,7 @@
 			<Button x:Name="Login" Content="Login" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Login_Click" Margin="174,376,174,0"/>
 
 			<TextBlock HorizontalAlignment="Left" TextAlignment="Center" TextWrapping="Wrap" Text="*Username not found*" Width="255" Height="50" Margin="100,125,0,422"/>
-			<toolkit:PhoneTextBox Hint="Username" x:Name="usernameBox" HorizontalAlignment="Center" Height="72" Margin="0,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="256" Tap="usernameBox_Tap" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
+			<toolkit:PhoneTextBox GotFocus="usernameBox_GotFocus" Hint="Username" x:Name="usernameBox" HorizontalAlignment="Center" Height="72" Margin="0,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="256" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 			<PasswordBox Tap="usernameBox_Tap" Password="Password" x:Name="passwordBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="255" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
 			<HyperlinkButton x:Name="registrationButton" Content="Need an Account? Sign Up Here!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50" Click="registrationButton_Click"/>
 

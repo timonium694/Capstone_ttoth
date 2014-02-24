@@ -186,5 +186,30 @@ namespace TheMainEvent_Capstone.Pages
 		{
 
 		}
+
+		private void getDirectionsClick_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void attendButton_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void Events_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void Contacts_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void Logout_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
