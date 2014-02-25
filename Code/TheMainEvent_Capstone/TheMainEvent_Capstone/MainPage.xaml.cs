@@ -82,13 +82,6 @@ namespace TheMainEvent_Capstone
 			return output;
 		}
 
-		private void usernameBox_GotFocus(object sender, RoutedEventArgs e)
-		{
-			this.descGotFocusStoryboard.Begin();
-		}
-
-
-
 
 
 

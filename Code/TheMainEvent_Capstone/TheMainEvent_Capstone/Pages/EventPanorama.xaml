@@ -69,7 +69,7 @@
 						<TextBlock x:Name="descriptionBlock" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Margin="9,0,0,0" TextWrapping="Wrap" Text="Bio Section. This is where the user bio is supposed to go whenever it is implemented. I tsimply need sto be bound to " VerticalAlignment="Top"  toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 						<TextBlock x:Name="detailsBlock" HorizontalAlignment="Left" Margin="9,0,0,0" FontSize="18" TextWrapping="Wrap" Text="Details: Here are some details one may need to know" VerticalAlignment="Top"  toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
 						<TextBlock x:Name="statusBlock" HorizontalAlignment="Left" Margin="9,0,0,0" FontSize="16" TextWrapping="Wrap" VerticalAlignment="Top"  toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
-						<Button x:Name="attendButton" Content="Attend" Width="135" Click="attendButton_Click" toolkit:TurnstileFeatherEffect.FeatheringIndex="5"/>
+						<Button x:Name="attendButton" Content="Attend" Width="135"  toolkit:TurnstileFeatherEffect.FeatheringIndex="5"/>
 					</StackPanel>
 				</Grid>
 			</phone:PanoramaItem>
@@ -83,9 +83,8 @@
 							<Button Content="Tweet"/>
 						</StackPanel>
 						<phone:LongListSelector
-						x:Name="EventsList" 
+						x:Name="TweetList" 
 						ItemsSource="{Binding Tweets}" 
-						SelectionChanged="EventsList_SelectionChanged"
 						toolkit:TurnstileFeatherEffect.FeatheringIndex="6"
 						toolkit:TiltEffect.IsTiltEnabled="True">
 							<phone:LongListSelector.ItemTemplate>
@@ -123,7 +122,7 @@
 			<shell:ApplicationBarIconButton Click="Logout_Click" IconUri="/Images/settings.png" Text="settings" />
 
 			<shell:ApplicationBar.MenuItems>
-				<shell:ApplicationBarMenuItem Click="attendButton_Click" Text="Attend Event" />
+				<shell:ApplicationBarMenuItem Text="Attend Event" />
 				<shell:ApplicationBarMenuItem x:Name="getDirections" Click="getDirectionsClick_Click" Text="Get Directions" />
 			</shell:ApplicationBar.MenuItems>
 

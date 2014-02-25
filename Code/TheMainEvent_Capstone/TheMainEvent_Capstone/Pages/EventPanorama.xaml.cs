@@ -15,6 +15,7 @@ using TheMainEvent_Capstone.DataAccessLayer;
 using Parse;
 using System.Threading.Tasks;
 using PayPal.Checkout;
+using LinqToTwitter;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -34,15 +35,37 @@ namespace TheMainEvent_Capstone.Pages
 		public EventPanorama()
 		{
 			InitializeComponent();
-			this.Loaded += this.Page_Loaded;
+
 		}
 
-		async void Page_Loaded(object sender, RoutedEventArgs e)
+		private async Task LoadTweets()
 		{
-			await this.LoadData();
-		}
+			var twitterCtx = new TwitterContext(new SingleUserAuthorizer()
+			{
+				CredentialStore = new InMemoryCredentialStore()
+				{
+					ConsumerKey = "XQzE7qY7Myw27saKRPWW9w",
+					ConsumerSecret = "dUz9DfDAI8FvfQXMsFqBctqGepip7wihpsqxrFKa8",
+					OAuthToken = "1315500614-JpvNyuMTSISTOp5l9Y9mRF2PX4sv21Psh1kMv42",
+					OAuthTokenSecret = "dhXrjuQZ4w9N2Aw1L6CwFGhZvBOtmJNkWop5zUXiVrntJ"
+				}
+			});
+			string hashtag = "#" + evm.Title;
+			var searchResponse =
+				await
+				(from search in twitterCtx.Search
+				 where search.Type == SearchType.Search &&
+					   search.Query == hashtag
+				 select search)
+				.SingleOrDefaultAsync();
 
-		private async Task LoadData()
+			List<Tweet> tweetsss = new List<Tweet>();
+			if (searchResponse != null && searchResponse.Statuses != null)
+				searchResponse.Statuses.ForEach(tweet => tweetsss.Add(new Tweet() { ImageSource = tweet.User.ProfileImageUrl, Message = tweet.Text, UserName = tweet.User.ScreenNameResponse }));
+
+
+		}
+		private async Task LoadEvent()
 		{
 			EventDAL ed = new EventDAL();
 			rootPanorama.Title = evm.Title;
@@ -85,6 +108,11 @@ namespace TheMainEvent_Capstone.Pages
 			}
 			evm.Cost = 30;
 		}
+
+		private async Task LoadData()
+		{
+			await this.LoadEvent();
+		}
 		protected async override void OnNavigatedTo(NavigationEventArgs e)
 		{
 			string msg = "";
@@ -104,9 +132,10 @@ namespace TheMainEvent_Capstone.Pages
 					ID = ev.ID,
 
 				};
+				await this.LoadData();
 			}
 		}
-		private void attendButton_Click(object sender, RoutedEventArgs e)
+		private async void attendButton_Click(object sender, RoutedEventArgs e)
 		{
 
 			//Comment for Testing 
@@ -117,14 +146,14 @@ namespace TheMainEvent_Capstone.Pages
 			}
 			else if (!owner.MerchantEmail.Equals("none"))
 			{
-				this.PayForEvent(owner.MerchantEmail);
+				await this.PayForEvent(owner.MerchantEmail);
 				EventDAL ed = new EventDAL();
 				ed.AddAttendee(evm.ID, currentUser.User);
 			}
 
 		}
 
-		private async void PayForEvent(string merchant)
+		private async Task PayForEvent(string merchant)
 		{
 			try
 			{
@@ -175,11 +204,11 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void tweetBox_GotFocus(object sender, RoutedEventArgs e)
 		{
-
+			this.tweetGotFocusStoryboard.Begin();
 		}
 		private void tweetBox_LostFocus(object sender, RoutedEventArgs e)
 		{
-
+			this.tweetLostFocusStoryboard.Begin();
 		}
 
 		private void EventsList_SelectionChanged(object sender, SelectionChangedEventArgs e)

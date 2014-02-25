@@ -31,6 +31,7 @@ namespace TheMainEvent_Capstone.Pages
 		public EventPage()
 		{
 			InitializeComponent();
+			TweetTextBox.Text = "#" + evm.Title + " Welcome to the event";
 		}
 		protected async override void OnNavigatedTo(NavigationEventArgs e)
 		{
@@ -165,6 +166,7 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			if (SharedState.Authorizer == null)
 				NavigationService.Navigate(new Uri("/OAuth.xaml", UriKind.Relative));
+
 			IAuthorizer auth = SharedState.Authorizer;
 
 			var twitterCtx = new TwitterContext(auth);
