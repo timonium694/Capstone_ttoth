@@ -52,7 +52,8 @@ namespace TheMainEvent_Capstone.Pages
 					Bio = bio,
 					Birthday = bday,
 					User = ParseUser.CurrentUser.ObjectId,
-					MerchantEmail = "tim.toth13@gmail.com"
+					MerchantEmail = "tim.toth13@gmail.com",
+					Email = ParseUser.CurrentUser.Email,
 				};
 				UserDAL ud = new UserDAL();
 				ud.CreateUserInfo(ui);

@@ -12,6 +12,7 @@ using TheMainEvent_Capstone.Model.ViewModels;
 using TheMainEvent_Capstone.DataAccessLayer;
 using TheMainEvent_Capstone.Model;
 using Parse;
+using System.Threading.Tasks;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -26,11 +27,17 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			InitializeComponent();
 		}
-		protected override void OnNavigatedTo(NavigationEventArgs e)
+		protected async override void OnNavigatedTo(NavigationEventArgs e)
 		{
-			this.LoadEvents();
-			this.LoadInvites();
+			await this.LoadEvents();
+			await this.LoadInvites();
+			await this.LoadUser();
+			await this.LoadContacts();
 			this.isLoaded = true;
+
+			this.loadingBar.Visibility = Visibility.Collapsed;
+			this.loadingBar.IsIndeterminate = false;
+			this.MainPivot.Visibility = Visibility.Visible;
 			//EventDAL ed = new EventDAL();
 			//Event ev = new Event()
 			//{
@@ -54,7 +61,7 @@ namespace TheMainEvent_Capstone.Pages
 			base.OnNavigatedFrom(e);
 			this.Events.Clear();
 		}
-		private async void LoadEvents()
+		private async Task LoadEvents()
 		{
 			EventDAL ed = new EventDAL();
 			List<Event> events = await ed.GetUserEvents(ParseUser.CurrentUser.ObjectId);
@@ -69,7 +76,7 @@ namespace TheMainEvent_Capstone.Pages
 					Title = e.Title,
 					ID = e.ID,
 					City = e.City,
-					Type = e.Type.ToString(),
+					Type = e.Type,
 					State = e.State,
 				});
 			}
@@ -77,7 +84,7 @@ namespace TheMainEvent_Capstone.Pages
 
 			EventsList.ItemsSource = this.Events;
 		}
-		private async void LoadInvites()
+		private async Task LoadInvites()
 		{
 			EventDAL ed = new EventDAL();
 			List<string> invites = await ed.GetInvitesForUser(ParseUser.CurrentUser.ObjectId);
@@ -99,29 +106,38 @@ namespace TheMainEvent_Capstone.Pages
 			InviteList.ItemsSource = this.Contacts;
 		}
 
-		private async void LoadUser()
+		private async Task LoadUser()
 		{
 			UserDAL ud = new UserDAL();
 			ParseUser p = ParseUser.CurrentUser;
 			UserInfo ui = await ud.GetUserInfo(p.ObjectId);
-			ContactViewModel cvm = new ContactViewModel()
-			{
-				Bio=ui.Bio,
-				Birthday = ui.Birthday,
-				Name = ui.FirstName + " " + ui.LastName,
-				Email = p.Email,
-				Phone = ui.Phone,
-				Username = p.Username
-				   
-			};
-			ProfilePage.DataContext = cvm;
+			ProfilePage.DataContext = ui;
+			ProfilePage.Header = ui.FirstName + ui.LastName;
 		}
 
-		private void LoadContacts()
+		private async Task LoadContacts()
 		{
+			UserDAL ud = new UserDAL();
+			List<string> ids = await ud.GetContacts(ParseUser.CurrentUser.ObjectId);
+			foreach (string id in ids)
+			{
+				try
+				{
+					UserInfo ui = await ud.GetUserInfo(id);
+					this.Contacts.Add(ui);
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+				}
+
+			}
+
+
 			List<AlphaKeyGroup<UserInfo>> DataSource = AlphaKeyGroup<UserInfo>.CreateGroups(Contacts,
 				System.Threading.Thread.CurrentThread.CurrentUICulture,
 				(UserInfo s) => { return s.FirstName; }, true);
+			ContactList.ItemsSource = DataSource;
 		}
 
 		private void EventsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -146,7 +162,7 @@ namespace TheMainEvent_Capstone.Pages
 			InviteViewModel evm = (InviteViewModel)InviteList.SelectedItem;
 			NavigationService.Navigate(new Uri("/Pages/EventPage.xaml?msg=" + evm.ID, UriKind.Relative));
 		}
-
+			
 		private void optionFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (isLoaded)

@@ -44,8 +44,8 @@ namespace TheMainEvent_Capstone
 		{
 			string username = usernameBox.Text;
 			string password = passwordBox.Password;
-			//username = "Timonium";
-			//password = "CorrectHorse1";
+			username = "Timonium";
+			password = "CorrectHorse1";
 
 			await this.LoginUser(username, password);
 		}
@@ -69,7 +69,7 @@ namespace TheMainEvent_Capstone
 			{
 				await ParseUser.LogInAsync(username, password);
 
-				NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml", UriKind.Relative));
+				NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
 			}
 			catch (Exception ex)
 			{

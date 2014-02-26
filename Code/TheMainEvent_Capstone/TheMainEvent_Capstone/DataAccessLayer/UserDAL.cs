@@ -46,6 +46,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 				output.Active = p.Get<string>("active");
 				output.User = p.Get<string>("user");
 				output.MerchantEmail = p.Get<string>("merchant");
+				output.Email = p.Get<string>("mail");
 			}
 			return output;
 		}
@@ -64,6 +65,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			info["active"] = ui.Active;
 			info["user"] = ui.User;
 			info["merchant"] = "none";
+			info["mail"] = ui.Email;
 			await info.SaveAsync();
 		}
 		public async void CreateUser(User u)

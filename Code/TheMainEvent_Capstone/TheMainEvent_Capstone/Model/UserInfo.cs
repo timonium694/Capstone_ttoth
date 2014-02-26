@@ -16,6 +16,7 @@ namespace TheMainEvent_Capstone.Model
 		public string User { get; set; }
 		public DateTime Birthday { get; set; }
 		public string MerchantEmail { get; set; }
+		public string Email { get; set; }
 
 		public override bool Equals(Object obj)
 		{
