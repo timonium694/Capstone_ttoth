@@ -33,6 +33,23 @@
 			</toolkit:NavigationOutTransition.Forward>
 		</toolkit:NavigationOutTransition>
 	</toolkit:TransitionService.NavigationOutTransition>
+	<phone:PhoneApplicationPage.Resources>
+		<Storyboard x:Name="bioGotFocusStoryboard">
+			<DoubleAnimation
+            Storyboard.TargetName="bioBox"
+            Storyboard.TargetProperty="Height"
+            From="72.0" To="150.0" Duration="0:0:1"
+            AutoReverse="True"/>
+		</Storyboard>
+		<Storyboard x:Name="bioLostFocusStoryboard">
+			<DoubleAnimation
+            Storyboard.TargetName="bioBox"
+            Storyboard.TargetProperty="Height"
+            From="150.0" To="72.0" Duration="0:0:1"
+            AutoReverse="True"/>
+		</Storyboard>
+	</phone:PhoneApplicationPage.Resources>
+
 	<!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
@@ -49,12 +66,10 @@
         <!--ContentPanel - place additional content here-->
 		<ScrollViewer x:Name="ContentScroll" Grid.Row="1" Margin="12,0,12,0">
 			<StackPanel>
-				<TextBox x:Name="firstNameBox" Width="250" Text="First Name" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
-				<TextBox x:Name="lastNameBox" Width="250" Text="Last Name" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
-				<TextBox x:Name="phoneBox" Width="250" Text="Phone Number" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
-				<ScrollViewer HorizontalAlignment="Center" x:Name="scrollViewer" Height="200" Width="350" VerticalScrollBarVisibility="Auto"  toolkit:TurnstileFeatherEffect.FeatheringIndex="5">
-					<toolkit:PhoneTextBox x:Name="bioBox" Text="Bio" Width="250" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
-				</ScrollViewer>
+				<toolkit:PhoneTextBox x:Name="firstNameBox" Width="250" Hint="First Name" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
+				<toolkit:PhoneTextBox x:Name="lastNameBox" Width="250" Hint="Last Name" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
+				<toolkit:PhoneTextBox x:Name="phoneBox" Width="250" Hint="Phone Number" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
+				<toolkit:PhoneTextBox x:Name="bioBox" Hint="Bio" Width="250" Height="72" AcceptsReturn="True" TextWrapping="Wrap"/>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  toolkit:TurnstileFeatherEffect.FeatheringIndex="6">
 					<TextBlock Margin="12,0,0,0" Text="Birthday" VerticalAlignment="Center" FontSize="30"/>
 					<toolkit:DatePicker x:Name="datePicker" HorizontalAlignment="Right" Width="150"/>

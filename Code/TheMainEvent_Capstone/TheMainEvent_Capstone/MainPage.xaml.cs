@@ -28,6 +28,11 @@ namespace TheMainEvent_Capstone
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
+			string msg = "";
+			if (NavigationContext.QueryString.TryGetValue("msg", out msg))
+			{
+				this.errorBox.Text = msg;
+			}
 			if (ParseUser.CurrentUser != null)
 			{
 				ParseUser.LogOut();
@@ -39,18 +44,10 @@ namespace TheMainEvent_Capstone
 		{
 			string username = usernameBox.Text;
 			string password = passwordBox.Password;
-			username = "Timonium";
-			password = "CorrectHorse1";
+			//username = "Timonium";
+			//password = "CorrectHorse1";
 
-			if (await this.LoginUser(username, password))
-			{
-				//NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
-				NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml", UriKind.Relative));
-			}
-			else
-			{
-				NavigationService.Navigate(new Uri("MainPage.xaml?msg=" + "Please provide a valid username and password or Register an Account", UriKind.Relative));
-			}
+			await this.LoginUser(username, password);
 		}
 
 		private void usernameBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -66,20 +63,19 @@ namespace TheMainEvent_Capstone
 		{
 			NavigationService.Navigate(new Uri("/Pages/RegistrationPage.xaml", UriKind.Relative));
 		}
-		private async Task<bool> LoginUser(string username, string password)
+		private async Task LoginUser(string username, string password)
 		{
-			bool output = false;
 			try
 			{
 				await ParseUser.LogInAsync(username, password);
-				output = true;
+
+				NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml", UriKind.Relative));
 			}
 			catch (Exception ex)
 			{
-
-				output = false;
+				this.errorBox.Text = "Please provide a valid username and password or Register an Account";
+				//NavigationService.Navigate(new Uri("MainPage.xaml?msg=" + "Please provide a valid username and password or Register an Account", UriKind.Relative));
 			}
-			return output;
 		}
 
 

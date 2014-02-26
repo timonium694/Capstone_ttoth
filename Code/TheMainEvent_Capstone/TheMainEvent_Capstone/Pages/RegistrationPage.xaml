@@ -68,7 +68,7 @@
 					<PasswordBox x:Name="confirmPasswordBox" Width="250" Margin="27,0,0,0"/>
 				</StackPanel>
 				<Button Content="Continue" Width="175" x:Name="Continue" Click="Continue_Click" toolkit:TurnstileFeatherEffect.FeatheringIndex="6"/>
-				<TextBlock HorizontalAlignment="Center" Text="*Validation errors go here*" toolkit:TurnstileFeatherEffect.FeatheringIndex="7"/>
+				<TextBlock x:Name="ErrorBox" HorizontalAlignment="Center" Text="*Validation errors go here*" toolkit:TurnstileFeatherEffect.FeatheringIndex="7"/>
 			</StackPanel>
 		</Grid>
     </Grid>

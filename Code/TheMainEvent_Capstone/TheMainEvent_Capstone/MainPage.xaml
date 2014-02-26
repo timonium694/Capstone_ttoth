@@ -55,7 +55,7 @@
 			<TextBlock HorizontalAlignment="Left" TextAlignment="Center" FontSize="49" Margin="101,34,0,0" TextWrapping="Wrap" Text="Welcome!" VerticalAlignment="Top" Width="255" Height="91"/>
 			<Button x:Name="Login" Content="Login" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Login_Click" Margin="174,376,174,0"/>
 
-			<TextBlock HorizontalAlignment="Left" TextAlignment="Center" TextWrapping="Wrap" Text="*Username not found*" Width="255" Height="50" Margin="100,125,0,422"/>
+			<TextBlock x:Name="errorBox" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Width="400" Height="75" Margin="53,108,53,449"/>
 			<toolkit:PhoneTextBox Hint="Username" x:Name="usernameBox" HorizontalAlignment="Center" Height="72" Margin="0,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="256" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 			<PasswordBox Tap="usernameBox_Tap" Password="Password" x:Name="passwordBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="255" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
 			<HyperlinkButton x:Name="registrationButton" Content="Need an Account? Sign Up Here!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50" Click="registrationButton_Click"/>

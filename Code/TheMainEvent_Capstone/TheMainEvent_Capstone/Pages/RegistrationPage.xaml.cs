@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using TheMainEvent_Capstone.DataAccessLayer;
 using TheMainEvent_Capstone.Model;
+using System.Threading.Tasks;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -20,6 +21,11 @@ namespace TheMainEvent_Capstone.Pages
 		}
 
 		private void Continue_Click(object sender, RoutedEventArgs e)
+		{
+			this.RegisterUser();
+		}
+
+		private void RegisterUser()
 		{
 			try
 			{
@@ -37,7 +43,7 @@ namespace TheMainEvent_Capstone.Pages
 			}
 			catch (Exception ex)
 			{
-				NavigationService.Navigate(new Uri("/RegistrationPage.xaml?msg=" + ex.Message, UriKind.Relative));
+				this.ErrorBox.Text = ex.Message;
 			}
 		}
 	}

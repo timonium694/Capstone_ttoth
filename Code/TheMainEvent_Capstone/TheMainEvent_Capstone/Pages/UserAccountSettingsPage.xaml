@@ -40,17 +40,6 @@
 					</StackPanel>
 				</toolkit:ExpanderView.Expander>
 			</toolkit:ExpanderView>
-			<toolkit:ExpanderView FontSize="30" x:Name="twitterExpander" Header="PayPal" HorizontalAlignment="Center" Width="400">
-				<toolkit:ExpanderView.Items>
-					<TextBox x:Name="twitterBox"/>
-				</toolkit:ExpanderView.Items>
-				<toolkit:ExpanderView.Expander>
-					<StackPanel>
-						<TextBlock Text="Twitter Settings"/>
-						<TextBlock Text="Tweets for events" Style="{StaticResource PhoneTextSubtleStyle}"/>
-					</StackPanel>
-				</toolkit:ExpanderView.Expander>
-			</toolkit:ExpanderView>
 			<Button Width="150" Content="Save" x:Name="saveButton" Click="saveButton_Click"/>
 		</StackPanel>
 	</Grid>

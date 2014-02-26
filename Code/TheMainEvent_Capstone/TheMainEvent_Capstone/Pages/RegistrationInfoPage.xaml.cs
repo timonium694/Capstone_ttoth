@@ -34,11 +34,6 @@ namespace TheMainEvent_Capstone.Pages
 				box.Text = "";
 			}
 		}
-		private void OnTextInputStart(object sender, TextCompositionEventArgs e)
-		{
-			scrollViewer.UpdateLayout();
-			scrollViewer.ScrollToVerticalOffset(bioBox.ActualHeight);
-		}
 
 		private void doneButton_Click(object sender, RoutedEventArgs e)
 		{
