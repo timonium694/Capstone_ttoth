@@ -22,7 +22,6 @@ namespace TheMainEvent_Capstone.Pages
 		private async void SaveSettings()
 		{
 			string email = this.merchantBox.Text;
-			string twitter = this.twitterBox.Text;
 			UserDAL ud = new UserDAL();
 			UserInfo ui = await ud.GetUserInfo(ParseUser.CurrentUser.ObjectId);
 			ui.MerchantEmail = email;

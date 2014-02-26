@@ -19,6 +19,7 @@ namespace TheMainEvent_Capstone.Pages
 	{
 		ObservableCollection<EventViewModel> Events = new ObservableCollection<EventViewModel>();
 		ObservableCollection<InviteViewModel> Invites = new ObservableCollection<InviteViewModel>();
+		List<UserInfo> Contacts = new List<UserInfo>();
 		private bool isLoaded = false;
 
 		public MainPages()
@@ -95,7 +96,7 @@ namespace TheMainEvent_Capstone.Pages
 				};
 				this.Invites.Add(ivm);
 			}
-			InviteList.ItemsSource = this.Invites;
+			InviteList.ItemsSource = this.Contacts;
 		}
 
 		private async void LoadUser()
@@ -114,6 +115,13 @@ namespace TheMainEvent_Capstone.Pages
 				   
 			};
 			ProfilePage.DataContext = cvm;
+		}
+
+		private void LoadContacts()
+		{
+			List<AlphaKeyGroup<UserInfo>> DataSource = AlphaKeyGroup<UserInfo>.CreateGroups(Contacts,
+				System.Threading.Thread.CurrentThread.CurrentUICulture,
+				(UserInfo s) => { return s.FirstName; }, true);
 		}
 
 		private void EventsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -148,5 +156,6 @@ namespace TheMainEvent_Capstone.Pages
 			}
 			
 		}
+		
 	}
 }
