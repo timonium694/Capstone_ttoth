@@ -230,6 +230,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AlignmentGrid.png" />
+    <Content Include="Assets\AppBar\appbar.flag.wavy.png" />
+    <Content Include="Assets\AppBar\appbar.magnify.png" />
+    <Content Include="Assets\AppBar\appbar.moon.sleep.png" />
+    <Content Include="Assets\AppBar\appbar.user.add.png" />
+    <Content Include="Assets\AppBar\heart2.png" />
+    <Content Include="Assets\AppBar\people.groups.png" />
+    <Content Include="Assets\AppBar\photo.flash.on.png" />
+    <Content Include="Assets\AppBar\time.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

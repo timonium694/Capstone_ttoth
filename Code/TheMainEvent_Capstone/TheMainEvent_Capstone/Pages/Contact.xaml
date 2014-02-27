@@ -51,19 +51,62 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 			<StackPanel>
-				<StackPanel Orientation="Horizontal">
-					<TextBlock x:Name="bioblock" HorizontalAlignment="Left" Width="260" FontSize="24" TextWrapping="Wrap" Text="Bio Section. This is where the user bio is supposed to go whenever it is implemented. It simply needs to be bound. " VerticalAlignment="Top" />
-					<Grid HorizontalAlignment="Right">
-						<StackPanel HorizontalAlignment="Left">
-							<TextBlock x:Name="emailBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource PhoneTextSubtleStyle}" Width="175" TextWrapping="Wrap" Text="eMailaddressoftheperson"/>
-							<TextBlock x:Name="phoneBlock" HorizontalAlignment="Left" VerticalAlignment="Bottom" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Text="330-766-0092"/>
-						</StackPanel>
-					</Grid>
-				</StackPanel>
-				<Button x:Name="addContact" Content="Add as Contact" Width="250" HorizontalAlignment="Left"/>
-				<Button x:Name="setupMeeting" Content="Setup Meeting" Width="250" HorizontalAlignment="Left"/>
-			</StackPanel>
-		</Grid>
-    </Grid>
+				<StackPanel x:Name="UserPanel">
+					<StackPanel HorizontalAlignment="Left">
 
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Email:" FontWeight="Bold"/>
+							<TextBlock x:Name="emailBlock"
+										   HorizontalAlignment="Left"
+										   VerticalAlignment="Top"
+										   Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap"
+										   Text="{Binding Email}"/>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Phone:" FontWeight="Bold"/>
+							<TextBlock x:Name="phoneBlock"
+										   HorizontalAlignment="Left"
+										   VerticalAlignment="Bottom"
+										   Style="{StaticResource PhoneTextSubtleStyle}"
+										   TextWrapping="Wrap" Text="{Binding Phone}"/>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Birthday:" FontWeight="Bold"/>
+							<TextBlock x:Name="bDayBlock"
+										   HorizontalAlignment="Left"
+										   VerticalAlignment="Bottom"
+										   Style="{StaticResource PhoneTextSubtleStyle}"
+										   TextWrapping="Wrap" Text="{Binding Birthday, StringFormat='dd MMMM yyyy'}"/>
+						</StackPanel>
+
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0">
+						<TextBlock x:Name="bioblock"
+								   HorizontalAlignment="Left"
+								   Width="450"
+								   TextWrapping="Wrap"
+								   Text="{Binding Bio}"
+								   VerticalAlignment="Top" />
+					</StackPanel>
+
+				</StackPanel>
+			</StackPanel>
+			
+		</Grid>
+		
+    </Grid>
+	<phone:PhoneApplicationPage.ApplicationBar>
+		<shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Default" Opacity="1.0" >
+
+			<shell:ApplicationBarIconButton x:Name="eventsNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="events" Click="eventsNav_Click" />
+			<shell:ApplicationBarIconButton x:Name="contactsNav" IconUri="/Assets/AppBar/people.groups.png" Text="contacts" Click="contactsNav_Click" />
+			<shell:ApplicationBarIconButton x:Name="logutNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="Logout" Click="logutNav_Click" />
+
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem x:Name="addContactItem" Text="Add contact" Click="addContactItem_Click" />
+				<shell:ApplicationBarMenuItem x:Name="inviteContactItem" Text="Invite to meeting" Click="inviteContactItem_Click" />
+			</shell:ApplicationBar.MenuItems>
+
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

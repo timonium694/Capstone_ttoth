@@ -118,8 +118,8 @@
 		<shell:ApplicationBar Mode="Default" Opacity="1.0" IsMenuEnabled="True" IsVisible="True">
 
 			<shell:ApplicationBarIconButton Click="Events_Click" IconUri="/Images/save.png" Text="Events" />
-			<shell:ApplicationBarIconButton Click="Contacts_Click" IconUri="/Images/settings.png" Text="settings" />
-			<shell:ApplicationBarIconButton Click="Logout_Click" IconUri="/Images/settings.png" Text="settings" />
+			<shell:ApplicationBarIconButton Click="Contacts_Click" IconUri="/Images/settings.png" Text="Contacts" />
+			<shell:ApplicationBarIconButton Click="Logout_Click" IconUri="/Images/settings.png" Text="Logout" />
 
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem Text="Attend Event" />

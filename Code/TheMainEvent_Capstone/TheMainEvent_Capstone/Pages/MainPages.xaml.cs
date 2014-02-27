@@ -35,8 +35,8 @@ namespace TheMainEvent_Capstone.Pages
 			await this.LoadContacts();
 			this.isLoaded = true;
 
-			this.loadingBar.Visibility = Visibility.Collapsed;
-			this.loadingBar.IsIndeterminate = false;
+			//this.loadingBar.Visibility = Visibility.Collapsed;
+			//this.loadingBar.IsIndeterminate = false;
 			this.MainPivot.Visibility = Visibility.Visible;
 			//EventDAL ed = new EventDAL();
 			//Event ev = new Event()
@@ -112,7 +112,7 @@ namespace TheMainEvent_Capstone.Pages
 			ParseUser p = ParseUser.CurrentUser;
 			UserInfo ui = await ud.GetUserInfo(p.ObjectId);
 			ProfilePage.DataContext = ui;
-			ProfilePage.Header = ui.FirstName + ui.LastName;
+			ProfilePage.Header = ui.FirstName + " " + ui.LastName;
 		}
 
 		private async Task LoadContacts()

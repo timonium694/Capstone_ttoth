@@ -75,13 +75,13 @@
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot" Background="Transparent">
-		<ProgressBar 
+		<!--<ProgressBar 
 			IsIndeterminate="true"
 			x:Name="loadingBar"
 			Style="{StaticResource CustomIndeterminateProgressBar}"
-			/>
+			/>-->
 		<!--Pivot Control-->
-		<phone:Pivot x:Name="MainPivot" Visibility="Collapsed" Title="The Main Event" toolkit:TurnstileFeatherEffect.FeatheringIndex="0" HeaderTemplate="{StaticResource MainPivotHeader}">
+		<phone:Pivot x:Name="MainPivot" Visibility="Visible" Title="The Main Event" toolkit:TurnstileFeatherEffect.FeatheringIndex="0" HeaderTemplate="{StaticResource MainPivotHeader}">
 			<!--Pivot item one-->
 			<phone:PivotItem Header="Events">
 				<Grid Margin="12,0,-12,0">
@@ -169,29 +169,43 @@
 			</phone:PivotItem>
 			<phone:PivotItem Header="Profile" x:Name="ProfilePage">
 				<StackPanel>
-					<StackPanel Orientation="Horizontal">
-						<TextBlock x:Name="bioblock"
-								   HorizontalAlignment="Left"
-								   Width="260" FontSize="24"
-								   TextWrapping="Wrap"
-								   Text="{Binding Bio}"
-								   VerticalAlignment="Top" />
-						<Grid HorizontalAlignment="Right">
-							<StackPanel HorizontalAlignment="Left">
-								<TextBlock x:Name="emailBlock"
+					<StackPanel HorizontalAlignment="Left">
+					
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Email:" FontWeight="Bold"/>
+							<TextBlock x:Name="emailBlock"
 										   HorizontalAlignment="Left"
 										   VerticalAlignment="Top"
-										   Style="{StaticResource PhoneTextSubtleStyle}"
-										   Width="175" TextWrapping="Wrap"
+										   Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap"
 										   Text="{Binding Email}"/>
-								<TextBlock x:Name="phoneBlock"
+						</StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Phone:" FontWeight="Bold"/>
+							<TextBlock x:Name="phoneBlock"
 										   HorizontalAlignment="Left"
 										   VerticalAlignment="Bottom"
 										   Style="{StaticResource PhoneTextSubtleStyle}"
 										   TextWrapping="Wrap" Text="{Binding Phone}"/>
-							</StackPanel>
-						</Grid>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Birthday:" FontWeight="Bold"/>
+							<TextBlock x:Name="bDayBlock"
+										   HorizontalAlignment="Left"
+										   VerticalAlignment="Bottom"
+										   Style="{StaticResource PhoneTextSubtleStyle}"
+										   TextWrapping="Wrap" Text="{Binding Birthday, StringFormat='dd MMMM yyyy'}"/>
+						</StackPanel>
+						
 					</StackPanel>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0">
+						<TextBlock x:Name="bioblock"
+								   HorizontalAlignment="Left"
+								   Width="450"
+								   TextWrapping="Wrap"
+								   Text="{Binding Bio}"
+								   VerticalAlignment="Top" />
+					</StackPanel>
+					
 				</StackPanel>
 			</phone:PivotItem>
 		</phone:Pivot>
