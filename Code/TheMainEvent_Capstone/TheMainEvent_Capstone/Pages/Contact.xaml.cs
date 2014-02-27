@@ -76,5 +76,10 @@ namespace TheMainEvent_Capstone.Pages
 		{
 
 		}
+
+		private void searchNav_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

@@ -100,7 +100,10 @@
 
 			<shell:ApplicationBarIconButton x:Name="eventsNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="events" Click="eventsNav_Click" />
 			<shell:ApplicationBarIconButton x:Name="contactsNav" IconUri="/Assets/AppBar/people.groups.png" Text="contacts" Click="contactsNav_Click" />
-			<shell:ApplicationBarIconButton x:Name="logutNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="Logout" Click="logutNav_Click" />
+			<shell:ApplicationBarIconButton x:Name="searchNav" IconUri="/Assets/AppBar/appbar.magnify.png" Text="Search" Click="searchNav_Click"/>
+			<shell:ApplicationBarIconButton x:Name="logutNav" IconUri="/Assets/AppBar/appbar.moon.sleep.png" Text="Logout" Click="logutNav_Click" />
+			
+			
 
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem x:Name="addContactItem" Text="Add contact" Click="addContactItem_Click" />

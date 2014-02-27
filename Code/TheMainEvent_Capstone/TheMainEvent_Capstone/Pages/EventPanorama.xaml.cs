@@ -40,6 +40,7 @@ namespace TheMainEvent_Capstone.Pages
 
 		private async Task LoadTweets()
 		{
+			tweetGrid.DataContext = new TweetViewModel();
 			var twitterCtx = new TwitterContext(new SingleUserAuthorizer()
 			{
 				CredentialStore = new InMemoryCredentialStore()
@@ -55,15 +56,17 @@ namespace TheMainEvent_Capstone.Pages
 				await
 				(from search in twitterCtx.Search
 				 where search.Type == SearchType.Search &&
-					   search.Query == hashtag
+					   search.Query == "\"LINQ to Twitter\""
 				 select search)
 				.SingleOrDefaultAsync();
 
-			List<Tweet> tweetsss = new List<Tweet>();
+			List<Tweet> tweets = new List<Tweet>();
 			if (searchResponse != null && searchResponse.Statuses != null)
-				searchResponse.Statuses.ForEach(tweet => tweetsss.Add(new Tweet() { ImageSource = tweet.User.ProfileImageUrl, Message = tweet.Text, UserName = tweet.User.ScreenNameResponse }));
+				searchResponse.Statuses.ForEach(tweet => tweets.Add(new Tweet() { ImageSource = tweet.User.ProfileImageUrl, Message = tweet.Text, UserName = tweet.User.ScreenNameResponse }));
 
-
+			var tweetCollection = (tweetGrid.DataContext as TweetViewModel).Tweets;
+			tweetCollection.Clear();
+			tweets.ForEach(tweet => tweetCollection.Add(tweet));
 		}
 		private async Task LoadEvent()
 		{
@@ -102,16 +105,39 @@ namespace TheMainEvent_Capstone.Pages
 					IsAttending = true;
 				}
 			}
-			if (this.IsOwner || this.IsAttending)
-			{
-				this.attendButton.Visibility = Visibility.Collapsed;
-			}
 			evm.Cost = 30;
+		}
+		private void UserInAttendance()
+		{
+
+			if (this.IsAttending)
+			{
+				ApplicationBar.MenuItems.Remove(this.attendEvent);
+				ApplicationBarMenuItem menuItem1 = new ApplicationBarMenuItem();
+				menuItem1.Text = "unattend event";
+				ApplicationBar.MenuItems.Add(menuItem1);
+				menuItem1.Click += new EventHandler(this.unattendButton_Click);
+			}
+			if (this.IsOwner)
+			{
+				ApplicationBar.MenuItems.Remove(this.attendEvent);
+				ApplicationBarMenuItem menuItem1 = new ApplicationBarMenuItem();
+				menuItem1.Text = "cancel event";
+				ApplicationBar.MenuItems.Add(menuItem1);
+				menuItem1.Click += new EventHandler(this.cancelEventButton_Click);
+
+				ApplicationBarMenuItem menuItem2 = new ApplicationBarMenuItem();
+				menuItem2.Text = "cancel event";
+				ApplicationBar.MenuItems.Add(menuItem2);
+				menuItem2.Click += new EventHandler(this.cancelEventButton_Click);
+			}
+
 		}
 
 		private async Task LoadData()
 		{
 			await this.LoadEvent();
+			await this.LoadTweets();
 		}
 		protected async override void OnNavigatedTo(NavigationEventArgs e)
 		{
@@ -150,7 +176,6 @@ namespace TheMainEvent_Capstone.Pages
 				EventDAL ed = new EventDAL();
 				ed.AddAttendee(evm.ID, currentUser.User);
 			}
-
 		}
 
 		private async Task PayForEvent(string merchant)
@@ -171,23 +196,23 @@ namespace TheMainEvent_Capstone.Pages
 				// start, auth, error, cancel and complete
 				bn.Start += new EventHandler<PayPal.Checkout.Event.StartEventArgs>((source, args) =>
 				{
-					this.statusBlock.Text = "Initiating payment";
+					MessageBox.Show("Initiating payment");
 				});
 				bn.Auth += new EventHandler<PayPal.Checkout.Event.AuthEventArgs>((source, args) =>
 				{
-					this.statusBlock.Text = "Authenticating payment: " + args.Token;
+					MessageBox.Show("Authenticating payment: " + args.Token);
 				});
 				bn.Complete += new EventHandler<PayPal.Checkout.Event.CompleteEventArgs>((source, args) =>
 				{
-					this.statusBlock.Text = "Your payment is complete. Transaction id: " + args.TransactionID;
+					MessageBox.Show("Your payment is complete. Transaction id: " + args.TransactionID);
 				});
 				bn.Cancel += new EventHandler<PayPal.Checkout.Event.CancelEventArgs>((source, args) =>
 				{
-					this.statusBlock.Text = "Payment Cancelled";
+					MessageBox.Show("Payment Cancelled");
 				});
 				bn.Error += new EventHandler<PayPal.Checkout.Event.ErrorEventArgs>((source, args) =>
 				{
-					this.statusBlock.Text = "There was an error processing your payment: " + args.Type + " " + args.Message;
+					MessageBox.Show("There was an error processing your payment: " + args.Type + " " + args.Message);
 				});
 
 				// Ready to go. Call the asynchronous Execute operation
@@ -198,7 +223,7 @@ namespace TheMainEvent_Capstone.Pages
 			}
 			catch (Exception ex)
 			{
-				this.statusBlock.Text = ex.Message;
+				MessageBox.Show(ex.Message);
 			}
 		}
 
@@ -211,33 +236,60 @@ namespace TheMainEvent_Capstone.Pages
 			this.tweetLostFocusStoryboard.Begin();
 		}
 
-		private void EventsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-
-		}
-
 		private void getDirectionsClick_Click(object sender, EventArgs e)
 		{
 
 		}
 
-		private void attendButton_Click(object sender, EventArgs e)
+		private void unattendButton_Click(object sender, EventArgs e)
+		{
+
+		}
+		private void cancelEventButton_Click(object sender, EventArgs e) 
 		{
 
 		}
 
-		private void Events_Click(object sender, EventArgs e)
+		private void eventsNav_Click(object sender, EventArgs e)
 		{
-
+			NavigationService.Navigate(new Uri("/Pages/EventPage.xaml?msg=" + "1", UriKind.Relative));
 		}
 
-		private void Contacts_Click(object sender, EventArgs e)
+		private void contactsNav_Click(object sender, EventArgs e)
 		{
-
+			NavigationService.Navigate(new Uri("/Pages/EventPage.xaml?msg=" + "3", UriKind.Relative));
 		}
 
-		private void Logout_Click(object sender, EventArgs e)
+		private void searchNav_Click(object sender, EventArgs e)
 		{
+			NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
+		}
+
+		private void logutNav_Click(object sender, EventArgs e)
+		{
+			ParseUser.LogOut();
+			NavigationService.Navigate(new Uri("/Pages/MainPage.xaml", UriKind.Relative));
+		}
+
+		private async void tweetButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (SharedState.Authorizer == null)
+				NavigationService.Navigate(new Uri("/OAuth.xaml", UriKind.Relative));
+
+			IAuthorizer auth = SharedState.Authorizer;
+
+			var twitterCtx = new TwitterContext(auth);
+
+			decimal latitude = 37.78215m;
+			decimal longitude = -122.40060m;
+
+			Status tweet = await twitterCtx.TweetAsync(this.tweetBox.Text, latitude, longitude);
+
+			MessageBox.Show(
+				"User: " + tweet.User.ScreenNameResponse +
+				", Posted Status: " + tweet.Text,
+				"Update Successfully Posted.",
+				MessageBoxButton.OK);
 
 		}
 	}

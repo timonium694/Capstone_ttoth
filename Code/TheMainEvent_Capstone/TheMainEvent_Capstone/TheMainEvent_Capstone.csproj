@@ -119,6 +119,7 @@
     <Compile Include="Model\ViewModels\ContactViewModel.cs" />
     <Compile Include="Model\ViewModels\EventViewModel.cs" />
     <Compile Include="Model\ViewModels\InviteViewModel.cs" />
+    <Compile Include="Model\ViewModels\TweetViewModel.cs" />
     <Compile Include="Pages\Contact.xaml.cs">
       <DependentUpon>Contact.xaml</DependentUpon>
     </Compile>

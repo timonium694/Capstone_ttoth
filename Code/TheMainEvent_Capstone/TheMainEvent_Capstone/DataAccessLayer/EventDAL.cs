@@ -31,6 +31,8 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			   ID = p.ObjectId,
 			   City = p.Get<string>("city"),
 			   State = p.Get<string>("state"),
+			   Cost = p.Get<double>("cost"),
+			   IsDonatable = p.Get<bool>("isDonatable")
 			};
 			return returnEvent;
 		}
@@ -51,6 +53,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			temp["state"] = e.State;
 			temp["type"] = e.Type;
 			temp["cost"] = e.Cost;
+			temp["isDonatable"] = e.IsDonatable;
 			await temp.SaveAsync();
 		}
 		public async void SetOwner(string eventId, string ownerId)
