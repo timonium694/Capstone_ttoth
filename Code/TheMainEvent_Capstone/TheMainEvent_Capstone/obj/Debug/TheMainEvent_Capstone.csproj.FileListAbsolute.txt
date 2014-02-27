@@ -24,7 +24,6 @@ C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\Bin\D
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\TheMainEvent_Capstone.csprojResolveAssemblyReference.cache
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\Bin\Debug\Microsoft.Phone.Controls.dll
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\Pages\MainPages.g.cs
-C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\Pages\MapPage.g.cs
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\Pages\CreateEvent.g.cs
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\Pages\RegistrationPage.g.cs
 C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent_Capstone\obj\Debug\Pages\RegistrationInfoPage.g.cs

@@ -35,8 +35,8 @@ namespace TheMainEvent_Capstone.Pages
 			await this.LoadContacts();
 			this.isLoaded = true;
 
-			//this.loadingBar.Visibility = Visibility.Collapsed;
-			//this.loadingBar.IsIndeterminate = false;
+			this.loadingBar.Visibility = Visibility.Collapsed;
+			this.loadingBar.IsIndeterminate = false;
 			this.MainPivot.Visibility = Visibility.Visible;
 			//EventDAL ed = new EventDAL();
 			//Event ev = new Event()
@@ -144,7 +144,7 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			//MessageBox.Show(((EventViewModel)EventsList.SelectedItem).Title);
 			EventViewModel evm = (EventViewModel)EventsList.SelectedItem;
-			NavigationService.Navigate(new Uri("/Pages/EventPage.xaml?msg=" + evm.ID, UriKind.Relative));
+			NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml?msg=" + evm.ID, UriKind.Relative));
 		}
 
 		private void FindEvent_Click(object sender, RoutedEventArgs e)

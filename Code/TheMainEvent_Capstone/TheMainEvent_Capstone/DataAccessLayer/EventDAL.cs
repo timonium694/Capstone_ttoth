@@ -32,7 +32,8 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			   City = p.Get<string>("city"),
 			   State = p.Get<string>("state"),
 			   Cost = p.Get<double>("cost"),
-			   IsDonatable = p.Get<bool>("isDonatable")
+			   IsDonatable = p.Get<bool>("isDonatable"),
+			   Type = p.Get<string>("type")
 			};
 			return returnEvent;
 		}

@@ -7,6 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
+	xmlns:maptk="clr-namespace:Microsoft.Phone.Maps.Toolkit;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -59,9 +61,9 @@
 
 			<phone:PanoramaItem>
 				<Grid Margin="0,-40,0,0">
-					<StackPanel>
+					<StackPanel x:Name="EventData">
 						<StackPanel Orientation="Horizontal"  toolkit:TurnstileFeatherEffect.FeatheringIndex="0">
-							<TextBlock x:Name="dateBlock" Text="{Binding Data}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+							<TextBlock x:Name="dateBlock" Text="{Binding Date, StringFormat='ddd, dd MMM yyyy'}" Style="{StaticResource PhoneTextSubtleStyle}"/>
 							<TextBlock x:Name="timeBlock" Text="{Binding Time}" Style="{StaticResource PhoneTextSubtleStyle}"/>
 							<TextBlock x:Name="costBlock" Text="{Binding Cost}" Margin="10,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
 						</StackPanel>
@@ -76,10 +78,10 @@
 			<!--Panorama item two-->
 			<phone:PanoramaItem x:Name="TweetSection">
 				<Grid Margin="0,-40,0,0" x:Name="tweetGrid">
-					<StackPanel >
+					<StackPanel>
 						<StackPanel Orientation="Horizontal">
-							<toolkit:PhoneTextBox x:Name="tweetBox" Text="Description" Width="320" AcceptsReturn="True" TextWrapping="Wrap"/>
-							<Button Content="Tweet" x:Name="tweetButton" Click="tweetButton_Click"/>
+							<toolkit:PhoneTextBox x:Name="tweetBox" Hint="tweet" Width="320" AcceptsReturn="True" TextWrapping="Wrap"/>
+							<Button Content="tweet" x:Name="tweetButton" Click="tweetButton_Click"/>
 						</StackPanel>
 						<phone:LongListSelector Grid.Row="1" Margin="0,0,-22,0" ItemsSource="{Binding Tweets}">
 							<phone:LongListSelector.ItemTemplate>
@@ -97,9 +99,21 @@
 					</StackPanel>
 				</Grid>
 			</phone:PanoramaItem>
-			<phone:PanoramaItem Header="Map">
-				<Grid Margin="0,-37,0,0">
-
+			<phone:PanoramaItem>
+				<Grid Margin="0,0,0,0">
+					<maps:Map Margin="0,0,0,0" Height="500" Width="450" x:Name="Map" VerticalAlignment="Center" Visibility="Visible" Hold="OnMapHold">
+						<maptk:MapExtensions.Children>
+							
+							<maptk:MapItemsControl Name="RestaurantItems">
+								<maptk:MapItemsControl.ItemTemplate>
+									<DataTemplate>
+										<maptk:Pushpin GeoCoordinate="{Binding Coordinate}" Content="{Binding Name}" />
+									</DataTemplate>
+								</maptk:MapItemsControl.ItemTemplate>
+							</maptk:MapItemsControl>
+							
+						</maptk:MapExtensions.Children>
+					</maps:Map>
 				</Grid>
 			</phone:PanoramaItem>
 		</phone:Panorama>
@@ -107,16 +121,17 @@
 	<phone:PhoneApplicationPage.ApplicationBar>
 
 		<shell:ApplicationBar Mode="Default" Opacity="1.0" IsMenuEnabled="True" IsVisible="True">
-
+			
 			<shell:ApplicationBarIconButton x:Name="eventsNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="events" Click="eventsNav_Click" />
 			<shell:ApplicationBarIconButton x:Name="contactsNav" IconUri="/Assets/AppBar/people.groups.png" Text="contacts" Click="contactsNav_Click" />
 			<shell:ApplicationBarIconButton x:Name="searchNav" IconUri="/Assets/AppBar/appbar.magnify.png" Text="search" Click="searchNav_Click"/>
 			<shell:ApplicationBarIconButton x:Name="logutNav" IconUri="/Assets/AppBar/appbar.moon.sleep.png" Text="logout" Click="logutNav_Click" />
-
+		
 
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem x:Name="attendEvent" Text="Attend Event" Click="attendButton_Click" />
-				<shell:ApplicationBarMenuItem x:Name="getDirections" Click="getDirectionsClick_Click" Text="Get Directions" />
+				<shell:ApplicationBarMenuItem x:Name="getDirections" Click="OnDirections" Text="Get Directions" />
+				<shell:ApplicationBarMenuItem x:Name="showRoute" Text="Show Route" Click="OnSHowRoute"/>
 			</shell:ApplicationBar.MenuItems>
 
 		</shell:ApplicationBar>

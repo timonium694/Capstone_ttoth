@@ -16,6 +16,15 @@ using Parse;
 using System.Threading.Tasks;
 using PayPal.Checkout;
 using LinqToTwitter;
+using System.IO.IsolatedStorage;
+using Microsoft.Phone.Maps.Controls;
+using System.Device.Location;
+using Microsoft.Phone.Maps.Services;
+using Microsoft.Phone.Tasks;
+using Windows.Devices.Geolocation;
+using Microsoft.Phone.Maps.Toolkit;
+using Windows.Foundation;
+using System.Reflection;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -31,6 +40,7 @@ namespace TheMainEvent_Capstone.Pages
 		ObservableCollection<ContactViewModel> AttendingUsers = new ObservableCollection<ContactViewModel>();
 
 
+
 		//Have event editing by making everything clickable and then having a message box come up with a field for editing.
 		public EventPanorama()
 		{
@@ -38,6 +48,8 @@ namespace TheMainEvent_Capstone.Pages
 
 		}
 
+
+		#region LoadData
 		private async Task LoadTweets()
 		{
 			tweetGrid.DataContext = new TweetViewModel();
@@ -56,7 +68,7 @@ namespace TheMainEvent_Capstone.Pages
 				await
 				(from search in twitterCtx.Search
 				 where search.Type == SearchType.Search &&
-					   search.Query == "\"LINQ to Twitter\""
+					   search.Query == hashtag
 				 select search)
 				.SingleOrDefaultAsync();
 
@@ -72,7 +84,7 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			EventDAL ed = new EventDAL();
 			rootPanorama.Title = evm.Title;
-			addressBlock.Text = evm.Address;
+			this.EventData.DataContext = evm;
 			if (evm.Cost.Equals(0.00))
 				costBlock.Text = "FREE";
 			else
@@ -105,7 +117,6 @@ namespace TheMainEvent_Capstone.Pages
 					IsAttending = true;
 				}
 			}
-			evm.Cost = 30;
 		}
 		private void UserInAttendance()
 		{
@@ -133,14 +144,57 @@ namespace TheMainEvent_Capstone.Pages
 			}
 
 		}
-
+		#endregion
 		private async Task LoadData()
 		{
 			await this.LoadEvent();
 			await this.LoadTweets();
 		}
+		private void PushPinOnMap()
+		{
+			//ObservableCollection<Restaurant> restaurants = new ObservableCollection<Restaurant>() 
+			//{
+			//	new Restaurant { Coordinate = new GeoCoordinate(47.6050338745117, -122.334243774414), Address = "Ristorante 1" },
+			//	new Restaurant() { Coordinate = new GeoCoordinate(47.6045697927475, -122.329885661602), Address = "Ristorante 2" },
+			//	new Restaurant() { Coordinate = new GeoCoordinate(47.605712890625, -122.330268859863), Address = "Ristorante 3" },
+			//	new Restaurant() { Coordinate = new GeoCoordinate(47.6015319824219, -122.335113525391), Address = "Ristorante 4" },
+			//	new Restaurant() { Coordinate = new GeoCoordinate(47.6056594848633, -122.334243774414), Address = "Ristorante 5" }
+			//};
+
+			//ObservableCollection<DependencyObject> children = MapExtensions.GetChildren(myMap);
+			//var obj =
+			//	children.FirstOrDefault(x => x.GetType() == typeof(MapItemsControl)) as MapItemsControl;
+
+			//obj.ItemsSource = restaurants;
+			//myMap.SetView(new GeoCoordinate(47.6050338745117, -122.334243774414), 16);
+
+		}
 		protected async override void OnNavigatedTo(NavigationEventArgs e)
 		{
+
+			//if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
+			//{
+			//	// User has opted in or out of Location
+			//	return;
+			//}
+			//else
+			//{
+			//	MessageBoxResult result =
+			//		MessageBox.Show("This app accesses your phone's location. Is that ok?",
+			//		"Location",
+			//		MessageBoxButton.OKCancel);
+
+			//	if (result == MessageBoxResult.OK)
+			//	{
+			//		IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
+			//	}
+			//	else
+			//	{
+			//		IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = false;
+			//	}
+
+			//	IsolatedStorageSettings.ApplicationSettings.Save();
+			//}
 			string msg = "";
 			if (NavigationContext.QueryString.TryGetValue("msg", out msg))
 			{
@@ -154,27 +208,11 @@ namespace TheMainEvent_Capstone.Pages
 					Description = ev.Description,
 					OtherDetails = "Details: " + ev.OtherDetails,
 					Date = ev.Date,
-					Type = ev.Type.ToString(),
+					Type = ev.Type,
 					ID = ev.ID,
 
 				};
 				await this.LoadData();
-			}
-		}
-		private async void attendButton_Click(object sender, RoutedEventArgs e)
-		{
-
-			//Comment for Testing 
-			if (owner.MerchantEmail.Equals("none"))
-			{
-				EventDAL ed = new EventDAL();
-				ed.AddAttendee(evm.ID, currentUser.User);
-			}
-			else if (!owner.MerchantEmail.Equals("none"))
-			{
-				await this.PayForEvent(owner.MerchantEmail);
-				EventDAL ed = new EventDAL();
-				ed.AddAttendee(evm.ID, currentUser.User);
 			}
 		}
 
@@ -236,16 +274,11 @@ namespace TheMainEvent_Capstone.Pages
 			this.tweetLostFocusStoryboard.Begin();
 		}
 
-		private void getDirectionsClick_Click(object sender, EventArgs e)
-		{
-
-		}
-
 		private void unattendButton_Click(object sender, EventArgs e)
 		{
 
 		}
-		private void cancelEventButton_Click(object sender, EventArgs e) 
+		private void cancelEventButton_Click(object sender, EventArgs e)
 		{
 
 		}
@@ -292,5 +325,77 @@ namespace TheMainEvent_Capstone.Pages
 				MessageBoxButton.OK);
 
 		}
+
+		private async void attendButton_Click(object sender, EventArgs e)
+		{
+			//Comment for Testing 
+			if (owner.MerchantEmail.Equals("none"))
+			{
+				EventDAL ed = new EventDAL();
+				ed.AddAttendee(evm.ID, currentUser.User);
+			}
+			else if (!owner.MerchantEmail.Equals("none"))
+			{
+				await this.PayForEvent(owner.MerchantEmail);
+				EventDAL ed = new EventDAL();
+				ed.AddAttendee(evm.ID, currentUser.User);
+			}
+		}
+		
+
+		
+		
+
+		//private void MapFlightToSeattle()
+		//{
+		//	LocationRectangle locationRectangle;
+
+		//	locationRectangle = LocationRectangle.CreateBoundingRectangle(from store in this.mainViewModel.StoreList select store.GeoCoordinate);
+
+		//	this.Map.SetView(locationRectangle, new Thickness(20, 20, 20, 20));
+		//}
+		
+
+
+		//private IAsyncOperation<Geoposition> GetUserLocation()
+		//{
+		//	Geolocator geolocator;
+
+		//	geolocator = new Geolocator();
+
+		//	return geolocator.GetGeopositionAsync();
+		//}
+
+	
+
+
+
+
+
 	}
+
+	#region Enums
+
+	/// <summary>
+	/// Map Mode
+	/// </summary>
+	public enum MapMode
+	{
+		/// <summary>
+		/// Stores are displayed in the map
+		/// </summary>
+		Stores,
+
+		/// <summary>
+		/// Map is showing directions using a Windows Phone Task
+		/// </summary>
+		Directions,
+
+		/// <summary>
+		/// Map is showing a route in the map
+		/// </summary>
+		Route
+	}
+
+	#endregion
 }

@@ -107,11 +107,13 @@
     <Compile Include="Model\AlphaKeyGroup.cs" />
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\EventOwner.cs" />
-    <Compile Include="Model\GeoCoder\GeocodeQueryHandler.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Maps\MapsViewModel.cs" />
+    <Compile Include="Model\Maps\Store.cs" />
+    <Compile Include="Model\Maps\StoreList.cs" />
     <Compile Include="Model\SharedState.cs" />
     <Compile Include="Model\Tweet.cs" />
     <Compile Include="Model\UserInfo.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Model\ViewModels\ContactViewModel.cs" />
     <Compile Include="Model\ViewModels\EventViewModel.cs" />
     <Compile Include="Model\ViewModels\InviteViewModel.cs" />
+    <Compile Include="Model\ViewModels\MapModel.cs" />
     <Compile Include="Model\ViewModels\TweetViewModel.cs" />
     <Compile Include="Pages\Contact.xaml.cs">
       <DependentUpon>Contact.xaml</DependentUpon>
@@ -134,9 +137,6 @@
     </Compile>
     <Compile Include="Pages\MainPages.xaml.cs">
       <DependentUpon>MainPages.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\MapPage.xaml.cs">
-      <DependentUpon>MapPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\EventAttendee.cs" />
     <Compile Include="Model\User.cs" />
@@ -201,10 +201,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MapPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\OAuth.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -236,6 +232,7 @@
     <Content Include="Assets\AppBar\appbar.moon.sleep.png" />
     <Content Include="Assets\AppBar\appbar.user.add.png" />
     <Content Include="Assets\AppBar\heart2.png" />
+    <Content Include="Assets\AppBar\maps.appbar.directions.dark.png" />
     <Content Include="Assets\AppBar\people.groups.png" />
     <Content Include="Assets\AppBar\photo.flash.on.png" />
     <Content Include="Assets\AppBar\time.png" />
