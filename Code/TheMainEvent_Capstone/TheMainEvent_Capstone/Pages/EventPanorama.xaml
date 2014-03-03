@@ -101,7 +101,7 @@
 			</phone:PanoramaItem>
 			<phone:PanoramaItem>
 				<Grid Margin="0,0,0,0">
-					<maps:Map Margin="0,0,0,0" Height="500" Width="450" x:Name="Map" VerticalAlignment="Center" Visibility="Visible" Hold="OnMapHold">
+					<maps:Map Margin="0,0,0,0" Height="500" Width="450" x:Name="Map" VerticalAlignment="Center" Visibility="Visible">
 						<maptk:MapExtensions.Children>
 							
 							<maptk:MapItemsControl Name="RestaurantItems">
@@ -130,8 +130,8 @@
 
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem x:Name="attendEvent" Text="Attend Event" Click="attendButton_Click" />
-				<shell:ApplicationBarMenuItem x:Name="getDirections" Click="OnDirections" Text="Get Directions" />
-				<shell:ApplicationBarMenuItem x:Name="showRoute" Text="Show Route" Click="OnSHowRoute"/>
+				<shell:ApplicationBarMenuItem x:Name="getDirections" Text="Get Directions" />
+				<shell:ApplicationBarMenuItem x:Name="showRoute" Text="Show Route" />
 			</shell:ApplicationBar.MenuItems>
 
 		</shell:ApplicationBar>
