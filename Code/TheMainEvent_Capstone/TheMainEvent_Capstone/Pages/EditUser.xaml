@@ -6,30 +6,77 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+	<toolkit:TransitionService.NavigationInTransition>
+		<toolkit:NavigationInTransition>
+			<toolkit:NavigationInTransition.Backward>
+				<toolkit:TurnstileFeatherTransition Mode="BackwardIn"/>
+			</toolkit:NavigationInTransition.Backward>
+			<toolkit:NavigationInTransition.Forward>
+				<toolkit:TurnstileFeatherTransition Mode="ForwardIn"/>
+			</toolkit:NavigationInTransition.Forward>
+		</toolkit:NavigationInTransition>
+	</toolkit:TransitionService.NavigationInTransition>
+	<toolkit:TransitionService.NavigationOutTransition>
+		<toolkit:NavigationOutTransition>
+			<toolkit:NavigationOutTransition.Backward>
+				<toolkit:TurnstileFeatherTransition Mode="BackwardOut"/>
+			</toolkit:NavigationOutTransition.Backward>
+			<toolkit:NavigationOutTransition.Forward>
+				<toolkit:TurnstileFeatherTransition Mode="ForwardOut"/>
+			</toolkit:NavigationOutTransition.Forward>
+		</toolkit:NavigationOutTransition>
+	</toolkit:TransitionService.NavigationOutTransition>
+	<phone:PhoneApplicationPage.Resources>
+		<Storyboard x:Name="bioGotFocusStoryboard">
+			<DoubleAnimation
+            Storyboard.TargetName="bioBox"
+            Storyboard.TargetProperty="Height"
+            From="72.0" To="150.0" Duration="0:0:1"
+            AutoReverse="True"/>
+		</Storyboard>
+		<Storyboard x:Name="bioLostFocusStoryboard">
+			<DoubleAnimation
+            Storyboard.TargetName="bioBox"
+            Storyboard.TargetProperty="Height"
+            From="150.0" To="72.0" Duration="0:0:1"
+            AutoReverse="True"/>
+		</Storyboard>
+	</phone:PhoneApplicationPage.Resources>
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+	<!--LayoutRoot is the root grid where all page content is placed-->
+	<Grid x:Name="LayoutRoot" Background="Transparent">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+		<!--TitlePanel contains the name of the application and page title-->
+		<StackPanel Grid.Row="0" Margin="12,17,0,28">
+			<TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}" toolkit:TurnstileFeatherEffect.FeatheringIndex="0"/>
+			<TextBlock Text="Profile Info" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" toolkit:TurnstileFeatherEffect.FeatheringIndex="1"/>
+		</StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
-        </Grid>
-    </Grid>
+		<!--ContentPanel - place additional content here-->
+		<ScrollViewer x:Name="ContentScroll" Grid.Row="1" Margin="12,0,12,0">
+			<StackPanel>
+				<toolkit:PhoneTextBox x:Name="firstNameBox" Width="250" Hint="First Name" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
+				<toolkit:PhoneTextBox x:Name="lastNameBox" Width="250" Hint="Last Name" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
+				<toolkit:PhoneTextBox x:Name="phoneBox" Width="250" Hint="Phone Number" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
+				<toolkit:PhoneTextBox x:Name="bioBox" Hint="Bio" Width="250" Height="72" AcceptsReturn="True" TextWrapping="Wrap"/>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  toolkit:TurnstileFeatherEffect.FeatheringIndex="6">
+					<TextBlock Margin="12,0,0,0" Text="Birthday" VerticalAlignment="Center" FontSize="30"/>
+					<toolkit:DatePicker x:Name="datePicker" HorizontalAlignment="Right" Width="150"/>
+				</StackPanel>
+				<Button x:Name="doneButton" Click="doneButton_Click" Content="Done" Width="150"  toolkit:TurnstileFeatherEffect.FeatheringIndex="7"/>
+			</StackPanel>
+		</ScrollViewer>
+	</Grid>
 
 </phone:PhoneApplicationPage>
