@@ -96,8 +96,8 @@
     <Compile Include="Controls\EventListControl.xaml.cs">
       <DependentUpon>EventListControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\EventSearcher.xaml.cs">
-      <DependentUpon>EventSearcher.xaml</DependentUpon>
+    <Compile Include="Controls\SearchControl.xaml.cs">
+      <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ProfileControl.xaml.cs">
       <DependentUpon>ProfileControl.xaml</DependentUpon>
@@ -149,6 +149,9 @@
     <Compile Include="Pages\OAuth.xaml.cs">
       <DependentUpon>OAuth.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\RegistrationInfoPage.xaml.cs">
       <DependentUpon>RegistrationInfoPage.xaml</DependentUpon>
     </Compile>
@@ -175,7 +178,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\EventSearcher.xaml">
+    <Page Include="Controls\SearchControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,6 +221,10 @@
     <Page Include="Pages\OAuth.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\SearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\RegistrationInfoPage.xaml">
       <SubType>Designer</SubType>
