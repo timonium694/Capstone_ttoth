@@ -15,15 +15,22 @@ namespace TheMainEvent_Capstone.Pages
 {
 	public partial class UserAccountSettingsPage : PhoneApplicationPage
 	{
+		UserInfo ui;
+		UserDAL ud;
 		public UserAccountSettingsPage()
 		{
 			InitializeComponent();
+			
 		}
-		private async void SaveSettings()
+		protected async override void OnNavigatedTo(NavigationEventArgs e)
+		{
+			ud = new UserDAL();
+			ui = await ud.GetUserInfo(ParseUser.CurrentUser.ObjectId);
+		}
+		private void SaveSettings()
 		{
 			string email = this.merchantBox.Text;
-			UserDAL ud = new UserDAL();
-			UserInfo ui = await ud.GetUserInfo(ParseUser.CurrentUser.ObjectId);
+			
 			ui.MerchantEmail = email;
 			ud.UpdateUserInfo(ui);
 		}
@@ -35,6 +42,12 @@ namespace TheMainEvent_Capstone.Pages
 		private void saveButton_Click(object sender, RoutedEventArgs e)
 		{
 			this.SaveSettings();
+		}
+
+		private void ListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			TextBlock t = (TextBlock)filterPicker.SelectedItem;
+			ui.FilterMode = t.Text;
 		}
 	}
 }
