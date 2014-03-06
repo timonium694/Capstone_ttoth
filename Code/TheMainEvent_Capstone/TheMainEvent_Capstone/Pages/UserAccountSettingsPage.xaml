@@ -40,6 +40,33 @@
 					</StackPanel>
 				</toolkit:ExpanderView.Expander>
 			</toolkit:ExpanderView>
+			<toolkit:Separator Background="Gray" Height="1" Margin="0,10,0,0"/>
+			<toolkit:ExpanderView FontSize="30" x:Name="filterExpander" Header="Events" HorizontalAlignment="Center" Width="400">
+				<toolkit:ExpanderView.Items>
+					<toolkit:ListPicker>
+						<toolkit:ListPicker.Items>
+							<toolkit:ListPickerItem>
+								<TextBlock Text="A-Z"/>
+							</toolkit:ListPickerItem>
+							<toolkit:ListPickerItem>
+								<TextBlock Text="Z-A"/>
+							</toolkit:ListPickerItem>
+							<toolkit:ListPickerItem>
+								<TextBlock Text="Date"/>
+							</toolkit:ListPickerItem>
+							<toolkit:ListPickerItem>
+								<TextBlock Text="Type"/>
+							</toolkit:ListPickerItem>
+						</toolkit:ListPicker.Items>
+					</toolkit:ListPicker>
+				</toolkit:ExpanderView.Items>
+				<toolkit:ExpanderView.Expander>
+					<StackPanel>
+						<TextBlock Text="Event Filter"/>
+						<TextBlock Text="Filter events on the Main Page" Style="{StaticResource PhoneTextSubtleStyle}"/>
+					</StackPanel>
+				</toolkit:ExpanderView.Expander>
+			</toolkit:ExpanderView>
 			<Button Width="150" Content="Save" x:Name="saveButton" Click="saveButton_Click"/>
 		</StackPanel>
 	</Grid>

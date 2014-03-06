@@ -85,22 +85,10 @@
 			<phone:PivotItem Header="Events">
 				<Grid Margin="12,0,-12,0">
 					<Grid.RowDefinitions>
-						<RowDefinition Height="25*"/>
-						<RowDefinition Height="75*"/>
+						<RowDefinition Height="100*"/>
 					</Grid.RowDefinitions>
-					<StackPanel>
-						<StackPanel HorizontalAlignment="Center"  Orientation="Horizontal">
-							<Button x:Name="FindEvent" Content="Find Events" Height="70" Click="FindEvent_Click" toolkit:TurnstileFeatherEffect.FeatheringIndex="1" />
-							<Button x:Name="CreateEvent" Content="New Event" Height="70" Click="CreateEvent_Click" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
-						</StackPanel>
-						<toolkit:ListPicker x:Name="optionFilter" Width="275" SelectionChanged="optionFilter_SelectionChanged"  toolkit:TurnstileFeatherEffect.FeatheringIndex="3">
-							<toolkit:ListPickerItem x:Name="nameOption" Content="Name" toolkit:TiltEffect.IsTiltEnabled="True"/>
-							<toolkit:ListPickerItem x:Name="dateOption" Content="Date" toolkit:TiltEffect.IsTiltEnabled="True"/>
-							<toolkit:ListPickerItem x:Name="typeOption" Content="Type" toolkit:TiltEffect.IsTiltEnabled="True"/>
-						</toolkit:ListPicker>
-					</StackPanel>
 					<phone:LongListSelector
-						Grid.Row="1" x:Name="EventsList" 
+						Grid.Row="0" x:Name="EventsList" 
 						ItemsSource="{Binding Events}" 
 						SelectionChanged="EventsList_SelectionChanged"
 						toolkit:TurnstileFeatherEffect.FeatheringIndex="4"
@@ -108,6 +96,8 @@
 						<phone:LongListSelector.ItemTemplate>
 							<DataTemplate>
 								<StackPanel>
+
+									<toolkit:Separator Background="Gray" Height="1" Margin="0,10,0,0"/>
 									<TextBlock Text="{Binding Title}"
 											   TextWrapping="Wrap"
 											   Style="{StaticResource PhoneTextExtraLargeStyle}"
@@ -160,6 +150,8 @@
 										TextWrapping="Wrap"
 										Style="{StaticResource PhoneTextSubtleStyle}"
 										/>
+
+									<toolkit:Separator Background="Gray" Height="1" Margin="0,10,0,0"/>
 								</StackPanel>
 							</DataTemplate>
 						</phone:LongListSelector.ItemTemplate>

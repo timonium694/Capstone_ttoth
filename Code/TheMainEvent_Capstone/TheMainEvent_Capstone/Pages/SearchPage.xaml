@@ -7,14 +7,47 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:uc="clr-namespace:TheMainEvent_Capstone.Controls"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+	
+	<toolkit:TransitionService.NavigationInTransition>
+		<toolkit:NavigationInTransition>
+			<toolkit:NavigationInTransition.Backward>
+				<toolkit:TurnstileFeatherTransition Mode="BackwardIn"/>
+			</toolkit:NavigationInTransition.Backward>
+			<toolkit:NavigationInTransition.Forward>
+				<toolkit:TurnstileFeatherTransition Mode="ForwardIn" BeginTime="0:0:0.7"/>
+			</toolkit:NavigationInTransition.Forward>
+		</toolkit:NavigationInTransition>
+	</toolkit:TransitionService.NavigationInTransition>
+	<toolkit:TransitionService.NavigationOutTransition>
+		<toolkit:NavigationOutTransition>
+			<toolkit:NavigationOutTransition.Backward>
+				<toolkit:TurnstileFeatherTransition Mode="BackwardOut"/>
+			</toolkit:NavigationOutTransition.Backward>
+			<toolkit:NavigationOutTransition.Forward>
+				<toolkit:TurnstileFeatherTransition Mode="ForwardOut"/>
+			</toolkit:NavigationOutTransition.Forward>
+		</toolkit:NavigationOutTransition>
+	</toolkit:TransitionService.NavigationOutTransition>
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
+	<phone:PhoneApplicationPage.Resources>
+		<DataTemplate x:Key="ContactItemTemplate">
+			<StackPanel VerticalAlignment="Top">
+				<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" />
+				<TextBlock Text="{Binding LastName}" />
+				<TextBlock Text="{Binding Email}" />
+				<TextBlock Text="{Binding Phone}" />
+			</StackPanel>
+		</DataTemplate>
+	</phone:PhoneApplicationPage.Resources>
+
+	<!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -24,13 +57,122 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-			<uc:EventSearcher/>
-        </Grid>
+			<StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBox Width="350" x:Name="searchBox"/>
+					<Button Content="Search" x:Name="searchButton" Click="searchButton_Click"/>
+				</StackPanel>
+				<ProgressBar 
+					IsIndeterminate="true"
+					x:Name="loadingBar"
+					Visibility="Collapsed"
+					Style="{StaticResource CustomIndeterminateProgressBar}"
+					/>
+
+				<phone:Pivot>
+					<phone:PivotItem Header="Events" Height="480">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="100*"/>
+							</Grid.RowDefinitions>
+							<phone:LongListSelector x:Name="EventsList" ItemsSource="{Binding Events}" >
+								<phone:LongListSelector.ItemTemplate>
+									<DataTemplate>
+										<StackPanel>
+
+											<toolkit:Separator Background="Gray" Height="1" Margin="0,10,0,0"/>
+											<TextBlock Text="{Binding Title}"
+												TextWrapping="Wrap"
+												Style="{StaticResource PhoneTextExtraLargeStyle}"
+												/>
+											<TextBlock 
+												Text="{Binding Description}"
+												TextWrapping="Wrap"
+												Style="{StaticResource PhoneTextSubtleStyle}"
+												/>
+										</StackPanel>
+									</DataTemplate>
+								</phone:LongListSelector.ItemTemplate>
+							</phone:LongListSelector>
+						</Grid>
+					</phone:PivotItem>
+					<phone:PivotItem Header="Users" Height="480">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="100*"/>
+							</Grid.RowDefinitions>
+							<phone:LongListSelector x:Name="UserList" ItemsSource="{Binding Events}" >
+								<phone:LongListSelector.ItemTemplate>
+									<DataTemplate>
+										<StackPanel>
+											<toolkit:Separator Background="Gray" Height="1" Margin="0,10,0,0"/>
+											<TextBlock Text="{Binding Name}"
+												TextWrapping="Wrap"
+												Style="{StaticResource PhoneTextExtraLargeStyle}"
+												/>
+											<TextBlock 
+												Text="{Binding Email}"
+												TextWrapping="Wrap"
+												Style="{StaticResource PhoneTextSubtleStyle}"
+												/>
+										</StackPanel>
+									</DataTemplate>
+								</phone:LongListSelector.ItemTemplate>
+							</phone:LongListSelector>
+						</Grid>
+						
+					</phone:PivotItem>
+				</phone:Pivot>
+				<!--<phone:Pivot x:Name="MainPivot" Visibility="Visible" toolkit:TurnstileFeatherEffect.FeatheringIndex="0">
+
+					<phone:PivotItem Header="Events" Margin="0,-115,0,0">
+						<Grid>
+							<phone:LongListSelector x:Name="EventsList" ItemsSource="{Binding Events}" >
+								<phone:LongListSelector.ItemTemplate>
+									<DataTemplate>
+										<StackPanel>
+											<TextBlock Text="{Binding Title}"
+										TextWrapping="Wrap"
+										Style="{StaticResource PhoneTextExtraLargeStyle}"
+										/>
+											<TextBlock 
+										Text="{Binding Description}"
+										TextWrapping="Wrap"
+										Style="{StaticResource PhoneTextSubtleStyle}"
+										/>
+										</StackPanel>
+									</DataTemplate>
+								</phone:LongListSelector.ItemTemplate>
+							</phone:LongListSelector>
+						</Grid>
+					</phone:PivotItem>
+					<phone:PivotItem Header="Users">
+						<phone:LongListSelector x:Name="UserList" ItemsSource="{Binding Events}" >
+							<phone:LongListSelector.ItemTemplate>
+								<DataTemplate>
+									<StackPanel>
+										<TextBlock Text="{Binding Title}"
+										TextWrapping="Wrap"
+										Style="{StaticResource PhoneTextExtraLargeStyle}"
+										/>
+										<TextBlock 
+										Text="{Binding Description}"
+										TextWrapping="Wrap"
+										Style="{StaticResource PhoneTextSubtleStyle}"
+										/>
+									</StackPanel>
+								</DataTemplate>
+							</phone:LongListSelector.ItemTemplate>
+						</phone:LongListSelector>
+					</phone:PivotItem>
+				</phone:Pivot>-->
+
+			</StackPanel>
+		</Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>

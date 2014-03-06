@@ -113,5 +113,73 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			info["merchant"] = "none";
 			await info.SaveAsync();
 		}
+
+		public async Task<List<UserInfo>> SearchUsers(string input)
+		{
+			string[] names = input.Split(' ');
+			List<UserInfo> users = new List<UserInfo>();
+
+			if (names.Count() == 2)
+			{
+
+				var query = await (from post in ParseObject.GetQuery("UserInfo")
+								   where (post.Get<string>("firstName").Contains(names[0]) &&
+								   post.Get<string>("lastName").Contains(names[1])) ||
+								   (post.Get<string>("firstName").Contains(names[1]) &&
+								   post.Get<string>("lastName").Contains(names[0]))
+								   select post).FindAsync();
+
+				IEnumerable<ParseObject> ids = query.ToList();
+				foreach (ParseObject p in ids)
+				{
+					UserInfo output = new UserInfo();
+					if (p != null)
+					{
+						output.FirstName = p.Get<string>("firstName");
+						output.LastName = p.Get<string>("lastName");
+						output.Phone = p.Get<string>("phone");
+						output.Bio = p.Get<string>("bio");
+						output.Birthday = p.Get<DateTime>("birthday");
+						output.Active = p.Get<string>("active");
+						output.User = p.Get<string>("user");
+						output.MerchantEmail = p.Get<string>("merchant");
+						output.Email = p.Get<string>("mail");
+					}
+					users.Add(output);
+				}
+			}
+
+
+			foreach (string word in names)
+			{
+				var query1 = await (from post in ParseObject.GetQuery("UserInfo")
+								   where post.Get<string>("firstName").Contains(word) ||
+								   post.Get<string>("lastName").Contains(word)
+								   select post).FindAsync();
+
+				IEnumerable<ParseObject> ids1 = query1.ToList();
+				foreach (ParseObject p in ids1)
+				{
+					UserInfo output = new UserInfo();
+					if (p != null)
+					{
+						output.FirstName = p.Get<string>("firstName");
+						output.LastName = p.Get<string>("lastName");
+						output.Phone = p.Get<string>("phone");
+						output.Bio = p.Get<string>("bio");
+						output.Birthday = p.Get<DateTime>("birthday");
+						output.Active = p.Get<string>("active");
+						output.User = p.Get<string>("user");
+						output.MerchantEmail = p.Get<string>("merchant");
+						output.Email = p.Get<string>("mail");
+					}
+					users.Add(output);
+				}
+
+			}
+			
+
+			return users;
+		}
 	}
 }

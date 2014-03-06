@@ -162,16 +162,6 @@ namespace TheMainEvent_Capstone.Pages
 			InviteViewModel evm = (InviteViewModel)InviteList.SelectedItem;
 			NavigationService.Navigate(new Uri("/Pages/EventPage.xaml?msg=" + evm.ID, UriKind.Relative));
 		}
-			
-		private void optionFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (isLoaded)
-			{
-				EventDAL ed = new EventDAL();
-				EventsList.ItemsSource = ed.BasicFilter(Events.ToList(), optionFilter.SelectedIndex);
-			}
-			
-		}
 		
 	}
 }
