@@ -13,21 +13,27 @@ using TheMainEvent_Capstone.Model;
 using Parse;
 using TheMainEvent_Capstone.DataAccessLayer;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace TheMainEvent_Capstone
 {
 	public partial class MainPage : PhoneApplicationPage
 	{
-
+		BitmapImage i;
 		// Constructor
 		public MainPage()
 		{
+
+			i = new BitmapImage(new Uri("Assets/proDefault.jpg", UriKind.Relative));
+
 			InitializeComponent();
 			// Sample code to localize the ApplicationBar
 			//BuildLocalizedApplicationBar();
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
+
+			us.Source = i;
 			string msg = "";
 			if (NavigationContext.QueryString.TryGetValue("msg", out msg))
 			{
@@ -68,7 +74,6 @@ namespace TheMainEvent_Capstone
 			try
 			{
 				await ParseUser.LogInAsync(username, password);
-
 				NavigationService.Navigate(new Uri("/Pages/SearchPage.xaml", UriKind.Relative));
 			}
 			catch (Exception ex)

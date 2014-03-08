@@ -13,6 +13,7 @@ using TheMainEvent_Capstone.DataAccessLayer;
 using TheMainEvent_Capstone.Model;
 using Parse;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -113,6 +114,7 @@ namespace TheMainEvent_Capstone.Pages
 			UserInfo ui = await ud.GetUserInfo(p.ObjectId);
 			ProfilePage.DataContext = ui;
 			ProfilePage.Header = ui.FirstName + " " + ui.LastName;
+			
 		}
 
 		private async Task LoadContacts()

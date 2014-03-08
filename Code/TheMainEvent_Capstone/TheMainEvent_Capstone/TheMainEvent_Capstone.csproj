@@ -93,18 +93,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\EventListControl.xaml.cs">
-      <DependentUpon>EventListControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SearchControl.xaml.cs">
-      <DependentUpon>SearchControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ProfileControl.xaml.cs">
-      <DependentUpon>ProfileControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DataAccessLayer\EventDAL.cs" />
     <Compile Include="DataAccessLayer\UserDAL.cs" />
     <Compile Include="Model\AlphaKeyGroup.cs" />
+    <Compile Include="Model\BytesToImageConverter.cs" />
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\EventOwner.cs" />
     <Compile Include="LocalizedStrings.cs" />
@@ -174,18 +166,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="Controls\EventListControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SearchControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ProfileControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -260,6 +240,8 @@
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\default.png" />
+    <Content Include="Assets\proDefault.jpg" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

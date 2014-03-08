@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+	xmlns:con="clr-namespace:TheMainEvent_Capstone.Model"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -69,6 +70,7 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+		<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
 	</phone:PhoneApplicationPage.Resources>
 
 
@@ -78,9 +80,10 @@
 			IsIndeterminate="true"
 			x:Name="loadingBar"
 			Style="{StaticResource CustomIndeterminateProgressBar}"
+			Visibility="Collapsed"
 			/>
 		<!--Pivot Control-->
-		<phone:Pivot x:Name="MainPivot" Visibility="Collapsed" Title="The Main Event" toolkit:TurnstileFeatherEffect.FeatheringIndex="0" HeaderTemplate="{StaticResource MainPivotHeader}">
+		<phone:Pivot x:Name="MainPivot" Visibility="Visible" Title="The Main Event" toolkit:TurnstileFeatherEffect.FeatheringIndex="0" HeaderTemplate="{StaticResource MainPivotHeader}">
 			<!--Pivot item one-->
 			<phone:PivotItem Header="Events">
 				<Grid Margin="12,0,-12,0">
@@ -160,33 +163,38 @@
 			</phone:PivotItem>
 			<phone:PivotItem Header="Profile" x:Name="ProfilePage">
 				<StackPanel>
-					<StackPanel HorizontalAlignment="Left">
-					
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Email:" FontWeight="Bold"/>
-							<TextBlock x:Name="emailBlock"
+					<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+						<Image x:Name="proImage" Width="175" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
+						<Line Fill="White" X1="0" X2="1" Y1="0" Y2="120" VerticalAlignment="Stretch" Margin="5,5,5,5" Stroke="White" StrokeThickness="1"/>
+						<StackPanel>
+						
+							<StackPanel Orientation="Vertical">
+
+								<TextBlock Text="Email" FontWeight="Bold"/>
+								<TextBlock x:Name="emailBlock"
 										   HorizontalAlignment="Left"
 										   VerticalAlignment="Top"
 										   Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap"
 										   Text="{Binding Email}"/>
-						</StackPanel>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Phone:" FontWeight="Bold"/>
-							<TextBlock x:Name="phoneBlock"
+							</StackPanel>
+							<StackPanel Orientation="Vertical">
+								<TextBlock Text="Phone" FontWeight="Bold"/>
+								<TextBlock x:Name="phoneBlock"
 										   HorizontalAlignment="Left"
 										   VerticalAlignment="Bottom"
 										   Style="{StaticResource PhoneTextSubtleStyle}"
 										   TextWrapping="Wrap" Text="{Binding Phone}"/>
-						</StackPanel>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Birthday:" FontWeight="Bold"/>
-							<TextBlock x:Name="bDayBlock"
+							</StackPanel>
+							<StackPanel Orientation="Vertical">
+								<TextBlock Text="Birthday" FontWeight="Bold"/>
+								<TextBlock x:Name="bDayBlock"
 										   HorizontalAlignment="Left"
 										   VerticalAlignment="Bottom"
 										   Style="{StaticResource PhoneTextSubtleStyle}"
 										   TextWrapping="Wrap" Text="{Binding Birthday, StringFormat='dd MMMM yyyy'}"/>
+							</StackPanel>
+
 						</StackPanel>
-						
 					</StackPanel>
 					<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0">
 						<TextBlock x:Name="bioblock"

@@ -1,9 +1,13 @@
 ﻿using Parse;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using TheMainEvent_Capstone.Model;
 
 namespace TheMainEvent_Capstone.DataAccessLayer
@@ -47,6 +51,9 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 				output.User = p.Get<string>("user");
 				output.MerchantEmail = p.Get<string>("merchant");
 				output.Email = p.Get<string>("mail");
+				output.FilterMode = p.Get<string>("filter");
+				var proPic = p.Get<ParseFile>("proPic");
+				output.ProfilePic = await new HttpClient().GetByteArrayAsync(proPic.Url);
 			}
 			return output;
 		}
@@ -66,6 +73,10 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			info["user"] = ui.User;
 			info["merchant"] = "none";
 			info["mail"] = ui.Email;
+			info["filter"] = "A-Z";
+			ParseFile proPic = new ParseFile("default.jpg", ui.ProfilePic);
+			await proPic.SaveAsync();
+			info["proPic"] = proPic;
 			await info.SaveAsync();
 		}
 		public async void CreateUser(User u)
@@ -73,7 +84,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			//Sign up user
 			var user = new ParseUser() { Username = u.Username, Email = u.Email, Password = u.Password, };
 			await user.SignUpAsync();
-			
+
 		}
 		public async void AddContact(string userId, string ContactId)
 		{
@@ -95,11 +106,12 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			}
 			return contacts;
 		}
-		public async void UpdateUserInfo(UserInfo ui)
+		public async Task UpdateUserInfo(UserInfo ui)
 		{
+
 			var query = await (from post in ParseObject.GetQuery("UserInfo")
-							  where post.Get<string>("user") == ui.User
-							  select post).FindAsync();
+							   where post.Get<string>("user") == ui.User
+							   select post).FindAsync();
 
 			IEnumerable<ParseObject> ids = query.ToList();
 			ParseObject info = ids.FirstOrDefault();
@@ -111,8 +123,34 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			info["active"] = ui.Active;
 			info["user"] = ui.User;
 			info["merchant"] = "none";
+			ParseFile proPic = new ParseFile("default.jpg", ui.ProfilePic);
+			await proPic.SaveAsync();
+			info["proPic"] = proPic;
 			await info.SaveAsync();
 		}
+		public byte[] ConvertToBytes(BitmapImage bitmapImage)
+		{
+			
+				using (MemoryStream ms = new MemoryStream())
+				{
+
+					var wBitmap = new WriteableBitmap(bitmapImage);
+					wBitmap.SaveJpeg(ms, wBitmap.PixelWidth, wBitmap.PixelHeight, 0, 100);
+					ms.Seek(0, SeekOrigin.Begin);
+					byte[] data = new byte[4096];
+					data = ms.GetBuffer();
+					return data;
+				}
+			
+		}
+		public BitmapImage ToImage(byte[] bytes)
+		{
+			MemoryStream ms = new MemoryStream(bytes);
+			BitmapImage image = new BitmapImage();
+			image.SetSource(ms);
+			return image;
+		}
+
 
 		public async Task<List<UserInfo>> SearchUsers(string input)
 		{
@@ -144,6 +182,9 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 						output.User = p.Get<string>("user");
 						output.MerchantEmail = p.Get<string>("merchant");
 						output.Email = p.Get<string>("mail");
+						output.FilterMode = p.Get<string>("filter");
+						var proPic = p.Get<ParseFile>("proPic");
+						output.ProfilePic = await new HttpClient().GetByteArrayAsync(proPic.Url);
 					}
 					users.Add(output);
 				}
@@ -153,9 +194,9 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			foreach (string word in names)
 			{
 				var query1 = await (from post in ParseObject.GetQuery("UserInfo")
-								   where post.Get<string>("firstName").Contains(word) ||
-								   post.Get<string>("lastName").Contains(word)
-								   select post).FindAsync();
+									where post.Get<string>("firstName").Contains(word) ||
+									post.Get<string>("lastName").Contains(word)
+									select post).FindAsync();
 
 				IEnumerable<ParseObject> ids1 = query1.ToList();
 				foreach (ParseObject p in ids1)
@@ -172,12 +213,15 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 						output.User = p.Get<string>("user");
 						output.MerchantEmail = p.Get<string>("merchant");
 						output.Email = p.Get<string>("mail");
+						output.FilterMode = p.Get<string>("filter");
+						var proPic = p.Get<ParseFile>("proPic");
+						output.ProfilePic = await new HttpClient().GetByteArrayAsync(proPic.Url);
 					}
 					users.Add(output);
 				}
 
 			}
-			
+
 
 			return users;
 		}

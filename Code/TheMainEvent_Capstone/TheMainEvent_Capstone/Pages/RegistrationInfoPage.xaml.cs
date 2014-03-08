@@ -11,11 +11,15 @@ using TheMainEvent_Capstone.Model;
 using TheMainEvent_Capstone.DataAccessLayer;
 using Parse;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
+using System.Text.RegularExpressions;
 
 namespace TheMainEvent_Capstone.Pages
 {
 	public partial class RegistrationInfoPage : PhoneApplicationPage
 	{
+		BitmapImage i;
+		bool isValidPhone = false;
 		public RegistrationInfoPage()
 		{
 			InitializeComponent();
@@ -23,6 +27,7 @@ namespace TheMainEvent_Capstone.Pages
 			lastNameBox.Tap += this.TextBox_Tap;
 			firstNameBox.Tap += this.TextBox_Tap;
 			bioBox.Tap += this.TextBox_Tap;
+			i = new BitmapImage(new Uri("Assets/proDefault.jpg", UriKind.Relative));
 
 			
 		}
@@ -39,6 +44,9 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			try
 			{
+
+				UserDAL ud = new UserDAL();
+				byte[] bytes = ud.ConvertToBytes(i);
 				DateTime bday = (DateTime)datePicker.Value;
 				string firstName = this.firstNameBox.Text;
 				string lastName = this.lastNameBox.Text;
@@ -54,13 +62,25 @@ namespace TheMainEvent_Capstone.Pages
 					User = ParseUser.CurrentUser.ObjectId,
 					MerchantEmail = "tim.toth13@gmail.com",
 					Email = ParseUser.CurrentUser.Email,
+					ProfilePic = bytes
 				};
-				UserDAL ud = new UserDAL();
 				ud.CreateUserInfo(ui);
 			}
 			catch (Exception ex)
 			{
 			}
+		}
+
+		private void phoneBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			string pattern = @"((\d){9})";
+			string input = phoneBox.Text;
+			if (!Regex.IsMatch(input, pattern))
+			{
+				phoneStatus.Visibility = Visibility.Visible;
+				phoneStatus.Text = "Input a valid phone number. ex. 3034589009";
+			}
+			else phoneStatus.Visibility = Visibility.Collapsed;
 		}
 	}
 }

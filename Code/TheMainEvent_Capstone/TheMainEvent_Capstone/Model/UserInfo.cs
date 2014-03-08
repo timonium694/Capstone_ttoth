@@ -18,6 +18,7 @@ namespace TheMainEvent_Capstone.Model
 		public string MerchantEmail { get; set; }
 		public string Email { get; set; }
 		public string FilterMode { get; set; }
+		public byte[] ProfilePic { get; set; }
 
 		public override bool Equals(Object obj)
 		{

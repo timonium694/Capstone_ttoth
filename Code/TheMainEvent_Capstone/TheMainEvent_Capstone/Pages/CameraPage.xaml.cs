@@ -12,6 +12,9 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using Microsoft.Xna.Framework.Media;
 using System.Windows.Media;
+using TheMainEvent_Capstone.Model;
+using TheMainEvent_Capstone.DataAccessLayer;
+using Parse;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -20,6 +23,8 @@ namespace TheMainEvent_Capstone.Pages
 		private int savedCounter = 0;
 		PhotoCamera cam;
 		MediaLibrary library = new MediaLibrary();
+		UserInfo currentUI;
+		UserDAL ud;
 		public CameraPage()
 		{
 			InitializeComponent();
@@ -27,13 +32,15 @@ namespace TheMainEvent_Capstone.Pages
 
 
 		//Code for initialization, capture completed, image availability events; also setting the source for the viewfinder.
-		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+		protected async override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
 		{
-
+			ud = new UserDAL();
+			currentUI = await ud.GetUserInfo(ParseUser.CurrentUser.ObjectId);
 			// Check to see if the camera is available on the phone.
 			if ((PhotoCamera.IsCameraTypeSupported(CameraType.Primary) == true) ||
 				 (PhotoCamera.IsCameraTypeSupported(CameraType.FrontFacing) == true))
 			{
+				
 				// Initialize the camera, when available.
 				if (PhotoCamera.IsCameraTypeSupported(CameraType.FrontFacing))
 				{
@@ -154,7 +161,7 @@ namespace TheMainEvent_Capstone.Pages
 			savedCounter++;
 		}
 		// Informs when full resolution photo has been taken, saves to local media library and the local folder.
-		void cam_CaptureImageAvailable(object sender, Microsoft.Devices.ContentReadyEventArgs e)
+		async void cam_CaptureImageAvailable(object sender, Microsoft.Devices.ContentReadyEventArgs e)
 		{
 			string fileName = savedCounter + ".jpg";
 
@@ -192,6 +199,8 @@ namespace TheMainEvent_Capstone.Pages
 						{
 							targetStream.Write(readBuffer, 0, bytesRead);
 						}
+						currentUI.ProfilePic = readBuffer;
+						await this.ud.UpdateUserInfo(currentUI);
 					}
 				}
 
