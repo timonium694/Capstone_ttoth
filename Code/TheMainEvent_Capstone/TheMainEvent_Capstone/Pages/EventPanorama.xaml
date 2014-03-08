@@ -42,14 +42,14 @@
 			<DoubleAnimation
             Storyboard.TargetName="tweetBox"
             Storyboard.TargetProperty="Height"
-            From="72.0" To="100.0" Duration="0:0:1"
+            From="72.0" To="150.0" Duration="0:0:1"
             AutoReverse="True"/>
 		</Storyboard>
 		<Storyboard x:Name="tweetLostFocusStoryboard">
 			<DoubleAnimation
             Storyboard.TargetName="tweetBox"
             Storyboard.TargetProperty="Height"
-            From="72.0" To="100.0" Duration="0:0:1"
+            From="72.0" To="150.0" Duration="0:0:1"
             AutoReverse="True"/>
 		</Storyboard>
 
@@ -57,7 +57,10 @@
 
 	<!--LayoutRoot contains the root grid where all other page content is placed-->
 	<Grid x:Name="LayoutRoot">
-		<phone:Panorama x:Name="rootPanorama" Title="Event Title" >
+		<StackPanel Grid.Row="0" Margin="10,10,0,0">
+			<TextBlock x:Name="statusBlock" Text="" Visibility="Collapsed" Style="{StaticResource PhoneTextNormalStyle}" toolkit:TurnstileFeatherEffect.FeatheringIndex="0"/>
+		</StackPanel>
+		<phone:Panorama Margin="0,20,0,0" x:Name="rootPanorama" Title="Event Title" >
 
 			<phone:PanoramaItem>
 				<Grid Margin="0,-40,0,0">

@@ -27,12 +27,12 @@ namespace TheMainEvent_Capstone.Pages
 			ud = new UserDAL();
 			ui = await ud.GetUserInfo(ParseUser.CurrentUser.ObjectId);
 		}
-		private void SaveSettings()
+		private async void SaveSettings()
 		{
 			string email = this.merchantBox.Text;
 			
 			ui.MerchantEmail = email;
-			ud.UpdateUserInfo(ui);
+			await ud.UpdateUserInfo(ui);
 		}
 		protected override void OnNavigatedFrom(NavigationEventArgs e)
 		{

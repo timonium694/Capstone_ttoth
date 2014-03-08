@@ -38,15 +38,13 @@
 			<DoubleAnimation
             Storyboard.TargetName="bioBox"
             Storyboard.TargetProperty="Height"
-            From="72.0" To="150.0" Duration="0:0:1"
-            AutoReverse="True"/>
+            From="72.0" To="150.0" Duration="0:0:.2"/>
 		</Storyboard>
 		<Storyboard x:Name="bioLostFocusStoryboard">
 			<DoubleAnimation
             Storyboard.TargetName="bioBox"
             Storyboard.TargetProperty="Height"
-            From="150.0" To="72.0" Duration="0:0:1"
-            AutoReverse="True"/>
+            From="150.0" To="72.0" Duration="0:0:.2"/>
 		</Storyboard>
 	</phone:PhoneApplicationPage.Resources>
 
@@ -69,8 +67,8 @@
 				<toolkit:PhoneTextBox x:Name="firstNameBox" Width="300" Hint="First Name" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 				<toolkit:PhoneTextBox x:Name="lastNameBox" Width="300" Hint="Last Name" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
 				<toolkit:PhoneTextBox x:Name="phoneBox" Width="300" Hint="Phone Number" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="4" TextChanged="phoneBox_TextChanged"/>
-				<TextBlock x:Name="phoneStatus" Width="300" Visibility="Collapsed"/>
-				<toolkit:PhoneTextBox x:Name="bioBox" Hint="Bio" Width="300" Height="72" AcceptsReturn="True" TextWrapping="Wrap"/>
+				<TextBlock x:Name="phoneStatus" Width="350" Visibility="Collapsed" TextWrapping="Wrap"/>
+				<toolkit:PhoneTextBox x:Name="bioBox" Hint="Bio" Width="300" Height="72" AcceptsReturn="True" TextWrapping="Wrap" GotFocus="bioBox_GotFocus" LostFocus="bioBox_LostFocus"/>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  toolkit:TurnstileFeatherEffect.FeatheringIndex="6">
 					<TextBlock Margin="12,0,0,0" Text="Birthday" VerticalAlignment="Center" FontSize="30"/>
 					<toolkit:DatePicker x:Name="datePicker" HorizontalAlignment="Right" Width="150"/>

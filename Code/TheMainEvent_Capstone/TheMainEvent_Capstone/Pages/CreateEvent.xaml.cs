@@ -14,6 +14,7 @@ using TheMainEvent_Capstone.DataAccessLayer;
 using Parse;
 using TheMainEvent_Capstone.Model;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -71,13 +72,6 @@ namespace TheMainEvent_Capstone.Pages
 			contacts.ItemsSource = Users;
 		}
 
-
-		private void OnTextInputStart(object sender, TextCompositionEventArgs e)
-		{
-			scrollViewer.UpdateLayout();
-			scrollViewer.ScrollToVerticalOffset(descriptionBox.ActualHeight);
-		}
-
 		private void TextBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
 		{
 			TextBox box = (TextBox)sender;
@@ -86,6 +80,8 @@ namespace TheMainEvent_Capstone.Pages
 
 		private async void createButton_Click(object sender, RoutedEventArgs e)
 		{
+			string eventToAdd = "";
+			this.statusBlock.Text = "Creating...";
 			try
 			{
 				Event ev = new Event()
@@ -97,22 +93,23 @@ namespace TheMainEvent_Capstone.Pages
 					OtherDetails = otherDetailsBox.Text,
 					Title = titleBox.Text,
 					Date = (DateTime)datePicker.Value,
-					Time = (DateTime)timePicker.Value
+					Time = (DateTime)timePicker.Value,
+					Type = ((TextBlock)typePicker.SelectedItem).Text
 				};
 				double cost = 0;
 				if (double.TryParse(costBox.Text, out cost))
 				{
 					ev.Cost = cost;
 				}
-				else
+				else if (String.IsNullOrEmpty(costBox.Text))
 				{
-					throw new Exception("Make sure the cost follows the format of a price e.g.: 9.50");
+					ev.Cost = 0;
 				}
 
 				EventDAL ed = new EventDAL();
 				ed.CreateEvent(ev);
 				string creatorId = ParseUser.CurrentUser.ObjectId;
-				string eventToAdd = await ed.NewestEventFromUser(ParseUser.CurrentUser.ObjectId );
+				eventToAdd = await ed.NewestEventFromUser(ParseUser.CurrentUser.ObjectId );
 				ed.SetOwner(eventToAdd, creatorId);
 				foreach (Object i in contacts.SelectedItems)
 				{
@@ -124,7 +121,7 @@ namespace TheMainEvent_Capstone.Pages
 			{
 				NavigationService.Navigate(new Uri("/Pages/MapPage.xaml?msg=" + ex.Message, UriKind.Relative));
 			}
-			NavigationService.Navigate(new Uri("/Pages/MapPage.xaml", UriKind.Relative));
+			NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml?msg=" + eventToAdd, UriKind.Relative));
 		}
 
 		private void title_TextChanged(object sender, TextChangedEventArgs e)
@@ -142,8 +139,6 @@ namespace TheMainEvent_Capstone.Pages
 			this.descLostFocusStoryboard.Begin();
 		}
 
-
-
 		private void OtherDetailsBox_GotFocus(object sender, RoutedEventArgs e)
 		{
 			this.otherGotFocusStoryboard.Begin();
@@ -151,6 +146,25 @@ namespace TheMainEvent_Capstone.Pages
 		private void OtherDetailsBox_LostFocus(object sender, RoutedEventArgs e)
 		{
 			this.otherLostFocusStoryboard.Begin();
+		}
+
+		private void donationCheck_Checked(object sender, RoutedEventArgs e)
+		{
+			if (donationCheck.IsChecked==true)
+			{
+				MessageBox.Show("Attendees will choose whether or not he/she will pay to attend the event.");
+			}
+		}
+
+		private void costBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			string input = costBox.Text;
+			string pattern = @"^((\d+).(\d){2})$";
+			if (!Regex.IsMatch(input, pattern))
+			{
+				costStatus.Visibility = Visibility.Visible;
+			}
+			else costStatus.Visibility = Visibility.Collapsed;
 		}
 
 		

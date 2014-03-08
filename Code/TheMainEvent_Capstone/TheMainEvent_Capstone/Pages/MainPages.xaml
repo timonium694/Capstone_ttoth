@@ -80,7 +80,6 @@
 			IsIndeterminate="true"
 			x:Name="loadingBar"
 			Style="{StaticResource CustomIndeterminateProgressBar}"
-			Visibility="Collapsed"
 			/>
 		<!--Pivot Control-->
 		<phone:Pivot x:Name="MainPivot" Visibility="Visible" Title="The Main Event" toolkit:TurnstileFeatherEffect.FeatheringIndex="0" HeaderTemplate="{StaticResource MainPivotHeader}">
@@ -90,17 +89,25 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="100*"/>
 					</Grid.RowDefinitions>
+					<StackPanel x:Name="noEventContainer" VerticalAlignment="Center" Visibility="Collapsed" Margin="0,-80,0,0">
+						<TextBlock Text="You have no current events" HorizontalAlignment="Center" FontSize="24"/>
+						<HyperlinkButton  Content="Create Event" Height="33" Click="navToCreateEvent"/>
+						<TextBlock Text="or" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+						<HyperlinkButton Content="Find Event" Height="33" Click="navToSearchPage"/>
+					</StackPanel>
 					<phone:LongListSelector
+						Visibility="Visible"
 						Grid.Row="0" x:Name="EventsList" 
 						ItemsSource="{Binding Events}" 
 						SelectionChanged="EventsList_SelectionChanged"
 						toolkit:TurnstileFeatherEffect.FeatheringIndex="4"
-						 toolkit:TiltEffect.IsTiltEnabled="True">
+						toolkit:TiltEffect.IsTiltEnabled="True"
+						Margin="0,-30,0,0">
 						<phone:LongListSelector.ItemTemplate>
 							<DataTemplate>
 								<StackPanel>
 
-									<toolkit:Separator Background="Gray" Height="1" Margin="0,10,0,0"/>
+									<toolkit:Separator HorizontalAlignment="Left" Margin="10,10,0,0" Background="Gray" Height="1" Width="390"/>
 									<TextBlock Text="{Binding Title}"
 											   TextWrapping="Wrap"
 											   Style="{StaticResource PhoneTextExtraLargeStyle}"
@@ -122,7 +129,12 @@
 			<!--Pivot item two-->
 			<phone:PivotItem Header="Contacts" >
 				<Grid>
+					<StackPanel x:Name="noContactsContainer" VerticalAlignment="Center" Visibility="Collapsed" Margin="0,-80,0,0">
+						<TextBlock Text="You have no contacts" HorizontalAlignment="Center" FontSize="24"/>
+						<HyperlinkButton  Content="Find Contacts" Height="33" Click="navToSearchPage"/>
+					</StackPanel>
 					<phone:LongListSelector
+					Visibility="Visible"
 					  x:Name="ContactList"
 					  JumpListStyle="{StaticResource ContactJumpListStyle}"
 					  Background="Transparent"
@@ -135,7 +147,14 @@
 			</phone:PivotItem>
 			<phone:PivotItem Header="Invites">
 				<Grid>
+					<StackPanel x:Name="noInvitesContainer" VerticalAlignment="Center" Visibility="Collapsed" Margin="0,-80,0,0">
+						<TextBlock Text="You have no invites" HorizontalAlignment="Center" FontSize="24"/>
+						<HyperlinkButton  Content="Find Contacts" Height="33" Click="navToSearchPage"/>
+						<TextBlock Text="or" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+						<HyperlinkButton Content="Find Event" Height="33" Click="navToSearchPage"/>
+					</StackPanel>
 					<phone:LongListSelector
+						Visibility="Visible"
 						x:Name="InviteList" 
 						ItemsSource="{Binding Invites}" 
 						SelectionChanged="InviteList_SelectionChanged"

@@ -33,27 +33,33 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		}
 		public async Task<UserInfo> GetUserInfo(string id)
 		{
-			var query = await (from post in ParseObject.GetQuery("UserInfo")
-							   where post.Get<string>("user") == id
-							   select post).FindAsync();
 
-			IEnumerable<ParseObject> ids = query.ToList();
-			ParseObject p = ids.FirstOrDefault();
 			UserInfo output = new UserInfo();
-			if (p != null)
+			try
 			{
-				output.FirstName = p.Get<string>("firstName");
-				output.LastName = p.Get<string>("lastName");
-				output.Phone = p.Get<string>("phone");
-				output.Bio = p.Get<string>("bio");
-				output.Birthday = p.Get<DateTime>("birthday");
-				output.Active = p.Get<string>("active");
-				output.User = p.Get<string>("user");
-				output.MerchantEmail = p.Get<string>("merchant");
-				output.Email = p.Get<string>("mail");
-				output.FilterMode = p.Get<string>("filter");
-				var proPic = p.Get<ParseFile>("proPic");
-				output.ProfilePic = await new HttpClient().GetByteArrayAsync(proPic.Url);
+				var query = await (from post in ParseObject.GetQuery("UserInfo")
+								   where post.Get<string>("user") == id
+								   select post).FindAsync();
+
+				IEnumerable<ParseObject> ids = query.ToList();
+				ParseObject p = ids.FirstOrDefault();
+				if (p != null)
+				{
+					output.FirstName = p.Get<string>("firstName");
+					output.LastName = p.Get<string>("lastName");
+					output.Phone = p.Get<string>("phone");
+					output.Bio = p.Get<string>("bio");
+					output.Birthday = p.Get<DateTime>("birthday");
+					output.User = p.Get<string>("user");
+					output.MerchantEmail = p.Get<string>("merchant");
+					output.Email = p.Get<string>("mail");
+					output.FilterMode = p.Get<string>("filter");
+					var picFile = p.Get<ParseFile>("picFile");
+					output.ProfilePic = await new HttpClient().GetByteArrayAsync(picFile.Url);
+				}
+			}
+			catch (Exception e)
+			{
 			}
 			return output;
 		}
@@ -69,21 +75,26 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			info["phone"] = ui.Phone;
 			info["bio"] = ui.Bio;
 			info["birthday"] = ui.Birthday;
-			info["active"] = ui.Active;
 			info["user"] = ui.User;
 			info["merchant"] = "none";
 			info["mail"] = ui.Email;
 			info["filter"] = "A-Z";
-			ParseFile proPic = new ParseFile("default.jpg", ui.ProfilePic);
-			await proPic.SaveAsync();
-			info["proPic"] = proPic;
+			ParseFile picFile = new ParseFile("default.jpg", ui.ProfilePic);
+			await picFile.SaveAsync();
+			info["picFile"] = picFile;
 			await info.SaveAsync();
 		}
-		public async void CreateUser(User u)
+		public async Task CreateUser(User u)
 		{
-			//Sign up user
-			var user = new ParseUser() { Username = u.Username, Email = u.Email, Password = u.Password, };
-			await user.SignUpAsync();
+			try
+			{
+				//Sign up user
+				var user = new ParseUser() { Username = u.Username, Email = u.Email, Password = u.Password, };
+				await user.SignUpAsync();
+			}
+			catch (Exception ex)
+			{
+			}
 
 		}
 		public async void AddContact(string userId, string ContactId)
@@ -120,12 +131,11 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			info["phone"] = ui.Phone;
 			info["bio"] = ui.Bio;
 			info["birthday"] = ui.Birthday;
-			info["active"] = ui.Active;
 			info["user"] = ui.User;
 			info["merchant"] = "none";
-			ParseFile proPic = new ParseFile("default.jpg", ui.ProfilePic);
-			await proPic.SaveAsync();
-			info["proPic"] = proPic;
+			ParseFile picFile = new ParseFile("default.jpg", ui.ProfilePic);
+			await picFile.SaveAsync();
+			info["picFile"] = picFile;
 			await info.SaveAsync();
 		}
 		public byte[] ConvertToBytes(BitmapImage bitmapImage)
@@ -178,13 +188,12 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 						output.Phone = p.Get<string>("phone");
 						output.Bio = p.Get<string>("bio");
 						output.Birthday = p.Get<DateTime>("birthday");
-						output.Active = p.Get<string>("active");
 						output.User = p.Get<string>("user");
 						output.MerchantEmail = p.Get<string>("merchant");
 						output.Email = p.Get<string>("mail");
 						output.FilterMode = p.Get<string>("filter");
-						var proPic = p.Get<ParseFile>("proPic");
-						output.ProfilePic = await new HttpClient().GetByteArrayAsync(proPic.Url);
+						var picFile = p.Get<ParseFile>("picFile");
+						output.ProfilePic = await new HttpClient().GetByteArrayAsync(picFile.Url);
 					}
 					users.Add(output);
 				}
@@ -209,13 +218,12 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 						output.Phone = p.Get<string>("phone");
 						output.Bio = p.Get<string>("bio");
 						output.Birthday = p.Get<DateTime>("birthday");
-						output.Active = p.Get<string>("active");
 						output.User = p.Get<string>("user");
 						output.MerchantEmail = p.Get<string>("merchant");
 						output.Email = p.Get<string>("mail");
 						output.FilterMode = p.Get<string>("filter");
-						var proPic = p.Get<ParseFile>("proPic");
-						output.ProfilePic = await new HttpClient().GetByteArrayAsync(proPic.Url);
+						var picFile = p.Get<ParseFile>("picFile");
+						output.ProfilePic = await new HttpClient().GetByteArrayAsync(picFile.Url);
 					}
 					users.Add(output);
 				}

@@ -38,6 +38,7 @@ namespace TheMainEvent_Capstone.Pages
 		private bool IsAttending = false;
 		ObservableCollection<ContactViewModel> InvitedUsers = new ObservableCollection<ContactViewModel>();
 		ObservableCollection<ContactViewModel> AttendingUsers = new ObservableCollection<ContactViewModel>();
+		ObservableCollection<ContactViewModel> PaidUsers = new ObservableCollection<ContactViewModel>();
 
 
 
@@ -133,7 +134,7 @@ namespace TheMainEvent_Capstone.Pages
 			{
 				ApplicationBar.MenuItems.Remove(this.attendEvent);
 				ApplicationBarMenuItem menuItem1 = new ApplicationBarMenuItem();
-				menuItem1.Text = "cancel event";
+				menuItem1.Text = "invite users";
 				ApplicationBar.MenuItems.Add(menuItem1);
 				menuItem1.Click += new EventHandler(this.cancelEventButton_Click);
 
@@ -234,23 +235,23 @@ namespace TheMainEvent_Capstone.Pages
 				// start, auth, error, cancel and complete
 				bn.Start += new EventHandler<PayPal.Checkout.Event.StartEventArgs>((source, args) =>
 				{
-					MessageBox.Show("Initiating payment");
+					statusBlock.Text = "Initializing Payment";
 				});
 				bn.Auth += new EventHandler<PayPal.Checkout.Event.AuthEventArgs>((source, args) =>
 				{
-					MessageBox.Show("Authenticating payment: " + args.Token);
+					statusBlock.Text = "Authorizing Payment";
 				});
 				bn.Complete += new EventHandler<PayPal.Checkout.Event.CompleteEventArgs>((source, args) =>
 				{
-					MessageBox.Show("Your payment is complete. Transaction id: " + args.TransactionID);
+					statusBlock.Text="Your payment is complete. Transaction id: " + args.TransactionID;
 				});
 				bn.Cancel += new EventHandler<PayPal.Checkout.Event.CancelEventArgs>((source, args) =>
 				{
-					MessageBox.Show("Payment Cancelled");
+					statusBlock.Text="Payment Cancelled";
 				});
 				bn.Error += new EventHandler<PayPal.Checkout.Event.ErrorEventArgs>((source, args) =>
 				{
-					MessageBox.Show("There was an error processing your payment: " + args.Type + " " + args.Message);
+					statusBlock.Text="There was an error processing your payment: " + args.Type + " " + args.Message;
 				});
 
 				// Ready to go. Call the asynchronous Execute operation
@@ -274,13 +275,15 @@ namespace TheMainEvent_Capstone.Pages
 			this.tweetLostFocusStoryboard.Begin();
 		}
 
-		private void unattendButton_Click(object sender, EventArgs e)
+		private async void unattendButton_Click(object sender, EventArgs e)
 		{
-
+			EventDAL ed = new EventDAL();
+			await ed.UnattendEvent(this.evm.ID, this.currentUser.User);
 		}
-		private void cancelEventButton_Click(object sender, EventArgs e)
+		private async void cancelEventButton_Click(object sender, EventArgs e)
 		{
-
+			EventDAL ed = new EventDAL();
+			await ed.DeleteEvent(this.evm.ID);
 		}
 
 		private void eventsNav_Click(object sender, EventArgs e)
@@ -373,29 +376,4 @@ namespace TheMainEvent_Capstone.Pages
 
 
 	}
-
-	#region Enums
-
-	/// <summary>
-	/// Map Mode
-	/// </summary>
-	public enum MapMode
-	{
-		/// <summary>
-		/// Stores are displayed in the map
-		/// </summary>
-		Stores,
-
-		/// <summary>
-		/// Map is showing directions using a Windows Phone Task
-		/// </summary>
-		Directions,
-
-		/// <summary>
-		/// Map is showing a route in the map
-		/// </summary>
-		Route
-	}
-
-	#endregion
 }

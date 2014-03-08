@@ -57,6 +57,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			temp["isDonatable"] = e.IsDonatable;
 			await temp.SaveAsync();
 		}
+
 		public async void SetOwner(string eventId, string ownerId)
 		{
 			ParseObject po = new ParseObject("EventOwner");
@@ -80,8 +81,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			ParseObject invite = events.FirstOrDefault();
 			if (invite != null)
 			{
-				invite["isAccepted"] = "true";
-				await invite.SaveAsync();
+				await invite.DeleteAsync();
 			}
 			await po.SaveAsync();
 		}
@@ -248,6 +248,42 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 					break;
 			}
 			return sorted;
+		}
+		public async Task UnattendEvent(string eventId, string userId)
+		{
+			var query1 = (from attendee in ParseObject.GetQuery("eventAttendee")
+						  where attendee.Get<string>("event") == eventId &&
+						  attendee.Get<string>("user") == userId
+						  select attendee);
+			IEnumerable<ParseObject> attendees = await query1.FindAsync();
+			ParseObject p = attendees.FirstOrDefault();
+			if (p != null)
+				await p.DeleteAsync();
+		}
+		public async Task DeleteEvent(string eventId)
+		{
+			var query = (from invite in ParseObject.GetQuery("UserInvites")
+						 where invite.Get<string>("event").Equals(eventId)
+						 where invite.Get<string>("isAccepted").Equals("false")
+						 select invite);
+			IEnumerable<ParseObject> invites = await query.FindAsync();
+			foreach (ParseObject p in invites)
+			{
+				await p.DeleteAsync();
+			}
+			var query1 = (from attendee in ParseObject.GetQuery("eventAttendee")
+						 where attendee.Get<string>("event") == eventId
+						 select attendee);
+			IEnumerable<ParseObject> attendees = await query1.FindAsync();
+			foreach (ParseObject p in attendees)
+			{
+				await p.DeleteAsync();
+			}
+			var query2 = (from owner in ParseObject.GetQuery("EventOwner")
+						 where owner.Get<string>("event") == eventId
+						 select owner);
+			ParseObject p1 = await query2.FirstAsync();
+			await p1.DeleteAsync();
 		}
 
 

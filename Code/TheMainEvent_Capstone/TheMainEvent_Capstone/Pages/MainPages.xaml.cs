@@ -23,6 +23,9 @@ namespace TheMainEvent_Capstone.Pages
 		ObservableCollection<InviteViewModel> Invites = new ObservableCollection<InviteViewModel>();
 		List<UserInfo> Contacts = new List<UserInfo>();
 		private bool isLoaded = false;
+		private bool noEvents = false;
+		private bool noContacts = false;
+		private bool noInvites = false;
 
 		public MainPages()
 		{
@@ -36,9 +39,25 @@ namespace TheMainEvent_Capstone.Pages
 			await this.LoadContacts();
 			this.isLoaded = true;
 
+			
+			if (noEvents)
+			{
+				noEventContainer.Visibility = Visibility.Visible;
+				EventsList.Visibility = Visibility.Collapsed;
+			}
+			if (noContacts)
+			{
+				noContactsContainer.Visibility = Visibility.Visible;
+				ContactList.Visibility = Visibility.Collapsed;
+			}
+			if (noInvites)
+			{
+				noInvitesContainer.Visibility = Visibility.Visible;
+				InviteList.Visibility = Visibility.Visible;
+			}
+			this.MainPivot.Visibility = Visibility.Visible;
 			this.loadingBar.Visibility = Visibility.Collapsed;
 			this.loadingBar.IsIndeterminate = false;
-			this.MainPivot.Visibility = Visibility.Visible;
 			//EventDAL ed = new EventDAL();
 			//Event ev = new Event()
 			//{
@@ -66,45 +85,57 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			EventDAL ed = new EventDAL();
 			List<Event> events = await ed.GetUserEvents(ParseUser.CurrentUser.ObjectId);
-			foreach (Event e in events)
+			if (events.Count != 0)
 			{
-				Events.Add(new EventViewModel()
+				foreach (Event e in events)
 				{
-					Address = e.Address,
-					Date = e.Date,
-					Description = e.Description,
-					OtherDetails = e.OtherDetails,
-					Title = e.Title,
-					ID = e.ID,
-					City = e.City,
-					Type = e.Type,
-					State = e.State,
-				});
+					Events.Add(new EventViewModel()
+					{
+						Address = e.Address,
+						Date = e.Date,
+						Description = e.Description,
+						OtherDetails = e.OtherDetails,
+						Title = e.Title,
+						ID = e.ID,
+						City = e.City,
+						Type = e.Type,
+						State = e.State,
+					});
+				}
+
+
+				EventsList.ItemsSource = this.Events;
 			}
-
-
-			EventsList.ItemsSource = this.Events;
+			else
+			{
+				this.noEvents = true;
+			}
+			
 		}
 		private async Task LoadInvites()
 		{
 			EventDAL ed = new EventDAL();
 			List<string> invites = await ed.GetInvitesForUser(ParseUser.CurrentUser.ObjectId);
-			foreach(string id in invites)
+			if (invites.Count != 0)
 			{
-				Event e = await ed.RetrieveEvent(id);
-				InviteViewModel ivm = new InviteViewModel()
+				foreach (string id in invites)
 				{
-					Title = e.Title,
-					Time = e.Time,
-					Address = e.Address + ", "+ e.City +", "+e.State,
-					ID = e.ID,
-					Cost = e.Cost,
-					Date = e.Date,
-					Description = e.Description
-				};
-				this.Invites.Add(ivm);
+					Event e = await ed.RetrieveEvent(id);
+					InviteViewModel ivm = new InviteViewModel()
+					{
+						Title = e.Title,
+						Time = e.Time,
+						Address = e.Address + ", " + e.City + ", " + e.State,
+						ID = e.ID,
+						Cost = e.Cost,
+						Date = e.Date,
+						Description = e.Description
+					};
+					this.Invites.Add(ivm);
+				}
+				InviteList.ItemsSource = this.Invites;
 			}
-			InviteList.ItemsSource = this.Contacts;
+			else this.noInvites = true;
 		}
 
 		private async Task LoadUser()
@@ -121,25 +152,32 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			UserDAL ud = new UserDAL();
 			List<string> ids = await ud.GetContacts(ParseUser.CurrentUser.ObjectId);
-			foreach (string id in ids)
+			if (ids.Count != 0)
 			{
-				try
+				foreach (string id in ids)
 				{
-					UserInfo ui = await ud.GetUserInfo(id);
-					this.Contacts.Add(ui);
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine(ex.Message);
+					try
+					{
+						UserInfo ui = await ud.GetUserInfo(id);
+						this.Contacts.Add(ui);
+					}
+					catch (Exception ex)
+					{
+						Console.WriteLine(ex.Message);
+					}
+
 				}
 
+
+				List<AlphaKeyGroup<UserInfo>> DataSource = AlphaKeyGroup<UserInfo>.CreateGroups(Contacts,
+					System.Threading.Thread.CurrentThread.CurrentUICulture,
+					(UserInfo s) => { return s.FirstName; }, true);
+				ContactList.ItemsSource = DataSource;
 			}
-
-
-			List<AlphaKeyGroup<UserInfo>> DataSource = AlphaKeyGroup<UserInfo>.CreateGroups(Contacts,
-				System.Threading.Thread.CurrentThread.CurrentUICulture,
-				(UserInfo s) => { return s.FirstName; }, true);
-			ContactList.ItemsSource = DataSource;
+			else
+			{
+				this.noContacts = true;
+			}
 		}
 
 		private void EventsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -163,6 +201,16 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			InviteViewModel evm = (InviteViewModel)InviteList.SelectedItem;
 			NavigationService.Navigate(new Uri("/Pages/EventPage.xaml?msg=" + evm.ID, UriKind.Relative));
+		}
+
+		private void navToCreateEvent(object sender, RoutedEventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/CreateEvent.xaml", UriKind.Relative));
+		}
+
+		private void navToSearchPage(object sender, RoutedEventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/SearchPage.xaml", UriKind.Relative));
 		}
 		
 	}

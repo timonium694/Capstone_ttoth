@@ -28,6 +28,7 @@ namespace TheMainEvent_Capstone.Pages
 			firstNameBox.Tap += this.TextBox_Tap;
 			bioBox.Tap += this.TextBox_Tap;
 			i = new BitmapImage(new Uri("Assets/proDefault.jpg", UriKind.Relative));
+			us.Source = i;
 
 			
 		}
@@ -73,14 +74,28 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void phoneBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			string pattern = @"((\d){9})";
+			string pattern = @"^((\d){9})$";
 			string input = phoneBox.Text;
 			if (!Regex.IsMatch(input, pattern))
 			{
 				phoneStatus.Visibility = Visibility.Visible;
-				phoneStatus.Text = "Input a valid phone number. ex. 3034589009";
+				isValidPhone = false;
 			}
-			else phoneStatus.Visibility = Visibility.Collapsed;
+			else
+			{
+				this.isValidPhone = true;
+				phoneStatus.Visibility = Visibility.Collapsed;
+			}
+		}
+
+		private void bioBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+			bioGotFocusStoryboard.Begin();
+		}
+
+		private void bioBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+			bioLostFocusStoryboard.Begin();
 		}
 	}
 }

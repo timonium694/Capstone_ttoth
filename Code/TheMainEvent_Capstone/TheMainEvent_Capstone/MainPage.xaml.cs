@@ -74,7 +74,7 @@ namespace TheMainEvent_Capstone
 			try
 			{
 				await ParseUser.LogInAsync(username, password);
-				NavigationService.Navigate(new Uri("/Pages/SearchPage.xaml", UriKind.Relative));
+				NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
 			}
 			catch (Exception ex)
 			{

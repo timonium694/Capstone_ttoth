@@ -20,12 +20,12 @@ namespace TheMainEvent_Capstone.Pages
 			InitializeComponent();
 		}
 
-		private void Continue_Click(object sender, RoutedEventArgs e)
+		private async void Continue_Click(object sender, RoutedEventArgs e)
 		{
-			this.RegisterUser();
+			await this.RegisterUser();
 		}
 
-		private void RegisterUser()
+		private async Task RegisterUser()
 		{
 			try
 			{
@@ -38,8 +38,8 @@ namespace TheMainEvent_Capstone.Pages
 				string email = emailBox.Text;
 				string username = usernameBox.Text;
 				UserDAL ud = new UserDAL();
-				ud.CreateUser(new User() { Email = email, Username = username, Password = password });
-				NavigationService.Navigate(new Uri("/RegistrationInfoPage.xaml", UriKind.Relative));
+				await ud.CreateUser(new User() { Email = email, Username = username, Password = password });
+				NavigationService.Navigate(new Uri("/Pages/RegistrationInfoPage.xaml", UriKind.Relative));
 			}
 			catch (Exception ex)
 			{

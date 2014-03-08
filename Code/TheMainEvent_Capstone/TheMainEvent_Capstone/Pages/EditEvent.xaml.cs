@@ -23,7 +23,6 @@ namespace TheMainEvent_Capstone.Pages
 		public EditEvent()
 		{
 			InitializeComponent();
-			this.AddUsers();
 			this.SetupPage();
 		}
 
@@ -39,43 +38,29 @@ namespace TheMainEvent_Capstone.Pages
 			otherDetailsBox.LostFocus += this.OtherDetailsBox_LostFocus;
 			titleBox.TextChanged += this.title_TextChanged;
 		}
-
-		
-		private async void AddUsers()
+		protected async override void OnNavigatedTo(NavigationEventArgs e)
 		{
-			UserDAL ud = new UserDAL();
-			List<string> ids = new List<string>();
-			ids = await ud.GetContacts(ParseUser.CurrentUser.ObjectId);
-			foreach (string id in ids)
+			string msg = "";
+			EventViewModel evm = new EventViewModel();
+			if (NavigationContext.QueryString.TryGetValue("msg", out msg))
 			{
-				try
+				EventDAL ed = new EventDAL();
+				Event ev = await ed.RetrieveEvent(msg);
+				evm = new EventViewModel()
 				{
-					UserInfo ui = await ud.GetUserInfo(id);
-					Users.Add(new ContactViewModel()
-					{
-						Name = ui.FirstName + " " + ui.LastName,
-						User = ui.User,
-						Bio = ui.Bio,
-						Birthday = ui.Birthday,
-						Phone = ui.Phone,
-					});
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine(ex.Message);
-				}
-				
+					Title = ev.Title,
+					Cost = ev.Cost,
+					Address = ev.Address + ", " + ev.City + ", " + ev.State,
+					Description = ev.Description,
+					OtherDetails = "Details: " + ev.OtherDetails,
+					Date = ev.Date,
+					Type = ev.Type,
+					ID = ev.ID,
+
+				};
 			}
-
-			contacts.ItemsSource = Users;
 		}
 
-
-		private void OnTextInputStart(object sender, TextCompositionEventArgs e)
-		{
-			scrollViewer.UpdateLayout();
-			scrollViewer.ScrollToVerticalOffset(descriptionBox.ActualHeight);
-		}
 
 		private void TextBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
 		{
@@ -113,11 +98,6 @@ namespace TheMainEvent_Capstone.Pages
 				string creatorId = ParseUser.CurrentUser.ObjectId;
 				string eventToAdd = await ed.NewestEventFromUser(ParseUser.CurrentUser.ObjectId );
 				ed.SetOwner(eventToAdd, creatorId);
-				foreach (Object i in contacts.SelectedItems)
-				{
-					ContactViewModel con = (ContactViewModel)i;
-					ed.InviteUser(con.User, eventToAdd, creatorId);
-				}
 			}
 			catch (Exception ex)
 			{

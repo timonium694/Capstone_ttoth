@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+	xmlns:con="clr-namespace:TheMainEvent_Capstone.Model"
     x:Class="TheMainEvent_Capstone.Pages.CreateEvent"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -38,33 +39,33 @@
 	<phone:PhoneApplicationPage.Resources>
 		<Storyboard x:Name="descGotFocusStoryboard">
 			<DoubleAnimation
-            Storyboard.TargetName="scrollViewer"
+            Storyboard.TargetName="descriptionBox"
             Storyboard.TargetProperty="Height"
-            From="72.0" To="100.0" Duration="0:0:1"
+            From="72.0" To="100.0" Duration="0:0:.2"
             AutoReverse="True"/>
 		</Storyboard>
 		<Storyboard x:Name="otherGotFocusStoryboard">
 			<DoubleAnimation
-            Storyboard.TargetName="scrollViewer"
+            Storyboard.TargetName="descriptionBox"
             Storyboard.TargetProperty="Height"
-            From="72.0" To="100.0" Duration="0:0:1"
+            From="72.0" To="100.0" Duration="0:0:.2"
             AutoReverse="True"/>
 		</Storyboard>
 		<Storyboard x:Name="descLostFocusStoryboard">
 			<DoubleAnimation
-            Storyboard.TargetName="scrollViewer"
+            Storyboard.TargetName="otherDetailsBox"
             Storyboard.TargetProperty="Height"
-            From="100.0" To="72.0" Duration="0:0:1"
+            From="100.0" To="72.0" Duration="0:0:.2"
             AutoReverse="True"/>
 		</Storyboard>
 		<Storyboard x:Name="otherLostFocusStoryboard">
 			<DoubleAnimation
-            Storyboard.TargetName="scrollViewer"
+            Storyboard.TargetName="otherDetailsBox"
             Storyboard.TargetProperty="Height"
-            From="100.0" To="72.0" Duration="0:0:1"
+            From="100.0" To="72.0" Duration="0:0:.2"
             AutoReverse="True"/>
 		</Storyboard>
-
+		<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
 	</phone:PhoneApplicationPage.Resources>
 
 	<Grid x:Name="LayoutRoot" Background="Transparent">
@@ -75,7 +76,7 @@
 
 		
 		<StackPanel Grid.Row="0" Margin="12,17,0,28">
-			<TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}" toolkit:TurnstileFeatherEffect.FeatheringIndex="0"/>
+			<TextBlock x:Name="statusBlock" Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}" toolkit:TurnstileFeatherEffect.FeatheringIndex="0"/>
 			<TextBlock Text="New Event" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" toolkit:TurnstileFeatherEffect.FeatheringIndex="1"/>
 		</StackPanel>
 
@@ -84,38 +85,40 @@
 
 
 				<TextBlock x:Name="titleBlock" Text="Event Title" HorizontalAlignment="Center" Style="{StaticResource PhoneTextTitle2Style}" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
-				<toolkit:PhoneTextBox x:Name="titleBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="Title" VerticalAlignment="Top" Width="275" TextChanged="title_TextChanged" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
-				<toolkit:PhoneTextBox x:Name="addressBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="Street Address" VerticalAlignment="Top" Width="275" toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
-				<toolkit:PhoneTextBox x:Name="stateBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="State" VerticalAlignment="Top" Width="275" toolkit:TurnstileFeatherEffect.FeatheringIndex="5"/>
-				<toolkit:PhoneTextBox x:Name="cityBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="City" VerticalAlignment="Top" Width="275" toolkit:TurnstileFeatherEffect.FeatheringIndex="6"/>
-				<ScrollViewer x:Name="scrollViewer" Height="200" Width="290" VerticalScrollBarVisibility="Auto" toolkit:TurnstileFeatherEffect.FeatheringIndex="7">
-					<toolkit:PhoneTextBox x:Name="descriptionBox" Hint="Description" Width="275" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
-				</ScrollViewer>
+				<toolkit:PhoneTextBox x:Name="titleBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="Title" VerticalAlignment="Top" Width="300" TextChanged="title_TextChanged" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
+				<toolkit:PhoneTextBox x:Name="addressBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="Street Address" VerticalAlignment="Top" Width="300" toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<toolkit:PhoneTextBox x:Name="cityBox" Width="200" HorizontalAlignment="Right" Height="72" TextWrapping="Wrap" Hint="City" VerticalAlignment="Top" toolkit:TurnstileFeatherEffect.FeatheringIndex="6"/>
+					<toolkit:PhoneTextBox Width="100" x:Name="stateBox" Height="72" TextWrapping="Wrap" Hint="State" VerticalAlignment="Top" toolkit:TurnstileFeatherEffect.FeatheringIndex="5"/>
+				</StackPanel>
+				<toolkit:PhoneTextBox x:Name="descriptionBox" Hint="Description" Width="300" AcceptsReturn="True" GotFocus="DescriptionBox_GotFocus" LostFocus="DescriptionBox_LostFocus"  TextWrapping="Wrap"/>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="8">
 					<toolkit:DatePicker x:Name="datePicker"/>
 					<toolkit:TimePicker x:Name="timePicker"/>
 				</StackPanel>
-				<ScrollViewer x:Name="scrollViewerOtherDetails" Height="200" Width="290" VerticalScrollBarVisibility="Auto" toolkit:TurnstileFeatherEffect.FeatheringIndex="9">
-					<toolkit:PhoneTextBox Hint="Other Details" x:Name="otherDetailsBox" Text="Description" Width="275" AcceptsReturn="True" TextInputStart="OnTextInputStart" TextWrapping="Wrap"/>
-				</ScrollViewer>
-				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="260" toolkit:TurnstileFeatherEffect.FeatheringIndex="10">
-					<TextBlock Text="Cost $" Margin="0,0,-5,0" FontSize="35" VerticalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
-					<toolkit:PhoneTextBox x:Name="costBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="0.00" VerticalAlignment="Top" Width="174"/>
+				<toolkit:PhoneTextBox Hint="Other Details" x:Name="otherDetailsBox" GotFocus="OtherDetailsBox_GotFocus"  LostFocus="OtherDetailsBox_LostFocus" Width="300" AcceptsReturn="True" TextWrapping="Wrap"/>
+				<TextBlock Visibility="Collapsed" HorizontalAlignment="Center" TextAlignment="Center" Text="Please an amount in the form of #.## or leave blank" Width="350" TextWrapping="Wrap" x:Name="costStatus"/>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="300" toolkit:TurnstileFeatherEffect.FeatheringIndex="10">
+					<TextBlock Text="Cost $" Margin="20,0,0,0" FontSize="35" VerticalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+					<toolkit:PhoneTextBox TextChanged="costBox_TextChanged" Text="" x:Name="costBox" Width="180" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="0.00" VerticalAlignment="Top"/>
 				</StackPanel>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-					<CheckBox x:Name="isDonatable" IsChecked="true"/>
-					<TextBlock Text="Donations" VerticalAlignment="Center" Style="{StaticResource PhoneTextTitle2Style}"/>
+					<CheckBox x:Name="donationCheck" Checked="donationCheck_Checked"/>
+					<TextBlock Text="Accept Donations" VerticalAlignment="Center" FontSize="24"/>
 				</StackPanel>
 				<toolkit:ExpanderView FontSize="25" x:Name="inviteExpander" Header="Invite" HorizontalAlignment="Center" Width="350" toolkit:TurnstileFeatherEffect.FeatheringIndex="11">
 					<toolkit:ExpanderView.Items>
 						<toolkit:LongListMultiSelector x:Name="contacts" ItemsSource="{Binding Users}" Height="450" LayoutMode="List" EnforceIsSelectionEnabled="True">
 							<toolkit:LongListMultiSelector.ItemTemplate>
 								<DataTemplate>
-									<TextBlock Text="{Binding Name}"
+									<StackPanel Orientation="Horizontal">
+										<Image Width="40" Source="{Binding ProfilePic}" Stretch="Uniform"/>
+										<TextBlock Text="{Binding Name}"
 											   TextWrapping="Wrap"
 											   Style="{StaticResource PhoneTextNormalStyle}"
 											   FontSize="25"
 											   />
+									</StackPanel>
 								</DataTemplate>
 							</toolkit:LongListMultiSelector.ItemTemplate>
 						</toolkit:LongListMultiSelector>
@@ -124,6 +127,19 @@
 						<TextBlock Width="250" Text="Contacts"/>
 					</toolkit:ExpanderView.Expander>
 				</toolkit:ExpanderView>
+				<toolkit:ListPicker x:Name="typePicker">
+					<toolkit:ListPicker.Items>
+						<toolkit:ListPickerItem>
+							<TextBlock Text="Public"/>
+						</toolkit:ListPickerItem>
+						<toolkit:ListPickerItem>
+							<TextBlock Text="Private"/>
+						</toolkit:ListPickerItem>
+						<toolkit:ListPickerItem>
+							<TextBlock Text="Meetings"/>
+						</toolkit:ListPickerItem>
+					</toolkit:ListPicker.Items>
+				</toolkit:ListPicker>
 				<Button x:Name="createButton" Click="createButton_Click" HorizontalAlignment="Center" Width="125" Height="70" Content="Done" toolkit:TurnstileFeatherEffect.FeatheringIndex="12"/>
 			</StackPanel>
 		</ScrollViewer>
