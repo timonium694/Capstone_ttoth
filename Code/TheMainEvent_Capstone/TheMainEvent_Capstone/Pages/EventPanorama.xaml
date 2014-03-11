@@ -9,13 +9,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
 	xmlns:maptk="clr-namespace:Microsoft.Phone.Maps.Toolkit;assembly=Microsoft.Phone.Controls.Toolkit"
+	xmlns:con="clr-namespace:TheMainEvent_Capstone.Model"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
-	
+
 	<toolkit:TransitionService.NavigationInTransition>
 		<toolkit:NavigationInTransition>
 			<toolkit:NavigationInTransition.Backward>
@@ -52,7 +53,38 @@
             From="72.0" To="150.0" Duration="0:0:1"
             AutoReverse="True"/>
 		</Storyboard>
-
+			<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
+			<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
+				<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/photo.flash.on.png" Text="attend" Click="attendButton_Click" />
+				<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="directions" Click="showRoute_Click" />
+				<shell:ApplicationBar.MenuItems>
+					<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
+					<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>
+					<shell:ApplicationBarMenuItem Text="search" Click="searchNav_Click"/>
+					<shell:ApplicationBarMenuItem Text="logout" Click="logutNav_Click"/>
+				</shell:ApplicationBar.MenuItems>
+			</shell:ApplicationBar>
+			<shell:ApplicationBar x:Key="IsOwnerAppBar" x:Name="IsOwnerAppBar" IsVisible="True" IsMenuEnabled="True">
+				<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/photo.flash.on.png" Text="invite" Click="inviteContacts_Click" />
+				<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="directions" Click="showRoute_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="cancel" Click="cancelEventButton_Click" />
+			<shell:ApplicationBar.MenuItems>
+					<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
+					<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>
+					<shell:ApplicationBarMenuItem Text="search" Click="searchNav_Click"/>
+					<shell:ApplicationBarMenuItem Text="logout" Click="logutNav_Click"/>
+				</shell:ApplicationBar.MenuItems>
+			</shell:ApplicationBar>
+		<shell:ApplicationBar x:Key="IsAttendingAppBar" x:Name="IsAttendingAppBar" IsVisible="True" IsMenuEnabled="True">
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/photo.flash.on.png" Text="unattend" Click="unattendButton_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="directions" Click="showRoute_Click" />
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="search" Click="searchNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="logout" Click="logutNav_Click"/>
+			</shell:ApplicationBar.MenuItems>
+		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.Resources>
 
 	<!--LayoutRoot contains the root grid where all other page content is placed-->
@@ -73,7 +105,7 @@
 						<TextBlock x:Name="addressBlock" Text="{Binding Address}" Style="{StaticResource PhoneTextSubtleStyle}"  toolkit:TurnstileFeatherEffect.FeatheringIndex="1"/>
 						<TextBlock x:Name="descriptionBlock" HorizontalAlignment="Left" Style="{StaticResource PhoneTextSubtleStyle}" Margin="9,0,0,0" TextWrapping="Wrap" Text="{Binding Description}" VerticalAlignment="Top"  toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 						<TextBlock x:Name="detailsBlock" HorizontalAlignment="Left" Margin="9,0,0,0" FontSize="18" TextWrapping="Wrap" Text="{Binding OtherDetails}" VerticalAlignment="Top"  toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
-						
+
 					</StackPanel>
 				</Grid>
 			</phone:PanoramaItem>
@@ -82,9 +114,11 @@
 			<phone:PanoramaItem x:Name="TweetSection">
 				<Grid Margin="0,-40,0,0" x:Name="tweetGrid">
 					<StackPanel>
-						<StackPanel Orientation="Horizontal">
+						
+						<StackPanel Orientation="Horizontal" x:Name="tweetPanel">
 							<toolkit:PhoneTextBox x:Name="tweetBox" Hint="tweet" Width="320" AcceptsReturn="True" TextWrapping="Wrap"/>
 							<Button Content="tweet" x:Name="tweetButton" Click="tweetButton_Click"/>
+							<Button x:Name="authorizeTweets" Content="Authorize Tweets" HorizontalAlignment="Center" Click="authorizeTweets_Click"/>
 						</StackPanel>
 						<phone:LongListSelector Grid.Row="1" Margin="0,0,-22,0" ItemsSource="{Binding Tweets}">
 							<phone:LongListSelector.ItemTemplate>
@@ -104,9 +138,9 @@
 			</phone:PanoramaItem>
 			<phone:PanoramaItem>
 				<Grid Margin="0,0,0,0">
-					<maps:Map Margin="0,0,0,0" Height="500" Width="450" x:Name="Map" VerticalAlignment="Center" Visibility="Visible">
+					<maps:Map Margin="0,-70,0,0" Height="540" Width="450" x:Name="Map" VerticalAlignment="Center" Visibility="Visible">
 						<maptk:MapExtensions.Children>
-							
+
 							<maptk:MapItemsControl Name="RestaurantItems">
 								<maptk:MapItemsControl.ItemTemplate>
 									<DataTemplate>
@@ -114,29 +148,77 @@
 									</DataTemplate>
 								</maptk:MapItemsControl.ItemTemplate>
 							</maptk:MapItemsControl>
-							
+
 						</maptk:MapExtensions.Children>
 					</maps:Map>
 				</Grid>
 			</phone:PanoramaItem>
+			<phone:PanoramaItem>
+				<Grid Margin="0,-50,0,0">
+					<StackPanel>
+						<toolkit:ExpanderView FontSize="24" Margin="-20,0,0,0" x:Name="attendingExpander">
+							<toolkit:ExpanderView.Items>
+								<phone:LongListSelector x:Name="AttendingList" ItemsSource="{Binding Events}" Height="500">
+									<phone:LongListSelector.ItemTemplate>
+										<DataTemplate>
+											<StackPanel VerticalAlignment="Top" Margin="22,0,0,0" Orientation="Horizontal">
+												<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" Margin="0,0,5,0"/>
+												<TextBlock Text="{Binding LastName}" />
+											</StackPanel>
+										</DataTemplate>
+									</phone:LongListSelector.ItemTemplate>
+								</phone:LongListSelector>
+
+							</toolkit:ExpanderView.Items>
+							<toolkit:ExpanderView.Expander>
+								<StackPanel>
+									<TextBlock Text="Attending"/>
+									<TextBlock Text="Users in attendance" Style="{StaticResource PhoneTextSubtleStyle}"/>
+								</StackPanel>
+							</toolkit:ExpanderView.Expander>
+						</toolkit:ExpanderView>
+						<toolkit:ExpanderView FontSize="24" Margin="-20,0,0,0" x:Name="invitedExpander">
+							<toolkit:ExpanderView.Expander>
+								<StackPanel>
+									<TextBlock Text="Invited"/>
+									<TextBlock Text="Users that were invited" Style="{StaticResource PhoneTextSubtleStyle}"/>
+								</StackPanel>
+							</toolkit:ExpanderView.Expander>
+							<phone:LongListSelector x:Name="InvitedList" ItemsSource="{Binding Events}" Height="500">
+								<phone:LongListSelector.ItemTemplate>
+									<DataTemplate>
+										<StackPanel VerticalAlignment="Top" Margin="22,0,0,0" Orientation="Horizontal">
+											<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" Margin="0,0,5,0"/>
+											<TextBlock Text="{Binding LastName}" />
+										</StackPanel>
+									</DataTemplate>
+								</phone:LongListSelector.ItemTemplate>
+							</phone:LongListSelector>
+
+						</toolkit:ExpanderView>
+						<toolkit:ExpanderView FontSize="24" Margin="-20,0,0,0" x:Name="paidExpander">
+							<toolkit:ExpanderView.Items>
+								<phone:LongListSelector x:Name="PaidList" ItemsSource="{Binding Events}" Height="500">
+									<phone:LongListSelector.ItemTemplate>
+										<DataTemplate>
+											<StackPanel VerticalAlignment="Top" Margin="22,0,0,0" Orientation="Horizontal">
+												<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" Margin="0,0,5,0"/>
+												<TextBlock Text="{Binding LastName}" />
+											</StackPanel>
+										</DataTemplate>
+									</phone:LongListSelector.ItemTemplate>
+								</phone:LongListSelector>
+							</toolkit:ExpanderView.Items>
+							<toolkit:ExpanderView.Expander>
+								<StackPanel>
+									<TextBlock Text="Paid"/>
+									<TextBlock Text="Users that have paid for the event" Style="{StaticResource PhoneTextSubtleStyle}"/>
+								</StackPanel>
+							</toolkit:ExpanderView.Expander>
+						</toolkit:ExpanderView>
+					</StackPanel>
+				</Grid>
+			</phone:PanoramaItem>
 		</phone:Panorama>
 	</Grid>
-	<phone:PhoneApplicationPage.ApplicationBar>
-
-		<shell:ApplicationBar Mode="Default" Opacity="1.0" IsMenuEnabled="True" IsVisible="True">
-			
-			<shell:ApplicationBarIconButton x:Name="eventsNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="events" Click="eventsNav_Click" />
-			<shell:ApplicationBarIconButton x:Name="contactsNav" IconUri="/Assets/AppBar/people.groups.png" Text="contacts" Click="contactsNav_Click" />
-			<shell:ApplicationBarIconButton x:Name="searchNav" IconUri="/Assets/AppBar/appbar.magnify.png" Text="search" Click="searchNav_Click"/>
-			<shell:ApplicationBarIconButton x:Name="logutNav" IconUri="/Assets/AppBar/appbar.moon.sleep.png" Text="logout" Click="logutNav_Click" />
-		
-
-			<shell:ApplicationBar.MenuItems>
-				<shell:ApplicationBarMenuItem x:Name="attendEvent" Text="Attend Event" Click="attendButton_Click" />
-				<shell:ApplicationBarMenuItem x:Name="getDirections" Text="Get Directions" />
-				<shell:ApplicationBarMenuItem x:Name="showRoute" Text="Show Route" />
-			</shell:ApplicationBar.MenuItems>
-
-		</shell:ApplicationBar>
-	</phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

@@ -46,26 +46,39 @@ namespace TheMainEvent_Capstone.Pages
 			try
 			{
 
-				UserDAL ud = new UserDAL();
-				byte[] bytes = ud.ConvertToBytes(i);
-				DateTime bday = (DateTime)datePicker.Value;
-				string firstName = this.firstNameBox.Text;
-				string lastName = this.lastNameBox.Text;
-				string phoneNumber = this.phoneBox.Text;
-				string bio = this.bioBox.Text;
-				UserInfo ui = new UserInfo()
+				if (this.isValidPhone)
 				{
-					FirstName = firstName,
-					LastName = lastName,
-					Phone = phoneNumber,
-					Bio = bio,
-					Birthday = bday,
-					User = ParseUser.CurrentUser.ObjectId,
-					MerchantEmail = "tim.toth13@gmail.com",
-					Email = ParseUser.CurrentUser.Email,
-					ProfilePic = bytes
-				};
-				ud.CreateUserInfo(ui);
+					UserDAL ud = new UserDAL();
+					byte[] bytes = ud.ConvertToBytes(i);
+					DateTime bday = (DateTime)datePicker.Value;
+					string firstName = this.firstNameBox.Text;
+					string lastName = this.lastNameBox.Text;
+					string input = this.phoneBox.Text;
+					string phoneNumber = "";
+					for (int u = 0; u < 9; u++ )
+					{
+						phoneNumber += input.ToCharArray()[u];
+						if (u == 2 || u == 5)
+						{
+							phoneNumber += "-";
+						}
+					}
+					string bio = this.bioBox.Text;
+					UserInfo ui = new UserInfo()
+					{
+						FirstName = firstName,
+						LastName = lastName,
+						Phone = phoneNumber,
+						Bio = bio,
+						Birthday = bday,
+						User = ParseUser.CurrentUser.ObjectId,
+						MerchantEmail = "tim.toth13@gmail.com",
+						Email = ParseUser.CurrentUser.Email,
+						ProfilePic = bytes
+					};
+					ud.CreateUserInfo(ui);
+				}
+
 			}
 			catch (Exception ex)
 			{
@@ -74,8 +87,19 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void phoneBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			string pattern = @"^((\d){9})$";
+			
 			string input = phoneBox.Text;
+			if (input.EndsWith("-"))
+			{
+				input.Remove(input.Length-1);
+			}
+			if (Regex.IsMatch(input, @"^((\d){3})$"))
+			{
+			}
+			if (Regex.IsMatch(input, @"^((\d){3})-((\d){3})$"))
+			{
+			}
+			string pattern = @"^((\d){3})-((\d){3})-((\d){4})$";
 			if (!Regex.IsMatch(input, pattern))
 			{
 				phoneStatus.Visibility = Visibility.Visible;

@@ -40,7 +40,7 @@
 					</StackPanel>
 				</toolkit:ExpanderView.Expander>
 			</toolkit:ExpanderView>
-			<toolkit:Separator Background="Gray" Height="1" Margin="0,10,0,0"/>
+			<!--<toolkit:Separator Background="Gray" Height="1" Margin="0,10,0,0"/>-->
 			<toolkit:ExpanderView FontSize="30" x:Name="filterExpander" Header="Events" HorizontalAlignment="Center" Width="400">
 				<toolkit:ExpanderView.Items>
 					<toolkit:ListPicker x:Name="filterPicker" SelectionChanged="ListPicker_SelectionChanged">

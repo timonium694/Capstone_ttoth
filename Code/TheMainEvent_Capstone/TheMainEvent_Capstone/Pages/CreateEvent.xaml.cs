@@ -29,7 +29,7 @@ namespace TheMainEvent_Capstone.Pages
 			this.SetupPage();
 		}
 
-		private void SetupPage()
+		private async void SetupPage()
 		{
 			if (ParseUser.CurrentUser != null)
 			{
@@ -40,6 +40,10 @@ namespace TheMainEvent_Capstone.Pages
 			descriptionBox.LostFocus += this.DescriptionBox_LostFocus;
 			otherDetailsBox.LostFocus += this.OtherDetailsBox_LostFocus;
 			titleBox.TextChanged += this.title_TextChanged;
+			UserDAL ud = new UserDAL();
+			UserInfo ui = await ud.GetUserInfo(ParseUser.CurrentUser.ObjectId);
+			if (ui.MerchantEmail.Equals("none"))
+				costPanel.Visibility = Visibility.Collapsed;
 		}
 
 		
@@ -119,7 +123,7 @@ namespace TheMainEvent_Capstone.Pages
 			}
 			catch (Exception ex)
 			{
-				NavigationService.Navigate(new Uri("/Pages/MapPage.xaml?msg=" + ex.Message, UriKind.Relative));
+				statusBlock.Text = ex.Message;
 			}
 			NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml?msg=" + eventToAdd, UriKind.Relative));
 		}
@@ -155,7 +159,6 @@ namespace TheMainEvent_Capstone.Pages
 				MessageBox.Show("Attendees will choose whether or not he/she will pay to attend the event.");
 			}
 		}
-
 		private void costBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			string input = costBox.Text;
@@ -165,6 +168,27 @@ namespace TheMainEvent_Capstone.Pages
 				costStatus.Visibility = Visibility.Visible;
 			}
 			else costStatus.Visibility = Visibility.Collapsed;
+		}
+
+		private void eventsNav_Click(object sender, EventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/MainPages.xaml?msg=" + "events", UriKind.Relative));
+		}
+
+		private void contactsNav_Click(object sender, EventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/MainPages.xaml?msg=" + "contacts", UriKind.Relative));
+		}
+
+		private void searchNav_Click(object sender, EventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/SearchPage.xaml", UriKind.Relative));
+		}
+
+		private void logutNav_Click(object sender, EventArgs e)
+		{
+			ParseUser.LogOut();
+			NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
 		}
 
 		

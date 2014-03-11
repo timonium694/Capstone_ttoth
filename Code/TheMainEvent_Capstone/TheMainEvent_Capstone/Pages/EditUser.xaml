@@ -56,19 +56,25 @@
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-
+		<ProgressBar 
+			Grid.Row="1"
+			IsIndeterminate="true"
+			x:Name="loadingBar"
+			Style="{StaticResource CustomIndeterminateProgressBar}"
+			/>
 		<!--TitlePanel contains the name of the application and page title-->
-		<StackPanel Grid.Row="0" Margin="12,17,0,28">
+		<StackPanel x:Name="titlePanel" Visibility="Collapsed" Grid.Row="0" Margin="12,17,0,28">
 			<TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}" toolkit:TurnstileFeatherEffect.FeatheringIndex="0"/>
 			<TextBlock Text="Profile Info" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" toolkit:TurnstileFeatherEffect.FeatheringIndex="1"/>
 		</StackPanel>
 
 		<!--ContentPanel - place additional content here-->
-		<ScrollViewer x:Name="ContentScroll" Grid.Row="1" Margin="12,0,12,0">
+		<ScrollViewer x:Name="ContentScroll" Visibility="Collapsed" Grid.Row="1" Margin="12,0,12,0">
 			<StackPanel>
 				<toolkit:PhoneTextBox x:Name="firstNameBox" Width="250" Hint="First Name" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 				<toolkit:PhoneTextBox x:Name="lastNameBox" Width="250" Hint="Last Name" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
-				<toolkit:PhoneTextBox x:Name="phoneBox" Width="250" Hint="Phone Number" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
+				<TextBlock x:Name="phoneStatus" Text="Enter a valid phone number: 330-766-0092" TextAlignment="Center" Width="350" Visibility="Visible" TextWrapping="Wrap"/>
+				<toolkit:PhoneTextBox x:Name="phoneBox" Width="250" Hint="Phone Number" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="4" TextChanged="phoneBox_TextChanged"/>
 				<toolkit:PhoneTextBox x:Name="bioBox" Hint="Bio" Width="250" Height="72" AcceptsReturn="True" TextWrapping="Wrap"/>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  toolkit:TurnstileFeatherEffect.FeatheringIndex="6">
 					<TextBlock Margin="12,0,0,0" Text="Birthday" VerticalAlignment="Center" FontSize="30"/>

@@ -33,7 +33,6 @@ namespace TheMainEvent_Capstone
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
 
-			us.Source = i;
 			string msg = "";
 			if (NavigationContext.QueryString.TryGetValue("msg", out msg))
 			{
@@ -41,8 +40,8 @@ namespace TheMainEvent_Capstone
 			}
 			if (ParseUser.CurrentUser != null)
 			{
-				ParseUser.LogOut();
-				//NavigationService.Navigate(new Uri("Pages/MainPages.xaml", UriKind.Relative));
+				//ParseUser.LogOut();
+				NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
 			}
 		}
 		//Set this method to async
@@ -50,8 +49,6 @@ namespace TheMainEvent_Capstone
 		{
 			string username = usernameBox.Text;
 			string password = passwordBox.Password;
-			username = "Timonium";
-			password = "CorrectHorse1";
 
 			await this.LoginUser(username, password);
 		}

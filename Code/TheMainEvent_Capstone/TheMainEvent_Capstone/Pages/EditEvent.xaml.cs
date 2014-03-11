@@ -56,9 +56,22 @@ namespace TheMainEvent_Capstone.Pages
 					Date = ev.Date,
 					Type = ev.Type,
 					ID = ev.ID,
-
 				};
+				descriptionBox.Text = evm.Description;
+				otherDetailsBox.Text = evm.OtherDetails;
+				cityBox.Text = ev.City;
+				addressBox.Text = ev.Address;
+				stateBox.Text = ev.State;
+				datePicker.Value = evm.Date;
+				timePicker.Value = evm.Time;
+				titleBox.Text = ev.Title;
 			}
+			
+
+			loadingBar.Visibility = Visibility.Collapsed;
+			loadingBar.IsIndeterminate = false;
+			scrollPanel.Visibility = Visibility.Visible;
+			titlePanel.Visibility = Visibility.Visible;
 		}
 
 

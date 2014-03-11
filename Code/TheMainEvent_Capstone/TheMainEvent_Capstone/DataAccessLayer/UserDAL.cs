@@ -195,7 +195,9 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 						var picFile = p.Get<ParseFile>("picFile");
 						output.ProfilePic = await new HttpClient().GetByteArrayAsync(picFile.Url);
 					}
-					users.Add(output);
+					string currId = ParseUser.CurrentUser.ObjectId;
+					if (!users.Contains(output) && !output.User.Equals(currId))
+						users.Add(output);
 				}
 			}
 
@@ -225,7 +227,9 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 						var picFile = p.Get<ParseFile>("picFile");
 						output.ProfilePic = await new HttpClient().GetByteArrayAsync(picFile.Url);
 					}
-					users.Add(output);
+					string currId = ParseUser.CurrentUser.ObjectId;
+					if (!users.Contains(output) && !output.User.Equals(currId))
+						users.Add(output);
 				}
 
 			}

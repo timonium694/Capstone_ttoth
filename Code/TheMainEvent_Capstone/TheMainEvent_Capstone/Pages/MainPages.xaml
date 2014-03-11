@@ -37,14 +37,8 @@
 	</toolkit:TransitionService.NavigationOutTransition>
 
 	<phone:PhoneApplicationPage.Resources>
-		<DataTemplate x:Key="ContactItemTemplate">
-			<StackPanel VerticalAlignment="Top">
-				<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" />
-				<TextBlock Text="{Binding LastName}" />
-				<TextBlock Text="{Binding Email}" />
-				<TextBlock Text="{Binding Phone}" />
-			</StackPanel>
-		</DataTemplate>
+		<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
+		
 		<DataTemplate x:Key="ContactGroupHeaderTemplate">
 			<Border Background="Transparent" Padding="5">
 				<Border Background="{StaticResource PhoneAccentBrush}" BorderBrush="{StaticResource PhoneAccentBrush}" BorderThickness="2" Width="62" 
@@ -70,7 +64,21 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-		<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
+		
+		<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
+			<shell:ApplicationBarIconButton x:Name="eventsNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="events" Click="navToEvents" />
+			<shell:ApplicationBarIconButton x:Name="contactsNav" IconUri="/Assets/AppBar/people.groups.png" Text="contacts" Click="navToContacts" />
+			<shell:ApplicationBarIconButton x:Name="searchNav" IconUri="/Assets/AppBar/appbar.magnify.png" Text="search" Click="navToSearch"/>
+			<shell:ApplicationBarIconButton x:Name="logutNav" IconUri="/Assets/AppBar/appbar.moon.sleep.png" Text="logout" Click="logout_Click" />
+
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem x:Name="createEvent" Text="create event" Click="navToCreate"/>
+				<shell:ApplicationBarMenuItem x:Name="editAccount" Text="edit account" Click="navToEditAccount"/>
+				<shell:ApplicationBarMenuItem x:Name="accountSettings" Text="accountSettings" Click="navToAccountSettings"/>
+			</shell:ApplicationBar.MenuItems>
+
+
+		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.Resources>
 
 
@@ -82,7 +90,7 @@
 			Style="{StaticResource CustomIndeterminateProgressBar}"
 			/>
 		<!--Pivot Control-->
-		<phone:Pivot x:Name="MainPivot" Visibility="Visible" Title="The Main Event" toolkit:TurnstileFeatherEffect.FeatheringIndex="0" HeaderTemplate="{StaticResource MainPivotHeader}">
+		<phone:Pivot x:Name="MainPivot" Visibility="Visible" Title="The Main Event" toolkit:TurnstileFeatherEffect.FeatheringIndex="0" HeaderTemplate="{StaticResource MainPivotHeader}" SelectionChanged="MainPivot_SelectionChanged">
 			<!--Pivot item one-->
 			<phone:PivotItem Header="Events">
 				<Grid Margin="12,0,-12,0">
@@ -95,8 +103,9 @@
 						<TextBlock Text="or" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 						<HyperlinkButton Content="Find Event" Height="33" Click="navToSearchPage"/>
 					</StackPanel>
+					
 					<phone:LongListSelector
-						Visibility="Visible"
+						Visibility="Collapsed"
 						Grid.Row="0" x:Name="EventsList" 
 						ItemsSource="{Binding Events}" 
 						SelectionChanged="EventsList_SelectionChanged"
@@ -105,16 +114,20 @@
 						Margin="0,-30,0,0">
 						<phone:LongListSelector.ItemTemplate>
 							<DataTemplate>
-								<StackPanel>
+								<StackPanel Margin="-10,0,0,0">
 
-									<toolkit:Separator HorizontalAlignment="Left" Margin="10,10,0,0" Background="Gray" Height="1" Width="390"/>
+									
 									<TextBlock Text="{Binding Title}"
 											   TextWrapping="Wrap"
 											   Style="{StaticResource PhoneTextExtraLargeStyle}"
 											   
 											   />
+									<StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+										<TextBlock x:Name="dateBlock" Text="{Binding Date, StringFormat='ddd, dd MMM yyyy'}" FontWeight="Bold" Style="{StaticResource PhoneTextSubtleStyle}"/>
+										<TextBlock x:Name="timeBlock" Text="{Binding Time, StringFormat='H:mm tt'}" FontWeight="Bold" Style="{StaticResource PhoneTextSubtleStyle}"/>
+									</StackPanel>
 									<TextBlock 
-										Text="{Binding Description}"
+										Text="Description"
 										TextWrapping="Wrap"
 										Style="{StaticResource PhoneTextSubtleStyle}"
 										/>
@@ -134,15 +147,31 @@
 						<HyperlinkButton  Content="Find Contacts" Height="33" Click="navToSearchPage"/>
 					</StackPanel>
 					<phone:LongListSelector
-					Visibility="Visible"
-					  x:Name="ContactList"
-					  JumpListStyle="{StaticResource ContactJumpListStyle}"
-					  Background="Transparent"
-					  GroupHeaderTemplate="{StaticResource ContactGroupHeaderTemplate}"
-					  ItemTemplate="{StaticResource ContactItemTemplate}"
-					  LayoutMode="List"
-					  IsGroupingEnabled="true"
-					  HideEmptyGroups ="true"/>
+						Visibility="Visible"
+						x:Name="ContactList"
+						JumpListStyle="{StaticResource ContactJumpListStyle}"
+						Background="Transparent"
+						GroupHeaderTemplate="{StaticResource ContactGroupHeaderTemplate}"
+						LayoutMode="List"
+						IsGroupingEnabled="true"
+						HideEmptyGroups ="true"
+						SelectionChanged="ContactList_SelectionChanged">
+						<phone:LongListSelector.ItemTemplate>
+							<DataTemplate>
+								<StackPanel VerticalAlignment="Top" Margin="10,0,0,0">
+									<StackPanel Orientation="Horizontal">
+										<Image Width="50" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
+										<StackPanel VerticalAlignment="Top" Margin="10,0,0,0">
+											<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" />
+											<TextBlock Text="{Binding LastName}" />
+										</StackPanel>
+									</StackPanel>
+									<TextBlock Text="{Binding Email}" />
+									<TextBlock Text="{Binding Phone}" />
+								</StackPanel>
+							</DataTemplate>
+						</phone:LongListSelector.ItemTemplate>
+					</phone:LongListSelector>
 				</Grid>
 			</phone:PivotItem>
 			<phone:PivotItem Header="Invites">
@@ -173,7 +202,7 @@
 										Style="{StaticResource PhoneTextSubtleStyle}"
 										/>
 
-									<toolkit:Separator Background="Gray" Height="1" Margin="0,10,0,0"/>
+									
 								</StackPanel>
 							</DataTemplate>
 						</phone:LongListSelector.ItemTemplate>
@@ -184,8 +213,8 @@
 				<StackPanel>
 					<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 						<Image x:Name="proImage" Width="175" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
-						<Line Fill="White" X1="0" X2="1" Y1="0" Y2="120" VerticalAlignment="Stretch" Margin="5,5,5,5" Stroke="White" StrokeThickness="1"/>
-						<StackPanel>
+						
+						<StackPanel Margin="5,0,0,0">
 						
 							<StackPanel Orientation="Vertical">
 

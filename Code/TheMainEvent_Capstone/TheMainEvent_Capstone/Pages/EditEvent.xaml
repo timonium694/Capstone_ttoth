@@ -41,28 +41,28 @@
 			<DoubleAnimation
             Storyboard.TargetName="scrollViewer"
             Storyboard.TargetProperty="Height"
-            From="72.0" To="100.0" Duration="0:0:1"
+            From="72.0" To="100.0" Duration="0:0:.2"
             AutoReverse="True"/>
 		</Storyboard>
 		<Storyboard x:Name="otherGotFocusStoryboard">
 			<DoubleAnimation
             Storyboard.TargetName="scrollViewer"
             Storyboard.TargetProperty="Height"
-            From="72.0" To="100.0" Duration="0:0:1"
+            From="72.0" To="100.0" Duration="0:0:.2"
             AutoReverse="True"/>
 		</Storyboard>
 		<Storyboard x:Name="descLostFocusStoryboard">
 			<DoubleAnimation
             Storyboard.TargetName="scrollViewer"
             Storyboard.TargetProperty="Height"
-            From="100.0" To="72.0" Duration="0:0:1"
+            From="100.0" To="72.0" Duration="0:0:.2"
             AutoReverse="True"/>
 		</Storyboard>
 		<Storyboard x:Name="otherLostFocusStoryboard">
 			<DoubleAnimation
             Storyboard.TargetName="scrollViewer"
             Storyboard.TargetProperty="Height"
-            From="100.0" To="72.0" Duration="0:0:1"
+            From="100.0" To="72.0" Duration="0:0:.2"
             AutoReverse="True"/>
 		</Storyboard>
 
@@ -73,14 +73,19 @@
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
+		<ProgressBar 
+			Grid.Row="1"
+			IsIndeterminate="true"
+			x:Name="loadingBar"
+			Style="{StaticResource CustomIndeterminateProgressBar}"
+			/>
 
-
-		<StackPanel Grid.Row="0" Margin="12,17,0,28">
+		<StackPanel x:Name="titlePanel" Visibility="Collapsed" Grid.Row="0" Margin="12,17,0,28">
 			<TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}" toolkit:TurnstileFeatherEffect.FeatheringIndex="0"/>
 			<TextBlock Text="New Event" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" toolkit:TurnstileFeatherEffect.FeatheringIndex="1"/>
 		</StackPanel>
 
-		<ScrollViewer Grid.Row="1">
+		<ScrollViewer x:Name="scrollPanel" Visibility="Collapsed" Grid.Row="1">
 			<StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
 				<TextBlock x:Name="titleBlock" Text="Event Title" HorizontalAlignment="Center" Style="{StaticResource PhoneTextTitle2Style}" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 				<toolkit:PhoneTextBox x:Name="titleBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="Title" VerticalAlignment="Top" Width="275" TextChanged="title_TextChanged" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>

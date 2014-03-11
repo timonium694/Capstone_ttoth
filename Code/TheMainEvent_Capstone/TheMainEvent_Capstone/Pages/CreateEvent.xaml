@@ -98,7 +98,7 @@
 				</StackPanel>
 				<toolkit:PhoneTextBox Hint="Other Details" x:Name="otherDetailsBox" GotFocus="OtherDetailsBox_GotFocus"  LostFocus="OtherDetailsBox_LostFocus" Width="300" AcceptsReturn="True" TextWrapping="Wrap"/>
 				<TextBlock Visibility="Collapsed" HorizontalAlignment="Center" TextAlignment="Center" Text="Please an amount in the form of #.## or leave blank" Width="350" TextWrapping="Wrap" x:Name="costStatus"/>
-				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="300" toolkit:TurnstileFeatherEffect.FeatheringIndex="10">
+				<StackPanel x:Name="costPanel" Orientation="Horizontal" HorizontalAlignment="Center" Width="300" toolkit:TurnstileFeatherEffect.FeatheringIndex="10">
 					<TextBlock Text="Cost $" Margin="20,0,0,0" FontSize="35" VerticalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
 					<toolkit:PhoneTextBox TextChanged="costBox_TextChanged" Text="" x:Name="costBox" Width="180" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="0.00" VerticalAlignment="Top"/>
 				</StackPanel>
@@ -112,7 +112,7 @@
 							<toolkit:LongListMultiSelector.ItemTemplate>
 								<DataTemplate>
 									<StackPanel Orientation="Horizontal">
-										<Image Width="40" Source="{Binding ProfilePic}" Stretch="Uniform"/>
+										<Image Width="40" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}" Stretch="Uniform"/>
 										<TextBlock Text="{Binding Name}"
 											   TextWrapping="Wrap"
 											   Style="{StaticResource PhoneTextNormalStyle}"
@@ -145,4 +145,15 @@
 		</ScrollViewer>
 	</Grid>
 
+	<phone:PhoneApplicationPage.ApplicationBar>
+		<shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Default" Opacity="1.0" >
+
+			<shell:ApplicationBarIconButton x:Name="eventsNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="events" Click="eventsNav_Click" />
+			<shell:ApplicationBarIconButton x:Name="contactsNav" IconUri="/Assets/AppBar/people.groups.png" Text="contacts" Click="contactsNav_Click" />
+			<shell:ApplicationBarIconButton x:Name="searchNav" IconUri="/Assets/AppBar/appbar.magnify.png" Text="Search" Click="searchNav_Click"/>
+			<shell:ApplicationBarIconButton x:Name="logutNav" IconUri="/Assets/AppBar/appbar.moon.sleep.png" Text="Logout" Click="logutNav_Click" />
+
+
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

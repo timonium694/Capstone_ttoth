@@ -93,6 +93,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\LongListDataTemplate.xaml.cs">
+      <DependentUpon>LongListDataTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataAccessLayer\EventDAL.cs" />
     <Compile Include="DataAccessLayer\UserDAL.cs" />
     <Compile Include="Model\AlphaKeyGroup.cs" />
@@ -150,6 +153,9 @@
     <Compile Include="Pages\RegistrationPage.xaml.cs">
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SelectInviteesPage.xaml.cs">
+      <DependentUpon>SelectInviteesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\UserAccountSettingsPage.xaml.cs">
       <DependentUpon>UserAccountSettingsPage.xaml</DependentUpon>
     </Compile>
@@ -166,6 +172,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\LongListDataTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -214,6 +224,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\SelectInviteesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\UserAccountSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -228,9 +242,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AlignmentGrid.png" />
+    <Content Include="Assets\AppBar\appbar.group.delete.png" />
+    <Content Include="Assets\AppBar\appbar.add.png" />
+    <Content Include="Assets\AppBar\appbar.arrow.right.png" />
     <Content Include="Assets\AppBar\appbar.flag.wavy.png" />
+    <Content Include="Assets\AppBar\appbar.group.add.png" />
+    <Content Include="Assets\AppBar\appbar.location.round.png" />
     <Content Include="Assets\AppBar\appbar.magnify.png" />
     <Content Include="Assets\AppBar\appbar.moon.sleep.png" />
+    <Content Include="Assets\AppBar\appbar.people.checkbox.png" />
+    <Content Include="Assets\AppBar\appbar.save.png" />
     <Content Include="Assets\AppBar\appbar.user.add.png" />
     <Content Include="Assets\AppBar\heart2.png" />
     <Content Include="Assets\AppBar\maps.appbar.directions.dark.png" />

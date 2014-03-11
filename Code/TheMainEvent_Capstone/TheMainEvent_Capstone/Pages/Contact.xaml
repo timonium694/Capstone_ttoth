@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+	xmlns:con="clr-namespace:TheMainEvent_Capstone.Model"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -34,6 +35,33 @@
 			</toolkit:NavigationOutTransition.Forward>
 		</toolkit:NavigationOutTransition>
 	</toolkit:TransitionService.NavigationOutTransition>
+	<phone:PhoneApplicationPage.Resources>
+		<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
+		<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
+			<shell:ApplicationBarIconButton x:Name="addContactIcon" IconUri="/Assets/AppBar/photo.flash.on.png" Text="add contact" Click="addContactItem_Click" />
+			<shell:ApplicationBarIconButton x:Name="inviteToMeetingIcon" IconUri="/Assets/AppBar/people.groups.png" Text="meeting" Click="inviteContactItem_Click" />
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="search" Click="searchNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="logout" Click="logutNav_Click"/>
+			</shell:ApplicationBar.MenuItems>
+		</shell:ApplicationBar>
+		<shell:ApplicationBar x:Key="IsContactAppBar" x:Name="IsContactAppBar" IsVisible="True" IsMenuEnabled="True">
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/photo.flash.on.png" Text="remove contact" Click="addContactItem_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="meeting" Click="inviteContactItem_Click" />
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="search" Click="searchNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="logout" Click="logutNav_Click"/>
+			</shell:ApplicationBar.MenuItems>
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.Resources>
+	
+	
+
+
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -44,34 +72,37 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="statusBlock" Text="The Main Event" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="nameBlock" Text="Name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-			<StackPanel>
-				<StackPanel x:Name="UserPanel">
-					<StackPanel HorizontalAlignment="Left">
+			<StackPanel x:Name="UserPanel">
+				<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+					<Image x:Name="proImage" Width="175" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
 
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Email:" FontWeight="Bold"/>
+					<StackPanel Margin="10,0,0,0">
+
+						<StackPanel Orientation="Vertical">
+
+							<TextBlock Text="Email" FontWeight="Bold"/>
 							<TextBlock x:Name="emailBlock"
 										   HorizontalAlignment="Left"
 										   VerticalAlignment="Top"
 										   Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap"
 										   Text="{Binding Email}"/>
 						</StackPanel>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Phone:" FontWeight="Bold"/>
+						<StackPanel Orientation="Vertical">
+							<TextBlock Text="Phone" FontWeight="Bold"/>
 							<TextBlock x:Name="phoneBlock"
 										   HorizontalAlignment="Left"
 										   VerticalAlignment="Bottom"
 										   Style="{StaticResource PhoneTextSubtleStyle}"
 										   TextWrapping="Wrap" Text="{Binding Phone}"/>
 						</StackPanel>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Birthday:" FontWeight="Bold"/>
+						<StackPanel Orientation="Vertical">
+							<TextBlock Text="Birthday" FontWeight="Bold"/>
 							<TextBlock x:Name="bDayBlock"
 										   HorizontalAlignment="Left"
 										   VerticalAlignment="Bottom"
@@ -80,36 +111,19 @@
 						</StackPanel>
 
 					</StackPanel>
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0">
-						<TextBlock x:Name="bioblock"
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0">
+					<TextBlock x:Name="bioblock"
 								   HorizontalAlignment="Left"
 								   Width="450"
 								   TextWrapping="Wrap"
 								   Text="{Binding Bio}"
 								   VerticalAlignment="Top" />
-					</StackPanel>
-
 				</StackPanel>
 			</StackPanel>
 			
 		</Grid>
 		
     </Grid>
-	<phone:PhoneApplicationPage.ApplicationBar>
-		<shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Default" Opacity="1.0" >
-
-			<shell:ApplicationBarIconButton x:Name="eventsNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="events" Click="eventsNav_Click" />
-			<shell:ApplicationBarIconButton x:Name="contactsNav" IconUri="/Assets/AppBar/people.groups.png" Text="contacts" Click="contactsNav_Click" />
-			<shell:ApplicationBarIconButton x:Name="searchNav" IconUri="/Assets/AppBar/appbar.magnify.png" Text="Search" Click="searchNav_Click"/>
-			<shell:ApplicationBarIconButton x:Name="logutNav" IconUri="/Assets/AppBar/appbar.moon.sleep.png" Text="Logout" Click="logutNav_Click" />
-			
-			
-
-			<shell:ApplicationBar.MenuItems>
-				<shell:ApplicationBarMenuItem x:Name="addContactItem" Text="Add contact" Click="addContactItem_Click" />
-				<shell:ApplicationBarMenuItem x:Name="inviteContactItem" Text="Invite to meeting" Click="inviteContactItem_Click" />
-			</shell:ApplicationBar.MenuItems>
-
-		</shell:ApplicationBar>
-	</phone:PhoneApplicationPage.ApplicationBar>
+	
 </phone:PhoneApplicationPage>

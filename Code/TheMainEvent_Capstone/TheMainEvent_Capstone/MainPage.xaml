@@ -58,8 +58,8 @@
 			<TextBlock x:Name="errorBox" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Width="400" Height="75" Margin="53,108,53,449"/>
 			<toolkit:PhoneTextBox Hint="Username" x:Name="usernameBox" HorizontalAlignment="Center" Height="72" Margin="0,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="256" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 			<PasswordBox Tap="usernameBox_Tap" Password="Password" x:Name="passwordBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="255" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
-			<HyperlinkButton x:Name="registrationButton" Content="Need an Account? Sign Up Here!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50" Click="registrationButton_Click"/>
-			<Image x:Name="us" VerticalAlignment="Top" Height="100" Stretch="Uniform"/>
+			<HyperlinkButton x:Name="registrationButton" Content="Need an Account? Sign Up Here!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50" Click="registrationButton_Click" toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
+			
 		</Grid>
 
 	</Grid>
