@@ -14,7 +14,7 @@ using TheMainEvent_Capstone.Model;
 using Parse;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using Microsoft.Phone.Shell;
+using PayPal.Checkout;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -236,8 +236,43 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void InviteList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			InviteViewModel evm = (InviteViewModel)InviteList.SelectedItem;
-			NavigationService.Navigate(new Uri("/Pages/EventPage.xaml?msg=" + evm.ID, UriKind.Relative));
+			InviteViewModel ivm = (InviteViewModel)InviteList.SelectedItem;
+			EventDAL ed = new EventDAL();
+			CustomMessageBox message = new CustomMessageBox()
+			{
+				Title = "Invite",
+				Message = "Click \"Accept\" to accept the invitation or \"Reject\" to decline the invitation.",
+				RightButtonContent = "Accept",
+				LeftButtonContent = "Reject"
+			};
+			message.Dismissed += async (s1, e1) =>
+			{
+				switch (e1.Result)
+				{
+					case CustomMessageBoxResult.RightButton:
+						if (ivm.Cost > 0)
+						{
+							MessageBox.Show("You will be redirected to the event page, you can pay from there.");
+							NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml?msg=" + ivm.ID, UriKind.Relative));
+						}
+						else
+						{
+							await ed.AddAttendee(ivm.ID, cur.User);
+							MessageBox.Show("You are now attending " + ivm.Title);
+						}
+						break;
+					case CustomMessageBoxResult.LeftButton:
+						await ed.RejectInvitation(cur.User, ivm.ID);
+						MessageBox.Show("You have rejected the invitation for " + ivm.Title);
+						break;
+					case CustomMessageBoxResult.None:
+						message.Dismiss();
+						break;
+					default:
+						break;
+				}
+			};
+			message.Show();
 		}
 
 		private void navToCreateEvent(object sender, RoutedEventArgs e)

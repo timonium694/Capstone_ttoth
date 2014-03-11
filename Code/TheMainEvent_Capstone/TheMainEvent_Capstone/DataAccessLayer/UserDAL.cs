@@ -143,7 +143,6 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			
 				using (MemoryStream ms = new MemoryStream())
 				{
-
 					var wBitmap = new WriteableBitmap(bitmapImage);
 					wBitmap.SaveJpeg(ms, wBitmap.PixelWidth, wBitmap.PixelHeight, 0, 100);
 					ms.Seek(0, SeekOrigin.Begin);

@@ -48,6 +48,16 @@
             From="150.0" To="72.0" Duration="0:0:1"
             AutoReverse="True"/>
 		</Storyboard>
+		<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
+			<shell:ApplicationBarIconButton x:Name="addContactIcon" IconUri="/Assets/AppBar/photo.flash.on.png" Text="save" Click="doneButton_Click" />
+			<shell:ApplicationBarIconButton x:Name="inviteToMeetingIcon" IconUri="/Assets/AppBar/people.groups.png" Text="edit pic" Click="picture_Click" />
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="search" Click="searchNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="logout" Click="logutNav_Click"/>
+			</shell:ApplicationBar.MenuItems>
+		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.Resources>
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
@@ -80,7 +90,6 @@
 					<TextBlock Margin="12,0,0,0" Text="Birthday" VerticalAlignment="Center" FontSize="30"/>
 					<toolkit:DatePicker x:Name="datePicker" HorizontalAlignment="Right" Width="150"/>
 				</StackPanel>
-				<Button x:Name="doneButton" Click="doneButton_Click" Content="Done" Width="150"  toolkit:TurnstileFeatherEffect.FeatheringIndex="7"/>
 			</StackPanel>
 		</ScrollViewer>
 	</Grid>

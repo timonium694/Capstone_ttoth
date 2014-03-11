@@ -11,6 +11,7 @@ using TheMainEvent_Capstone.Model;
 using TheMainEvent_Capstone.DataAccessLayer;
 using Parse;
 using System.Text.RegularExpressions;
+using Microsoft.Phone.Tasks;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -50,7 +51,7 @@ namespace TheMainEvent_Capstone.Pages
 			}
 		}
 
-		private async void doneButton_Click(object sender, RoutedEventArgs e)
+		private async void doneButton_Click(object sender, EventArgs e)
 		{
 			try
 			{
@@ -66,6 +67,7 @@ namespace TheMainEvent_Capstone.Pages
 						{
 							phoneNumber += "-";
 						}
+						count++;
 					}
 					DateTime bday = (DateTime)datePicker.Value;
 					string firstName = this.firstNameBox.Text;
@@ -109,6 +111,71 @@ namespace TheMainEvent_Capstone.Pages
 				this.isValidPhone = true;
 				phoneStatus.Visibility = Visibility.Collapsed;
 			}
+		}
+
+		private void picture_Click(object sender, EventArgs e)
+		{
+			PhotoChooserTask photoChooserTask;
+			photoChooserTask = new PhotoChooserTask();
+			photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
+			CustomMessageBox message = new CustomMessageBox()
+			{
+				Title = "Profile Picture",
+				Message = "Would you like to take a new photo or choose from you media library",
+				RightButtonContent = "Media Library",
+				LeftButtonContent = "New Photo"
+			};
+			message.Dismissed += (s1, e1) =>
+			{
+				switch (e1.Result)
+				{
+					case CustomMessageBoxResult.RightButton:
+
+						break;
+					case CustomMessageBoxResult.LeftButton:
+						message.Dismiss();
+						break;
+					case CustomMessageBoxResult.None:
+						break;
+					default:
+						break;
+				}
+			};
+			message.Show();
+		}
+
+		private void photoChooserTask_Completed(object sender, PhotoResult e)
+		{
+			if (e.TaskResult == TaskResult.OK)
+			{
+				MessageBox.Show(e.ChosenPhoto.Length.ToString());
+
+				System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
+				bmp.SetSource(e.ChosenPhoto);
+				UserDAL ud = new UserDAL();
+				byte[] data = ud.ConvertToBytes(bmp);
+				ui.ProfilePic = data;
+			}
+		}
+		private void eventsNav_Click(object sender, EventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/MainPages.xaml?msg=" + "events", UriKind.Relative));
+		}
+
+		private void contactsNav_Click(object sender, EventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/MainPages.xaml?msg=" + "contacts", UriKind.Relative));
+		}
+
+		private void logutNav_Click(object sender, EventArgs e)
+		{
+			ParseUser.LogOut();
+			NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+		}
+
+		private void searchNav_Click(object sender, EventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/SearchPage.xaml", UriKind.Relative));
 		}
 	}
 }

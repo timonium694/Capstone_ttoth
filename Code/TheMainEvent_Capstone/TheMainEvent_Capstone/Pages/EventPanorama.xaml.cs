@@ -504,7 +504,7 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void inviteContacts_Click(object sender, EventArgs e)
 		{
-
+			NavigationService.Navigate(new Uri("/Pages/SelectInviteesPage.xaml?msg=" + this.evm.ID, UriKind.Relative));
 		}
 		
 

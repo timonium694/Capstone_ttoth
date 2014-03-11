@@ -41,28 +41,28 @@ namespace TheMainEvent_Capstone.Pages
 			}
 		}
 
-		private void doneButton_Click(object sender, RoutedEventArgs e)
+		private async void doneButton_Click(object sender, RoutedEventArgs e)
 		{
 			try
 			{
 
 				if (this.isValidPhone)
 				{
-					UserDAL ud = new UserDAL();
-					byte[] bytes = ud.ConvertToBytes(i);
-					DateTime bday = (DateTime)datePicker.Value;
-					string firstName = this.firstNameBox.Text;
-					string lastName = this.lastNameBox.Text;
-					string input = this.phoneBox.Text;
 					string phoneNumber = "";
-					for (int u = 0; u < 9; u++ )
+					int count = 0;
+					foreach (char s in phoneBox.Text.ToCharArray())
 					{
-						phoneNumber += input.ToCharArray()[u];
-						if (u == 2 || u == 5)
+
+						phoneNumber = s + "";
+						if (count == 2 || count == 5)
 						{
 							phoneNumber += "-";
 						}
+						count++;
 					}
+					DateTime bday = (DateTime)datePicker.Value;
+					string firstName = this.firstNameBox.Text;
+					string lastName = this.lastNameBox.Text;
 					string bio = this.bioBox.Text;
 					UserInfo ui = new UserInfo()
 					{
@@ -74,9 +74,16 @@ namespace TheMainEvent_Capstone.Pages
 						User = ParseUser.CurrentUser.ObjectId,
 						MerchantEmail = "tim.toth13@gmail.com",
 						Email = ParseUser.CurrentUser.Email,
-						ProfilePic = bytes
 					};
-					ud.CreateUserInfo(ui);
+					UserDAL ud = new UserDAL();
+
+					byte[] data = ud.ConvertToBytes(i);
+					ui.ProfilePic = data;
+					await ud.UpdateUserInfo(ui);
+				}
+				else
+				{
+					MessageBox.Show("You must have a valid phone number.");
 				}
 
 			}
@@ -87,19 +94,9 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void phoneBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			
+
 			string input = phoneBox.Text;
-			if (input.EndsWith("-"))
-			{
-				input.Remove(input.Length-1);
-			}
-			if (Regex.IsMatch(input, @"^((\d){3})$"))
-			{
-			}
-			if (Regex.IsMatch(input, @"^((\d){3})-((\d){3})$"))
-			{
-			}
-			string pattern = @"^((\d){3})-((\d){3})-((\d){4})$";
+			string pattern = @"^((\d){9})$";
 			if (!Regex.IsMatch(input, pattern))
 			{
 				phoneStatus.Visibility = Visibility.Visible;

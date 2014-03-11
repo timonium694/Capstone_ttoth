@@ -28,6 +28,7 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void SetupPage()
 		{
+			ApplicationBar = ((ApplicationBar)this.Resources["DefaultAppBar"]);
 			if (ParseUser.CurrentUser != null)
 			{
 				user = ParseUser.CurrentUser;
@@ -72,13 +73,6 @@ namespace TheMainEvent_Capstone.Pages
 			loadingBar.IsIndeterminate = false;
 			scrollPanel.Visibility = Visibility.Visible;
 			titlePanel.Visibility = Visibility.Visible;
-		}
-
-
-		private void TextBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-		{
-			TextBox box = (TextBox)sender;
-			
 		}
 
 		private async void createButton_Click(object sender, RoutedEventArgs e)
