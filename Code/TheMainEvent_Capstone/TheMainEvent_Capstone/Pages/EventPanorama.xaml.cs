@@ -27,6 +27,9 @@ using Windows.Foundation;
 using System.Reflection;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Threading;
+using System.Text;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -42,10 +45,10 @@ namespace TheMainEvent_Capstone.Pages
 		ObservableCollection<ContactViewModel> InvitedUsers = new ObservableCollection<ContactViewModel>();
 		ObservableCollection<UserInfo> InvitedInfo = new ObservableCollection<UserInfo>();
 		ObservableCollection<UserInfo> AttendingInfo = new ObservableCollection<UserInfo>();
-		ObservableCollection<UserInfo> PaidInfo = new ObservableCollection<UserInfo>();
 		ObservableCollection<ContactViewModel> AttendingUsers = new ObservableCollection<ContactViewModel>();
-		ObservableCollection<ContactViewModel> PaidUsers = new ObservableCollection<ContactViewModel>();
 		List<GeoCoordinate> MyCoordinates = new List<GeoCoordinate>();
+		GeoCoordinate g;
+		GeoCoordinate myLoc;
 		RouteQuery MyQuery = null;
 		GeocodeQuery Mygeocodequery = null;
 
@@ -58,47 +61,66 @@ namespace TheMainEvent_Capstone.Pages
 
 		}
 
-
+		private void ShowLoadingBar()
+		{
+			this.loadingBar.Visibility = Visibility.Visible;
+			this.loadingBar.IsIndeterminate = true;
+			this.rootPanorama.Visibility = Visibility.Collapsed;
+		}
+		private void ShowUI()
+		{
+			this.loadingBar.Visibility = Visibility.Collapsed;
+			this.loadingBar.IsIndeterminate = false;
+			this.rootPanorama.Visibility = Visibility.Visible;
+		}
 		#region LoadData
 		private async Task LoadTweets()
 		{
-			tweetGrid.DataContext = new TweetViewModel();
-			var twitterCtx = new TwitterContext(new SingleUserAuthorizer()
+			try
 			{
-				CredentialStore = new InMemoryCredentialStore()
+				tweetGrid.DataContext = new TweetViewModel();
+				var twitterCtx = new TwitterContext(new SingleUserAuthorizer()
 				{
-					ConsumerKey = "XQzE7qY7Myw27saKRPWW9w",
-					ConsumerSecret = "dUz9DfDAI8FvfQXMsFqBctqGepip7wihpsqxrFKa8",
-					OAuthToken = "1315500614-JpvNyuMTSISTOp5l9Y9mRF2PX4sv21Psh1kMv42",
-					OAuthTokenSecret = "dhXrjuQZ4w9N2Aw1L6CwFGhZvBOtmJNkWop5zUXiVrntJ"
+					CredentialStore = new InMemoryCredentialStore()
+					{
+						ConsumerKey = "XQzE7qY7Myw27saKRPWW9w",
+						ConsumerSecret = "dUz9DfDAI8FvfQXMsFqBctqGepip7wihpsqxrFKa8",
+						OAuthToken = "1315500614-JpvNyuMTSISTOp5l9Y9mRF2PX4sv21Psh1kMv42",
+						OAuthTokenSecret = "dhXrjuQZ4w9N2Aw1L6CwFGhZvBOtmJNkWop5zUXiVrntJ"
+					}
+				});
+				string[] input = evm.Title.Split(' ');
+
+				string hashtag = "#";
+				foreach (string s in input)
+				{
+					hashtag += s;
 				}
-			});
-			string[] input = evm.Title.Split(' ');
+				this.tweetBox.Text = hashtag;
+				var searchResponse =
+					await
+					(from search in twitterCtx.Search
+					 where search.Type == SearchType.Search &&
+						   search.Query == hashtag
+					 select search)
+					.SingleOrDefaultAsync();
 
-			string hashtag = "#";
-			foreach (string s in input)
-			{
-				hashtag += s;
+				List<Tweet> tweets = new List<Tweet>();
+				if (searchResponse != null && searchResponse.Statuses != null)
+					searchResponse.Statuses.ForEach(tweet => tweets.Add(new Tweet() { ImageSource = tweet.User.ProfileImageUrl, Message = tweet.Text, UserName = tweet.User.ScreenNameResponse }));
+
+				var tweetCollection = (tweetGrid.DataContext as TweetViewModel).Tweets;
+				tweetCollection.Clear();
+				tweets.ForEach(tweet => tweetCollection.Add(tweet));
 			}
-			var searchResponse =
-				await
-				(from search in twitterCtx.Search
-				 where search.Type == SearchType.Search &&
-					   search.Query == hashtag
-				 select search)
-				.SingleOrDefaultAsync();
-
-			List<Tweet> tweets = new List<Tweet>();
-			if (searchResponse != null && searchResponse.Statuses != null)
-				searchResponse.Statuses.ForEach(tweet => tweets.Add(new Tweet() { ImageSource = tweet.User.ProfileImageUrl, Message = tweet.Text, UserName = tweet.User.ScreenNameResponse }));
-
-			var tweetCollection = (tweetGrid.DataContext as TweetViewModel).Tweets;
-			tweetCollection.Clear();
-			tweets.ForEach(tweet => tweetCollection.Add(tweet));
+			catch (Exception e)
+			{
+			}
 		}
 		private async Task LoadEvent()
 		{
 			EventDAL ed = new EventDAL();
+
 			rootPanorama.Title = evm.Title;
 			this.EventData.DataContext = evm;
 			if (evm.Cost.Equals(0.00))
@@ -124,12 +146,10 @@ namespace TheMainEvent_Capstone.Pages
 			foreach (string id in users)
 			{
 				UserInfo s = await ud.GetUserInfo(id);
-				AttendingInfo.Add(s);
-				AttendingUsers.Add(new ContactViewModel()
+				if (!s.Equals(currentUser))
 				{
-					Name = s.FirstName + " " + s.LastName,
-					User = s.User,
-				});
+					AttendingInfo.Add(s);
+				}
 				if (currentUser.Equals(s))
 				{
 					IsAttending = true;
@@ -142,36 +162,53 @@ namespace TheMainEvent_Capstone.Pages
 				this.InvitedInfo.Add(ui);
 			}
 			this.InvitedList.ItemsSource = InvitedInfo;
+			this.SetAppBar();
 		}
 		private void SetAppBar()
 		{
-
-			if (this.IsAttending)
-			{
-				ApplicationBar = ((ApplicationBar)this.Resources["IsAttendingAppBar"]);
-			}
 			if (this.IsOwner)
 			{
 				ApplicationBar = ((ApplicationBar)this.Resources["IsOwnerAppBar"]);
 			}
+			else if (this.IsAttending)
+			{
+				ApplicationBar = ((ApplicationBar)this.Resources["IsAttendingAppBar"]);
+			}
+			else ApplicationBar = ((ApplicationBar)this.Resources["DefaultAppBar"]);
+
 
 		}
 		#endregion
 		private async Task LoadData()
 		{
-			await this.LoadEvent();
-			await this.LoadTweets();
-			this.LoadMap();
-
-
-			if (SharedState.Authorizer == null)
+			this.ShowLoadingBar();
+			try
 			{
-				this.tweetBox.Visibility = Visibility.Collapsed;
-				this.tweetButton.Visibility = Visibility.Collapsed;
-				this.authorizeTweets.Visibility = Visibility.Visible;
+				await this.LoadEvent();
+				this.LoadMap();
+				await this.LoadTweets();
+
+				if (evm.Type.Equals("Meeting"))
+				{
+					TweetSection.Visibility = Visibility.Collapsed;
+				}
+				else if (SharedState.Authorizer == null)
+				{
+					this.tweetPanel.Visibility = Visibility.Collapsed;
+					this.authorizeTweets.Visibility = Visibility.Visible;
+				}
+				else if (SharedState.Authorizer != null)
+				{
+					this.tweetPanel.Visibility = Visibility.Visible;
+					this.authorizeTweets.Visibility = Visibility.Collapsed;
+				}
+				this.ShowUI();
+			}
+			catch (Exception e)
+			{
 			}
 		}
-		
+
 		protected async override void OnNavigatedTo(NavigationEventArgs e)
 		{
 
@@ -243,19 +280,19 @@ namespace TheMainEvent_Capstone.Pages
 				{
 					statusBlock.Text = "Authorizing Payment";
 				});
-				bn.Complete += new EventHandler<PayPal.Checkout.Event.CompleteEventArgs>( async (source, args) => 
+				bn.Complete += new EventHandler<PayPal.Checkout.Event.CompleteEventArgs>(async (source, args) =>
 				{
-					statusBlock.Text="Your payment is complete. Transaction id: " + args.TransactionID;
+					statusBlock.Text = "Your payment is complete. Transaction id: " + args.TransactionID;
 					EventDAL ed = new EventDAL();
 					await ed.AddAttendee(evm.ID, currentUser.User);
 				});
 				bn.Cancel += new EventHandler<PayPal.Checkout.Event.CancelEventArgs>((source, args) =>
 				{
-					statusBlock.Text="Payment Cancelled";
+					statusBlock.Text = "Payment Cancelled";
 				});
 				bn.Error += new EventHandler<PayPal.Checkout.Event.ErrorEventArgs>((source, args) =>
 				{
-					statusBlock.Text="There was an error processing your payment: " + args.Type + " " + args.Message;
+					statusBlock.Text = "There was an error processing your payment: " + args.Type + " " + args.Message;
 				});
 
 				// Ready to go. Call the asynchronous Execute operation
@@ -324,18 +361,41 @@ namespace TheMainEvent_Capstone.Pages
 
 				Status tweet = await twitterCtx.TweetAsync(this.tweetBox.Text, latitude, longitude);
 
-				MessageBox.Show(
-					"User: " + tweet.User.ScreenNameResponse +
-					", Posted Status: " + tweet.Text,
-					"Update Successfully Posted.",
-					MessageBoxButton.OK);
+
+				BackgroundWorker worker = new BackgroundWorker();
+				worker.RunWorkerCompleted += new
+
+				RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
+				worker.DoWork += new DoWorkEventHandler(worker_DoWork);
+				worker.RunWorkerAsync();
+
+
 			}
 			else
 			{
 				MessageBox.Show("You are not authorized to send tweets.");
 			}
-			
 
+
+		}
+
+		private void worker_DoWork(object sender, DoWorkEventArgs e)
+		{
+			Thread.Sleep(5000);
+		}
+
+		private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			tweetsLoading.IsIndeterminate = true;
+			tweetsLoading.Visibility = Visibility.Visible;
+			this.BackGroundTweets();
+
+			tweetsLoading.IsIndeterminate = false;
+			tweetsLoading.Visibility = Visibility.Collapsed;
+		}
+		private async void BackGroundTweets()
+		{
+			await this.LoadTweets();
 		}
 
 		private async void attendButton_Click(object sender, EventArgs e)
@@ -346,7 +406,11 @@ namespace TheMainEvent_Capstone.Pages
 				EventDAL ed = new EventDAL();
 				await ed.AddAttendee(evm.ID, currentUser.User);
 			}
-			else if (!owner.MerchantEmail.Equals("none") && evm.Cost>0.00)
+			else if (!owner.MerchantEmail.Equals("none") && evm.Cost > 0.00)
+			{
+				await this.PayForEvent(owner.MerchantEmail);
+			}
+			else if (!owner.MerchantEmail.Equals("none") && evm.IsDonatable)
 			{
 				this.PayDonation();
 			}
@@ -357,21 +421,22 @@ namespace TheMainEvent_Capstone.Pages
 			PhoneTextBox costBox = new PhoneTextBox();
 			costBox.Height = 72;
 			costBox.Width = 100;
-			costBox.Hint = "State";
+			costBox.Hint = "Amount";
 			costBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
 
 
 			StackPanel container = new StackPanel();
 			container.Children.Add(costBox);
+			EventDAL ed = new EventDAL();
 
 
 			CustomMessageBox message = new CustomMessageBox()
 			{
 				Title = "Donation",
 				Content = container,
-				Message = "Enter the amount you would like to donate",
-				RightButtonContent = "Make Donation",
-				LeftButtonContent = "Cancel"
+				Message = "Would you like to make a donation",
+				RightButtonContent = "Yes, make Donation",
+				LeftButtonContent = "No, just attend"
 			};
 			message.Dismissed += async (s1, e1) =>
 			{
@@ -382,9 +447,11 @@ namespace TheMainEvent_Capstone.Pages
 						await this.PayForEvent(owner.MerchantEmail);
 						break;
 					case CustomMessageBoxResult.LeftButton:
+						await ed.AddAttendee(this.evm.ID, this.currentUser.User);
 						message.Dismiss();
 						break;
 					case CustomMessageBoxResult.None:
+						await ed.AddAttendee(this.evm.ID, this.currentUser.User);
 						break;
 					default:
 						break;
@@ -394,14 +461,17 @@ namespace TheMainEvent_Capstone.Pages
 		}
 		private void LoadMap()
 		{
-			this.GetCoordinates();
+
+			this.Maps_GeoCoding(null, null);
+			this.OneShotLocation_Click(null, null);
+			//this.GetCoordinates();
 			//DrawMapMarker(eventLoc, Colors.Black, layer);
 			//DrawMapMarker(current, Colors.Black, layer);
 			//Map.Layers.Add(layer);
 		}
 
-		
 
+		#region ObsoleteGeoQuery
 		private async void GetCoordinates()
 		{
 			// Get the phone's current location.
@@ -412,6 +482,7 @@ namespace TheMainEvent_Capstone.Pages
 			{
 				MyGeoPosition = await MyGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
 				MyCoordinates.Add(new GeoCoordinate(MyGeoPosition.Coordinate.Latitude, MyGeoPosition.Coordinate.Longitude));
+				Map.SetView(MyCoordinates[0], 13);
 			}
 			catch (UnauthorizedAccessException)
 			{
@@ -441,7 +512,7 @@ namespace TheMainEvent_Capstone.Pages
 		}
 		void GeoCoordinateQuery_QueryCompleted(object sender, QueryCompletedEventArgs<IList<MapLocation>> e)
 		{
-			if (e.Error == null)
+			if (e.Error == null && e.Result.Count > 0)
 			{
 				MyQuery = new RouteQuery();
 				MyCoordinates.Add(e.Result[0].GeoCoordinate);
@@ -466,8 +537,6 @@ namespace TheMainEvent_Capstone.Pages
 						RouteList.Add(maneuver.InstructionText);
 					}
 				}
-
-				MyQuery.Dispose();
 				MyQuery.Dispose();
 
 			}
@@ -491,6 +560,7 @@ namespace TheMainEvent_Capstone.Pages
 			overlay.PositionOrigin = new System.Windows.Point(0.0, 1.0);
 			mapLayer.Add(overlay);
 		}
+		#endregion
 
 		private void showRoute_Click(object sender, EventArgs e)
 		{
@@ -499,17 +569,67 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void authorizeTweets_Click(object sender, RoutedEventArgs e)
 		{
-			NavigationService.Navigate(new Uri("/OAuth.xaml", UriKind.Relative));
+			NavigationService.Navigate(new Uri("/Pages/OAuth.xaml", UriKind.Relative));
 		}
 
 		private void inviteContacts_Click(object sender, EventArgs e)
 		{
 			NavigationService.Navigate(new Uri("/Pages/SelectInviteesPage.xaml?msg=" + this.evm.ID, UriKind.Relative));
 		}
-		
 
-		
-		
+		private void kickAttendants_Click(object sender, EventArgs e)
+		{
+		}
+
+		private void Maps_GeoCoding(object sender, RoutedEventArgs e)
+		{
+			GeocodeQuery query = new GeocodeQuery()
+			{
+				GeoCoordinate = new GeoCoordinate(0, 0),
+				SearchTerm = this.evm.Address,
+			};
+			query.QueryCompleted += query_QueryCompleted;
+			query.QueryAsync();
+		}
+
+		void query_QueryCompleted(object sender, QueryCompletedEventArgs<IList<MapLocation>> e)
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.AppendLine("Ferry Building Geocoding results...");
+			var item = e.Result[0];
+			this.g = item.GeoCoordinate;
+			
+			
+			MessageBox.Show(sb.ToString());
+		}
+
+		private async void OneShotLocation_Click(object sender, RoutedEventArgs e)
+		{
+			//Check for the user agreement in use his position. If not, method returns.
+			
+			Geolocator geolocator = new Geolocator();
+			geolocator.DesiredAccuracyInMeters = 50;
+
+			try
+			{
+				Geoposition geoposition = await geolocator.GetGeopositionAsync(
+					 maximumAge: TimeSpan.FromMinutes(5),
+					 timeout: TimeSpan.FromSeconds(10)
+					);
+				this.myLoc = new GeoCoordinate(geoposition.Coordinate.Latitude, geoposition.Coordinate.Longitude);
+				//With this 2 lines of code, the app is able to write on a Text Label the Latitude and the Longitude, given by {{Icode|geoposition}}
+				string lat = geoposition.Coordinate.Latitude.ToString("0.00");
+				string lon = geoposition.Coordinate.Longitude.ToString("0.00");
+			}
+			//If an error is catch 2 are the main causes: the first is that you forgot to include ID_CAP_LOCATION in your app manifest. 
+			//The second is that the user doesn't turned on the Location Services
+			catch (Exception ex)
+			{
+				
+			}
+		}
+
+
 
 		//private void MapFlightToSeattle()
 		//{
@@ -519,7 +639,7 @@ namespace TheMainEvent_Capstone.Pages
 
 		//	this.Map.SetView(locationRectangle, new Thickness(20, 20, 20, 20));
 		//}
-		
+
 
 
 		//private IAsyncOperation<Geoposition> GetUserLocation()
@@ -531,7 +651,7 @@ namespace TheMainEvent_Capstone.Pages
 		//	return geolocator.GetGeopositionAsync();
 		//}
 
-	
+
 
 
 

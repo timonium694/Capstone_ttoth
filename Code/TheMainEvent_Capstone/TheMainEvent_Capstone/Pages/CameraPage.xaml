@@ -17,11 +17,10 @@
 	<Grid x:Name="LayoutRoot" Background="Transparent">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="640" />
-			<ColumnDefinition Width="160" />
 		</Grid.ColumnDefinitions>
 
 		<Canvas x:Name="viewfinderCanvas" Width="640" Height="480" 
-                   HorizontalAlignment="Left" >
+                   HorizontalAlignment="Center" Margin="90,0,0,0">
 
 			<!--Camera viewfinder -->
 			<Canvas.Background>
@@ -29,13 +28,16 @@
 			</Canvas.Background>
 		</Canvas>
 
-		<!--Button StackPanel to the right of viewfinder>-->
-		<StackPanel Grid.Column="1" >
-			<Button x:Name="ShutterButton" Content="SH" Click="ShutterButton_Click" FontSize="26" FontWeight="ExtraBold" Height="75" />
-		</StackPanel>
 
 		<!--Used for debugging >-->
 		<TextBlock Height="40" HorizontalAlignment="Left" Margin="8,428,0,0" Name="txtDebug" VerticalAlignment="Top" Width="626" FontSize="24" FontWeight="ExtraBold" />
 	</Grid>
+	<phone:PhoneApplicationPage.ApplicationBar>
 
+		<shell:ApplicationBar Mode="Default" Opacity="1.0" IsMenuEnabled="True" IsVisible="True">
+
+			<shell:ApplicationBarIconButton x:Name="ShutterButton" IconUri="/Assets/AppBar/appbar.moon.sleep.png" Text="take picture" Click="ShutterButton_Click" />
+
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

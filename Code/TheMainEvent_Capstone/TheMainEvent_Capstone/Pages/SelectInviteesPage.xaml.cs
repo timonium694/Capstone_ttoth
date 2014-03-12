@@ -11,6 +11,7 @@ using Parse;
 using TheMainEvent_Capstone.Model;
 using TheMainEvent_Capstone.DataAccessLayer;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -19,6 +20,7 @@ namespace TheMainEvent_Capstone.Pages
 		UserInfo cur;
 		string eventId = "";
 		string curId = "";
+		Event ev;
 		List<UserInfo> contacts = new List<UserInfo>();
 		List<UserInfo> invitees = new List<UserInfo>();
 		List<UserInfo> attendees = new List<UserInfo>();
@@ -34,12 +36,13 @@ namespace TheMainEvent_Capstone.Pages
 			if (NavigationContext.QueryString.TryGetValue("msg", out msg))
 			{
 				EventDAL ed = new EventDAL();
-				Event ev = await ed.RetrieveEvent(msg);
+				ev = await ed.RetrieveEvent(msg);
 				this.eventId = ev.ID;
 				UserDAL ud = new UserDAL();
 				this.curId = ParseUser.CurrentUser.ObjectId;
 				this.cur = await ud.GetUserInfo(curId);
 				ApplicationBar = ((ApplicationBar)this.Resources["DefaultAppBar"]);
+				this.LoadUsers();
 			}
 		}
 
@@ -90,7 +93,41 @@ namespace TheMainEvent_Capstone.Pages
 
 		}
 
-		private async void inviteUsers_Click(object sender, EventArgs e)
+		private void inviteUsers_Click(object sender, EventArgs e)
+		{
+			this.loadingBar.IsIndeterminate = true;
+			this.loadingBar.Visibility = Visibility.Visible;
+			CustomMessageBox message = new CustomMessageBox()
+			{
+				RightButtonContent = "Invite",
+				LeftButtonContent = "Cancel",
+				Message = "Are you sure you want to invite these people?",
+				Title = "Invitations"
+			};
+			message.Dismissed += async (s1, e1) =>
+			{
+				switch (e1.Result)
+				{
+					case CustomMessageBoxResult.RightButton:
+						await InvitePeople();
+						break;
+					case CustomMessageBoxResult.LeftButton:
+						message.Dismiss();
+						break;
+					case CustomMessageBoxResult.None:
+						break;
+					default:
+						break;
+				}
+
+				this.loadingBar.IsIndeterminate = false;
+				this.loadingBar.Visibility = Visibility.Collapsed;
+			};
+			message.Show();
+			
+		}
+
+		private async Task InvitePeople()
 		{
 			EventDAL ed = new EventDAL();
 			foreach (var item in this.contactList.SelectedItems)
@@ -99,6 +136,15 @@ namespace TheMainEvent_Capstone.Pages
 				if (!invitees.Contains(ui))
 				{
 					await ed.InviteUser(ui.User, this.eventId, this.curId);
+				}
+			}
+			foreach (var item in this.contactList.ItemsSource)
+			{
+				LongListMultiSelectorItem container = contactList.ContainerFromItem(item) as LongListMultiSelectorItem;
+				UserInfo ui = (UserInfo)item;
+				if (!container.IsSelected && invitees.Contains(ui))
+				{
+					await ed.RejectInvitation(ui.User, this.eventId);
 				}
 			}
 		}
@@ -122,6 +168,16 @@ namespace TheMainEvent_Capstone.Pages
 		private void searchNav_Click(object sender, EventArgs e)
 		{
 			NavigationService.Navigate(new Uri("/Pages/SearchPage.xaml", UriKind.Relative));
+		}
+
+		private void info_Click(object sender, EventArgs e)
+		{
+			MessageBox.Show("Selecting a checkmark will invite the user. Deselecting a checkmark will uninvite the user.");
+		}
+
+		private void goback_click(object sender, EventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml?msg=" + this.eventId, UriKind.Relative));
 		}
 	}
 }

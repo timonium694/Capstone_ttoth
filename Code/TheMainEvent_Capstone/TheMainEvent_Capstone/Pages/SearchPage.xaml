@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+	xmlns:con="clr-namespace:TheMainEvent_Capstone.Model"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -36,14 +37,7 @@
 	</toolkit:TransitionService.NavigationOutTransition>
 
 	<phone:PhoneApplicationPage.Resources>
-		<DataTemplate x:Key="ContactItemTemplate">
-			<StackPanel VerticalAlignment="Top">
-				<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" />
-				<TextBlock Text="{Binding LastName}" />
-				<TextBlock Text="{Binding Email}" />
-				<TextBlock Text="{Binding Phone}" />
-			</StackPanel>
-		</DataTemplate>
+		<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
 	</phone:PhoneApplicationPage.Resources>
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
@@ -81,7 +75,7 @@
 							<StackPanel x:Name="noEventResults" Width="350" Visibility="Collapsed">
 								<TextBlock Text="The search has returned no results. Try searching again." TextWrapping="Wrap" TextAlignment="Center"/>
 							</StackPanel>
-							<phone:LongListSelector x:Name="EventsList" ItemsSource="{Binding Events}" >
+							<phone:LongListSelector x:Name="EventsList" ItemsSource="{Binding Events}" SelectionChanged="EventsList_SelectionChanged">
 								<phone:LongListSelector.ItemTemplate>
 									<DataTemplate>
 										<StackPanel Margin="18,0,0,0">
@@ -106,20 +100,25 @@
 					</phone:PivotItem>
 					<phone:PivotItem Header="Users" Height="480" Margin="0,-30,0,0">
 						<Grid>
+							
 							<Grid.RowDefinitions>
 								<RowDefinition Height="100*"/>
 							</Grid.RowDefinitions>
+					
 							<StackPanel x:Name="noUserResults" Width="350" Visibility="Collapsed">
 								<TextBlock Text="The search has returned no results. Try searching again." TextWrapping="Wrap" TextAlignment="Center"/>
 							</StackPanel>
-							<phone:LongListSelector x:Name="UserList" ItemsSource="{Binding Events}" >
+							<phone:LongListSelector x:Name="UserList" ItemsSource="{Binding Events}" SelectionChanged="ContactList_SelectionChanged">
 								<phone:LongListSelector.ItemTemplate>
 									<DataTemplate>
-										<StackPanel VerticalAlignment="Top" Margin="22,0,0,0">
-											<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" />
-											<TextBlock Text="{Binding LastName}" />
-											<TextBlock Text="{Binding Email}" />
-											<TextBlock Text="{Binding Phone}" />
+										<StackPanel VerticalAlignment="Top" Margin="10,0,0,0">
+											<StackPanel Orientation="Horizontal">
+												<Image Width="90" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
+												<StackPanel VerticalAlignment="Top" Margin="10,0,0,0">
+													<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" Style="{StaticResource PhoneTextExtraLargeStyle}" />
+													<TextBlock Text="{Binding LastName}" FontSize="30"/>
+												</StackPanel>
+											</StackPanel>
 										</StackPanel>
 									</DataTemplate>
 								</phone:LongListSelector.ItemTemplate>

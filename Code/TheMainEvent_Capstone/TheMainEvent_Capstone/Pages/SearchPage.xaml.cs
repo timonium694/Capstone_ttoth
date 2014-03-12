@@ -29,14 +29,19 @@ namespace TheMainEvent_Capstone.Pages
 
 		private async void searchButton_Click(object sender, RoutedEventArgs e)
 		{
+			await Search();
+		}
+
+		private async System.Threading.Tasks.Task Search()
+		{
 			this.statusBox.Text = "Searching...";
 			EventDAL ed = new EventDAL();
 			List<Event> events = await ed.BasicEventSearch(searchBox.Text);
 			Events.Clear();
 			if (events.Count != 0)
 			{
-				this.EventsList.Visibility = Visibility.Collapsed;
-				this.noEventResults.Visibility = Visibility.Visible;
+				this.EventsList.Visibility = Visibility.Visible;
+				this.noEventResults.Visibility = Visibility.Collapsed;
 				foreach (Event ev in events)
 				{
 					Events.Add(new EventViewModel()
@@ -98,6 +103,17 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			ParseUser.LogOut();
 			NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+		}
+		private void EventsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			//MessageBox.Show(((EventViewModel)EventsList.SelectedItem).Title);
+			EventViewModel evm = (EventViewModel)EventsList.SelectedItem;
+			NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml?msg=" + evm.ID, UriKind.Relative));
+		}
+		private void ContactList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			UserInfo ui = (UserInfo)UserList.SelectedItem;
+			NavigationService.Navigate(new Uri("/Pages/Contact.xaml?msg=" + ui.User, UriKind.Relative));
 		}
 	}
 }

@@ -135,7 +135,7 @@ namespace TheMainEvent_Capstone.Pages
 
 			base.OnOrientationChanged(e);
 		}
-		private void ShutterButton_Click(object sender, RoutedEventArgs e)
+		private void ShutterButton_Click(object sender, EventArgs e)
 		{
 			if (cam != null)
 			{

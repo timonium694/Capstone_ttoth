@@ -40,6 +40,8 @@
 		<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
 		<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
 			<shell:ApplicationBarIconButton x:Name="inviteContacts" IconUri="/Assets/AppBar/appbar.group.add.png" Text="invite" Click="inviteUsers_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.information.png" Text="info" Click="info_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.arrow.left.png" Text="go back" Click="goback_click" />
 			
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
@@ -59,22 +61,30 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,0">
+			<ProgressBar 
+			IsIndeterminate="false"
+			Visibility="Collapsed"
+			x:Name="loadingBar"
+			Style="{StaticResource CustomIndeterminateProgressBar}"
+			/>
             <TextBlock x:Name="statusBlock" Text="Invite Contacts" Style="{StaticResource PhoneTextNormalStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 			<StackPanel>
-				<toolkit:LongListMultiSelector x:Name="contactList" ItemsSource="{Binding Users}" Height="720" LayoutMode="List" EnforceIsSelectionEnabled="True">
+				<toolkit:LongListMultiSelector HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" x:Name="contactList" ItemsSource="{Binding Users}" Height="600" Margin="0,50,0,0" LayoutMode="List" EnforceIsSelectionEnabled="True">
 					<toolkit:LongListMultiSelector.ItemTemplate>
 						<DataTemplate>
-							<StackPanel Orientation="Horizontal">
-								<Image Width="50" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
-								<StackPanel VerticalAlignment="Top" Margin="10,0,0,0">
-									<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" />
-									<TextBlock Text="{Binding LastName}" />
+							<Grid Margin="0,15,0,-22">
+								<StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+									<Image Width="60" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
+									<StackPanel VerticalAlignment="Top" Margin="10,0,0,0" Orientation="Horizontal">
+										<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" />
+										<TextBlock Text="{Binding LastName}" />
+									</StackPanel>
 								</StackPanel>
-							</StackPanel>
+							</Grid>
 						</DataTemplate>
 					</toolkit:LongListMultiSelector.ItemTemplate>
 				</toolkit:LongListMultiSelector>

@@ -53,28 +53,29 @@
             From="72.0" To="150.0" Duration="0:0:1"
             AutoReverse="True"/>
 		</Storyboard>
-			<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
-			<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
-				<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/photo.flash.on.png" Text="attend" Click="attendButton_Click" />
-				<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="directions" Click="showRoute_Click" />
-				<shell:ApplicationBar.MenuItems>
-					<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
-					<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>
-					<shell:ApplicationBarMenuItem Text="search" Click="searchNav_Click"/>
-					<shell:ApplicationBarMenuItem Text="logout" Click="logutNav_Click"/>
-				</shell:ApplicationBar.MenuItems>
-			</shell:ApplicationBar>
-			<shell:ApplicationBar x:Key="IsOwnerAppBar" x:Name="IsOwnerAppBar" IsVisible="True" IsMenuEnabled="True">
-				<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/photo.flash.on.png" Text="invite" Click="inviteContacts_Click" />
-				<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="directions" Click="showRoute_Click" />
-			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="cancel" Click="cancelEventButton_Click" />
+		<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
+		<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/photo.flash.on.png" Text="attend" Click="attendButton_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="directions" Click="showRoute_Click" />
 			<shell:ApplicationBar.MenuItems>
-					<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
-					<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>
-					<shell:ApplicationBarMenuItem Text="search" Click="searchNav_Click"/>
-					<shell:ApplicationBarMenuItem Text="logout" Click="logutNav_Click"/>
-				</shell:ApplicationBar.MenuItems>
-			</shell:ApplicationBar>
+				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="search" Click="searchNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="logout" Click="logutNav_Click"/>
+			</shell:ApplicationBar.MenuItems>
+		</shell:ApplicationBar>
+		<shell:ApplicationBar x:Key="IsOwnerAppBar" x:Name="IsOwnerAppBar" IsVisible="True" IsMenuEnabled="True">
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.group.add.png" Text="invite" Click="inviteContacts_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.group.delete.png" Text="remove guest" Click="kickAttendants_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.location.round.png" Text="directions" Click="showRoute_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.cancel.png" Text="cancel" Click="cancelEventButton_Click" />
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="search" Click="searchNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="logout" Click="logutNav_Click"/>
+			</shell:ApplicationBar.MenuItems>
+		</shell:ApplicationBar>
 		<shell:ApplicationBar x:Key="IsAttendingAppBar" x:Name="IsAttendingAppBar" IsVisible="True" IsMenuEnabled="True">
 			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/photo.flash.on.png" Text="unattend" Click="unattendButton_Click" />
 			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="directions" Click="showRoute_Click" />
@@ -87,8 +88,14 @@
 		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.Resources>
 
+
 	<!--LayoutRoot contains the root grid where all other page content is placed-->
 	<Grid x:Name="LayoutRoot">
+		<ProgressBar 
+			IsIndeterminate="true"
+			x:Name="loadingBar"
+			Style="{StaticResource CustomIndeterminateProgressBar}"
+			/>
 		<StackPanel Grid.Row="0" Margin="10,10,0,0">
 			<TextBlock x:Name="statusBlock" Text="" Visibility="Collapsed" Style="{StaticResource PhoneTextNormalStyle}" toolkit:TurnstileFeatherEffect.FeatheringIndex="0"/>
 		</StackPanel>
@@ -113,14 +120,22 @@
 			<!--Panorama item two-->
 			<phone:PanoramaItem x:Name="TweetSection">
 				<Grid Margin="0,-40,0,0" x:Name="tweetGrid">
+
+
 					<StackPanel>
-						
-						<StackPanel Orientation="Horizontal" x:Name="tweetPanel">
+						<Button x:Name="authorizeTweets" Visibility="Collapsed" VerticalAlignment="Top" Height="70" Content="Authorize Tweets" HorizontalAlignment="Center" Click="authorizeTweets_Click"/>
+						<StackPanel Orientation="Horizontal" x:Name="tweetPanel" Height="70" VerticalAlignment="Top">
 							<toolkit:PhoneTextBox x:Name="tweetBox" Hint="tweet" Width="320" AcceptsReturn="True" TextWrapping="Wrap"/>
 							<Button Content="tweet" x:Name="tweetButton" Click="tweetButton_Click"/>
-							<Button x:Name="authorizeTweets" Content="Authorize Tweets" HorizontalAlignment="Center" Click="authorizeTweets_Click"/>
+
 						</StackPanel>
-						<phone:LongListSelector Grid.Row="1" Margin="0,0,-22,0" ItemsSource="{Binding Tweets}">
+						<ProgressBar 
+							IsIndeterminate="false"
+							Visibility="Collapsed"
+							x:Name="tweetsLoading"
+							Style="{StaticResource CustomIndeterminateProgressBar}"
+							/>
+						<phone:LongListSelector Grid.Row="1"  VerticalAlignment="Top" Height="520" ItemsSource="{Binding Tweets}">
 							<phone:LongListSelector.ItemTemplate>
 								<DataTemplate>
 									<StackPanel Orientation="Horizontal" Height="132">
@@ -134,6 +149,7 @@
 							</phone:LongListSelector.ItemTemplate>
 						</phone:LongListSelector>
 					</StackPanel>
+
 				</Grid>
 			</phone:PanoramaItem>
 			<phone:PanoramaItem>
@@ -197,30 +213,6 @@
 									</DataTemplate>
 								</phone:LongListSelector.ItemTemplate>
 							</phone:LongListSelector>
-
-						</toolkit:ExpanderView>
-						<toolkit:ExpanderView FontSize="24" Margin="-20,0,0,0" x:Name="paidExpander">
-							<toolkit:ExpanderView.Items>
-								<phone:LongListSelector x:Name="PaidList" ItemsSource="{Binding Events}" Height="500">
-									<phone:LongListSelector.ItemTemplate>
-										<DataTemplate>
-											<StackPanel Orientation="Horizontal">
-												<Image Width="50" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
-												<StackPanel VerticalAlignment="Top" Margin="10,0,0,0">
-													<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" />
-													<TextBlock Text="{Binding LastName}" />
-												</StackPanel>
-											</StackPanel>
-										</DataTemplate>
-									</phone:LongListSelector.ItemTemplate>
-								</phone:LongListSelector>
-							</toolkit:ExpanderView.Items>
-							<toolkit:ExpanderView.Expander>
-								<StackPanel>
-									<TextBlock Text="Paid"/>
-									<TextBlock Text="Users that have paid for the event" Style="{StaticResource PhoneTextSubtleStyle}"/>
-								</StackPanel>
-							</toolkit:ExpanderView.Expander>
 						</toolkit:ExpanderView>
 					</StackPanel>
 				</Grid>

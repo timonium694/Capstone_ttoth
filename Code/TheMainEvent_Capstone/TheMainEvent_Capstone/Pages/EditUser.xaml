@@ -49,8 +49,8 @@
             AutoReverse="True"/>
 		</Storyboard>
 		<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
-			<shell:ApplicationBarIconButton x:Name="addContactIcon" IconUri="/Assets/AppBar/photo.flash.on.png" Text="save" Click="doneButton_Click" />
-			<shell:ApplicationBarIconButton x:Name="inviteToMeetingIcon" IconUri="/Assets/AppBar/people.groups.png" Text="edit pic" Click="picture_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appar.save.png" Text="save" Click="doneButton_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.camera.png" Text="edit pic" Click="picture_Click" />
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
 				<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click"/>

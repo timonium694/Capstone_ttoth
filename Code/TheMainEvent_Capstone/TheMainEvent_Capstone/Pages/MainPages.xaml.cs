@@ -35,6 +35,7 @@ namespace TheMainEvent_Capstone.Pages
 		}
 		protected async override void OnNavigatedTo(NavigationEventArgs e)
 		{
+			this.ShowLoadingBar();
 			await this.LoadUser();
 			await this.LoadEvents();
 			await this.LoadInvites();
@@ -42,6 +43,14 @@ namespace TheMainEvent_Capstone.Pages
 			this.isLoaded = true;
 
 			ShowOrHide();
+			string msg = "";
+			if (NavigationContext.QueryString.TryGetValue("msg", out msg))
+			{
+				if (msg.Equals("events"))
+					this.MainPivot.SelectedIndex = 0;
+				if (msg.Equals("contacts"))
+					this.MainPivot.SelectedIndex = 1;
+			}
 			//EventDAL ed = new EventDAL();
 			//Event ev = new Event()
 			//{
@@ -93,14 +102,27 @@ namespace TheMainEvent_Capstone.Pages
 				noInvitesContainer.Visibility = Visibility.Collapsed;
 				InviteList.Visibility = Visibility.Visible;
 			}
-			this.MainPivot.Visibility = Visibility.Visible;
+			ShowUI();
+		}
+		private void ShowLoadingBar()
+		{
+			this.loadingBar.Visibility = Visibility.Visible;
+			this.loadingBar.IsIndeterminate = true;
+			this.MainPivot.Visibility = Visibility.Collapsed;
+		}
+		private void ShowUI()
+		{
 			this.loadingBar.Visibility = Visibility.Collapsed;
 			this.loadingBar.IsIndeterminate = false;
+			this.MainPivot.Visibility = Visibility.Visible;
 		}
 		protected override void OnNavigatedFrom(NavigationEventArgs e)
 		{
-			base.OnNavigatedFrom(e);
 			this.Events.Clear();
+			this.Invites.Clear();
+			this.Contacts.Clear();
+			this.ContactList.ItemsSource.Clear();
+			this.ShowLoadingBar();
 		}
 		private async Task LoadEvents()
 		{
@@ -116,28 +138,32 @@ namespace TheMainEvent_Capstone.Pages
 			}
 			if (cur.FilterMode.Equals("Date"))
 			{
-				events.OrderByDescending(x => x.Title);
+				events.OrderBy(x => x.Date);
 			}
 			if (cur.FilterMode.Equals("Type"))
 			{
-				events.OrderByDescending(x => x.Title);
+				events.OrderBy(x => x.Type);
 			}
 			if (events.Count != 0)
 			{
 				foreach (Event e in events)
 				{
-					Events.Add(new EventViewModel()
+					if (e.Date.CompareTo(DateTime.Now) > 0)
 					{
-						Address = e.Address,
-						Date = e.Date,
-						Description = e.Description,
-						OtherDetails = e.OtherDetails,
-						Title = e.Title,
-						ID = e.ID,
-						City = e.City,
-						Type = e.Type,
-						State = e.State,
-					});
+						Events.Add(new EventViewModel()
+						{
+							Address = e.Address,
+							Date = e.Date,
+							Description = e.Description,
+							OtherDetails = e.OtherDetails,
+							Title = e.Title,
+							ID = e.ID,
+							City = e.City,
+							Type = e.Type,
+							State = e.State,
+							Cost = e.Cost
+						});
+					}
 				}
 
 
@@ -166,10 +192,11 @@ namespace TheMainEvent_Capstone.Pages
 						ID = e.ID,
 						Cost = e.Cost,
 						Date = e.Date,
-						Description = e.Description
+						Description = e.Description,
 					};
 					this.Invites.Add(ivm);
 				}
+				this.Invites.OrderBy(x => x.Date);
 				InviteList.ItemsSource = this.Invites;
 			}
 			else this.noInvites = true;
@@ -181,12 +208,13 @@ namespace TheMainEvent_Capstone.Pages
 			ParseUser p = ParseUser.CurrentUser;
 			cur = await ud.GetUserInfo(p.ObjectId);
 			ProfilePage.DataContext = cur;
-			ProfilePage.Header = cur.FirstName + " " + cur.LastName;
-			
+			ProfilePage.Header = cur.FirstName + " " + cur.LastName;	
 		}
 
 		private async Task LoadContacts()
 		{
+			if (ContactList.ItemsSource!=null)
+				this.ContactList.ItemsSource.Clear();
 			UserDAL ud = new UserDAL();
 			List<string> ids = await ud.GetContacts(ParseUser.CurrentUser.ObjectId);
 			if (ids.Count != 0)
@@ -257,22 +285,28 @@ namespace TheMainEvent_Capstone.Pages
 						}
 						else
 						{
+							this.ShowLoadingBar();
 							await ed.AddAttendee(ivm.ID, cur.User);
+							await this.LoadInvites();
+							this.ShowUI();
 							MessageBox.Show("You are now attending " + ivm.Title);
 						}
 						break;
 					case CustomMessageBoxResult.LeftButton:
+						this.ShowLoadingBar();
 						await ed.RejectInvitation(cur.User, ivm.ID);
+						await this.LoadInvites();
+						this.ShowUI();
 						MessageBox.Show("You have rejected the invitation for " + ivm.Title);
 						break;
 					case CustomMessageBoxResult.None:
-						message.Dismiss();
 						break;
 					default:
 						break;
 				}
 			};
 			message.Show();
+
 		}
 
 		private void navToCreateEvent(object sender, RoutedEventArgs e)

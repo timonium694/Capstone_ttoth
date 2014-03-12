@@ -74,7 +74,7 @@ namespace TheMainEvent_Capstone.Pages
 			ud.AddContact(cur.User, ui.User);
 		}
 
-		
+
 
 		private void PickDate()
 		{
@@ -120,7 +120,7 @@ namespace TheMainEvent_Capstone.Pages
 			{
 			}
 			else this.PickTime();
-			
+
 		}
 
 		private void PickTime()
@@ -137,7 +137,7 @@ namespace TheMainEvent_Capstone.Pages
 
 			};
 			this.date.Subtract(TimeSpan.FromHours(1));
-			tp.Value = this.date;
+			tp.Value = new DateTime();
 			tp.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
 			container.Children.Add(tp);
 			CustomMessageBox message = new CustomMessageBox()
@@ -212,14 +212,14 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			statusBlock.Text = "Inviting user...";
 			Event e = new Event();
-			e.Date = this.date;
-			e.Time = this.time;
+			e.Date = this.date + this.time.TimeOfDay;
 			e.OtherDetails = this.details;
 			e.City = this.city;
 			e.State = this.state;
 			e.Address = this.address;
 			e.Description = "Meeting called by " + cur.FirstName + " " + cur.LastName;
 			e.Title = "Meeting";
+			e.Type = "Meetings";
 			e.Cost = 0;
 			e.IsDonatable = false;
 			EventDAL ed = new EventDAL();
@@ -264,6 +264,7 @@ namespace TheMainEvent_Capstone.Pages
 			addr.Width = 300;
 			addr.Hint = "Address";
 			addr.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+			
 			PhoneTextBox city = new PhoneTextBox();
 			city.Height = 72;
 			city.Width = 200;
@@ -293,7 +294,32 @@ namespace TheMainEvent_Capstone.Pages
 				Content = container,
 				Message = "Enter the address of the meeting",
 				RightButtonContent = "Continue",
-				LeftButtonContent = "Cancel"
+				LeftButtonContent = "Cancel",
+				IsRightButtonEnabled = false,
+			};
+			addr.TextChanged += (a1, a2) =>
+			{
+				if (!string.IsNullOrEmpty(addr.Text) && !string.IsNullOrEmpty(city.Text) && !string.IsNullOrEmpty(state.Text))
+				{
+					message.IsRightButtonEnabled = true;
+				}
+				else message.IsRightButtonEnabled = false;
+			};
+			city.TextChanged += (a1, a2) =>
+			{
+				if (!string.IsNullOrEmpty(addr.Text) && !string.IsNullOrEmpty(city.Text) && !string.IsNullOrEmpty(state.Text))
+				{
+					message.IsRightButtonEnabled = true;
+				}
+				else message.IsRightButtonEnabled = false;
+			};
+			state.TextChanged += (a1, a2) =>
+			{
+				if (!string.IsNullOrEmpty(addr.Text) && !string.IsNullOrEmpty(city.Text) && !string.IsNullOrEmpty(state.Text))
+				{
+					message.IsRightButtonEnabled = true;
+				}
+				else message.IsRightButtonEnabled = false;
 			};
 			message.Dismissed += (s1, e1) =>
 			{
@@ -309,6 +335,7 @@ namespace TheMainEvent_Capstone.Pages
 						message.Dismiss();
 						break;
 					case CustomMessageBoxResult.None:
+						message.Dismiss();
 						break;
 					default:
 						break;

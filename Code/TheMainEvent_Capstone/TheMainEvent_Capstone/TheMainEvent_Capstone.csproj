@@ -136,11 +136,17 @@
     <Compile Include="Pages\EventPanorama.xaml.cs">
       <DependentUpon>EventPanorama.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\KickAttendants.xaml.cs">
+      <DependentUpon>KickAttendants.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MainPages.xaml.cs">
       <DependentUpon>MainPages.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\EventAttendee.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="Pages\NotificationsPage.xaml.cs">
+      <DependentUpon>NotificationsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\OAuth.xaml.cs">
       <DependentUpon>OAuth.xaml</DependentUpon>
     </Compile>
@@ -204,7 +210,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\KickAttendants.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\MainPages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\NotificationsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -242,11 +256,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AlignmentGrid.png" />
+    <Content Include="Assets\AppBar\appbar.arrow.left.png" />
+    <Content Include="Assets\AppBar\appbar.camera.png" />
+    <Content Include="Assets\AppBar\appbar.cancel.png" />
     <Content Include="Assets\AppBar\appbar.group.delete.png" />
     <Content Include="Assets\AppBar\appbar.add.png" />
     <Content Include="Assets\AppBar\appbar.arrow.right.png" />
     <Content Include="Assets\AppBar\appbar.flag.wavy.png" />
     <Content Include="Assets\AppBar\appbar.group.add.png" />
+    <Content Include="Assets\AppBar\appbar.information.png" />
     <Content Include="Assets\AppBar\appbar.location.round.png" />
     <Content Include="Assets\AppBar\appbar.magnify.png" />
     <Content Include="Assets\AppBar\appbar.moon.sleep.png" />

@@ -20,7 +20,7 @@ namespace TheMainEvent_Capstone.Pages
 {
 	public partial class CreateEvent : PhoneApplicationPage
 	{
-		ObservableCollection<ContactViewModel> Users = new ObservableCollection<ContactViewModel>();
+		ObservableCollection<UserInfo> Users = new ObservableCollection<UserInfo>();
 		ParseUser user;
 		public CreateEvent()
 		{
@@ -46,7 +46,7 @@ namespace TheMainEvent_Capstone.Pages
 				costPanel.Visibility = Visibility.Collapsed;
 		}
 
-		
+
 		private async void AddUsers()
 		{
 			UserDAL ud = new UserDAL();
@@ -57,20 +57,13 @@ namespace TheMainEvent_Capstone.Pages
 				try
 				{
 					UserInfo ui = await ud.GetUserInfo(id);
-					Users.Add(new ContactViewModel()
-					{
-						Name = ui.FirstName + " " + ui.LastName,
-						User = ui.User,
-						Bio = ui.Bio,
-						Birthday = ui.Birthday,
-						Phone = ui.Phone,
-					});
+					Users.Add(ui);
 				}
 				catch (Exception ex)
 				{
 					Console.WriteLine(ex.Message);
 				}
-				
+
 			}
 
 			contacts.ItemsSource = Users;
@@ -79,17 +72,18 @@ namespace TheMainEvent_Capstone.Pages
 		private void TextBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
 		{
 			TextBox box = (TextBox)sender;
-			
 		}
-
-		private async void createButton_Click(object sender, RoutedEventArgs e)
+		private async void CreateEvent_Click()
 		{
 			string eventToAdd = "";
 			this.statusBlock.Text = "Creating...";
 			try
 			{
-				Event ev = new Event()
+				if (!string.IsNullOrEmpty(cityBox.Text) && !string.IsNullOrEmpty(addressBox.Text) && !string.IsNullOrEmpty(stateBox.Text)
+					&& !string.IsNullOrEmpty(descriptionBox.Text) && !string.IsNullOrEmpty(otherDetailsBox.Text) && !string.IsNullOrEmpty(titleBox.Text) )
 				{
+					Event ev = new Event()
+					{
 					City = cityBox.Text,
 					Address = addressBox.Text,
 					State = stateBox.Text,
@@ -99,26 +93,27 @@ namespace TheMainEvent_Capstone.Pages
 					Date = (DateTime)datePicker.Value,
 					Time = (DateTime)timePicker.Value,
 					Type = ((TextBlock)typePicker.SelectedItem).Text
-				};
-				double cost = 0;
-				if (double.TryParse(costBox.Text, out cost))
-				{
-					ev.Cost = cost;
-				}
-				else if (String.IsNullOrEmpty(costBox.Text))
-				{
-					ev.Cost = 0;
-				}
+					};
+					double cost = 0;
+					if (double.TryParse(costBox.Text, out cost))
+					{
+						ev.Cost = cost;
+					}
+					else if (String.IsNullOrEmpty(costBox.Text))
+					{
+						ev.Cost = 0;
+					}
 
-				EventDAL ed = new EventDAL();
-				ed.CreateEvent(ev);
-				string creatorId = ParseUser.CurrentUser.ObjectId;
-				eventToAdd = await ed.NewestEventFromUser(ParseUser.CurrentUser.ObjectId );
-				ed.SetOwner(eventToAdd, creatorId);
-				foreach (Object i in contacts.SelectedItems)
-				{
-					ContactViewModel con = (ContactViewModel)i;
-					ed.InviteUser(con.User, eventToAdd, creatorId);
+					EventDAL ed = new EventDAL();
+					await ed.CreateEvent(ev);
+					string creatorId = ParseUser.CurrentUser.ObjectId;
+					eventToAdd = await ed.NewestEventFromUser(ParseUser.CurrentUser.ObjectId);
+					await ed.SetOwner(eventToAdd, creatorId);
+					foreach (Object i in contacts.SelectedItems)
+					{
+						ContactViewModel con = (ContactViewModel)i;
+						await ed.InviteUser(con.User, eventToAdd, creatorId);
+					}
 				}
 			}
 			catch (Exception ex)
@@ -126,6 +121,11 @@ namespace TheMainEvent_Capstone.Pages
 				statusBlock.Text = ex.Message;
 			}
 			NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml?msg=" + eventToAdd, UriKind.Relative));
+
+		}
+
+		private async void createButton_Click(object sender, RoutedEventArgs e)
+		{
 		}
 
 		private void title_TextChanged(object sender, TextChangedEventArgs e)
@@ -154,7 +154,7 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void donationCheck_Checked(object sender, RoutedEventArgs e)
 		{
-			if (donationCheck.IsChecked==true)
+			if (donationCheck.IsChecked == true)
 			{
 				MessageBox.Show("Attendees will choose whether or not he/she will pay to attend the event.");
 			}
@@ -191,7 +191,7 @@ namespace TheMainEvent_Capstone.Pages
 			NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
 		}
 
-		
-		
+
+
 	}
 }

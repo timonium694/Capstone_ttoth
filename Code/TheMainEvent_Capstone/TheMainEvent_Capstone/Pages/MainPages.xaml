@@ -66,15 +66,14 @@
 		</Style>
 		
 		<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
-			<shell:ApplicationBarIconButton x:Name="eventsNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="events" Click="navToEvents" />
-			<shell:ApplicationBarIconButton x:Name="contactsNav" IconUri="/Assets/AppBar/people.groups.png" Text="contacts" Click="navToContacts" />
-			<shell:ApplicationBarIconButton x:Name="searchNav" IconUri="/Assets/AppBar/appbar.magnify.png" Text="search" Click="navToSearch"/>
-			<shell:ApplicationBarIconButton x:Name="logutNav" IconUri="/Assets/AppBar/appbar.moon.sleep.png" Text="logout" Click="logout_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.add.png" Text="create" Click="navToCreate" />
 
 			<shell:ApplicationBar.MenuItems>
-				<shell:ApplicationBarMenuItem x:Name="createEvent" Text="create event" Click="navToCreate"/>
-				<shell:ApplicationBarMenuItem x:Name="editAccount" Text="edit account" Click="navToEditAccount"/>
-				<shell:ApplicationBarMenuItem x:Name="accountSettings" Text="accountSettings" Click="navToAccountSettings"/>
+				<shell:ApplicationBarMenuItem Text="edit profile" Click="navToEditAccount"/>
+				<shell:ApplicationBarMenuItem Text="events" Click="navToEvents"/>
+				<shell:ApplicationBarMenuItem Text="contacts" Click="navToContacts"/>
+				<shell:ApplicationBarMenuItem Text="search" Click="navToSearch"/>
+				<shell:ApplicationBarMenuItem Text="logout" Click="logout_Click"/>
 			</shell:ApplicationBar.MenuItems>
 
 
@@ -88,6 +87,7 @@
 			IsIndeterminate="true"
 			x:Name="loadingBar"
 			Style="{StaticResource CustomIndeterminateProgressBar}"
+			Visibility="Collapsed"
 			/>
 		<!--Pivot Control-->
 		<phone:Pivot x:Name="MainPivot" Visibility="Visible" Title="The Main Event" toolkit:TurnstileFeatherEffect.FeatheringIndex="0" HeaderTemplate="{StaticResource MainPivotHeader}" SelectionChanged="MainPivot_SelectionChanged">
@@ -103,9 +103,9 @@
 						<TextBlock Text="or" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 						<HyperlinkButton Content="Find Event" Height="33" Click="navToSearchPage"/>
 					</StackPanel>
+
 					
 					<phone:LongListSelector
-						Visibility="Collapsed"
 						Grid.Row="0" x:Name="EventsList" 
 						ItemsSource="{Binding Events}" 
 						SelectionChanged="EventsList_SelectionChanged"
@@ -114,24 +114,26 @@
 						Margin="0,-30,0,0">
 						<phone:LongListSelector.ItemTemplate>
 							<DataTemplate>
-								<StackPanel Margin="-10,0,0,0">
-
-									
-									<TextBlock Text="{Binding Title}"
+								<Grid Margin="-10,0,0,0" Height="120">
+									<StackPanel Height="120" VerticalAlignment="Top">
+										<TextBlock Text="{Binding Title}"
 											   TextWrapping="Wrap"
 											   Style="{StaticResource PhoneTextExtraLargeStyle}"
-											   
 											   />
-									<StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-										<TextBlock x:Name="dateBlock" Text="{Binding Date, StringFormat='ddd, dd MMM yyyy'}" FontWeight="Bold" Style="{StaticResource PhoneTextSubtleStyle}"/>
-										<TextBlock x:Name="timeBlock" Text="{Binding Time, StringFormat='H:mm tt'}" FontWeight="Bold" Style="{StaticResource PhoneTextSubtleStyle}"/>
-									</StackPanel>
-									<TextBlock 
-										Text="Description"
+										<TextBlock x:Name="dateBlock" Text="{Binding Date, StringFormat='ddd, dd MMM yyyy H:mm tt'}" FontWeight="Bold" Style="{StaticResource PhoneTextSubtleStyle}"/>
+										<TextBlock 
+										Text="{Binding Description}"
 										TextWrapping="Wrap"
 										Style="{StaticResource PhoneTextSubtleStyle}"
 										/>
-								</StackPanel>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Right" Height="120" Margin="0,0,10,0">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock Text="$"/>
+											<TextBlock Text="{Binding Cost}"/>
+										</StackPanel>
+									</StackPanel>
+								</Grid>
 							</DataTemplate>
 						</phone:LongListSelector.ItemTemplate>
 					</phone:LongListSelector>
@@ -166,8 +168,6 @@
 											<TextBlock Text="{Binding LastName}" />
 										</StackPanel>
 									</StackPanel>
-									<TextBlock Text="{Binding Email}" />
-									<TextBlock Text="{Binding Phone}" />
 								</StackPanel>
 							</DataTemplate>
 						</phone:LongListSelector.ItemTemplate>
@@ -191,19 +191,26 @@
 						 toolkit:TiltEffect.IsTiltEnabled="True">
 						<phone:LongListSelector.ItemTemplate>
 							<DataTemplate>
-								<StackPanel>
-									<TextBlock Text="{Binding Title}"
+								<Grid Margin="-10,0,0,0" Height="120">
+									<StackPanel Height="120" VerticalAlignment="Top">
+										<TextBlock Text="{Binding Title}"
 											   TextWrapping="Wrap"
 											   Style="{StaticResource PhoneTextExtraLargeStyle}"
 											   />
-									<TextBlock 
+										<TextBlock x:Name="dateBlock" Text="{Binding Date, StringFormat='ddd, dd MMM yyyy H:mm tt'}" FontWeight="Bold" Style="{StaticResource PhoneTextSubtleStyle}"/>
+										<TextBlock 
 										Text="{Binding Description}"
 										TextWrapping="Wrap"
 										Style="{StaticResource PhoneTextSubtleStyle}"
 										/>
-
-									
-								</StackPanel>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Right" Height="120" Margin="0,0,10,0">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock Text="$"/>
+											<TextBlock Text="{Binding Cost}"/>
+										</StackPanel>
+									</StackPanel>
+								</Grid>
 							</DataTemplate>
 						</phone:LongListSelector.ItemTemplate>
 					</phone:LongListSelector>

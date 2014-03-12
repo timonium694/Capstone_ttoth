@@ -26,7 +26,7 @@ namespace TheMainEvent_Capstone.Pages
 			lastNameBox.Tap += this.TextBox_Tap;
 			firstNameBox.Tap += this.TextBox_Tap;
 			bioBox.Tap += this.TextBox_Tap;
-
+			ApplicationBar = ((ApplicationBar)this.Resources["DefaultAppBar"]);
 			
 		}
 		protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -57,35 +57,38 @@ namespace TheMainEvent_Capstone.Pages
 			{
 				if (this.isValidPhone)
 				{
-					string phoneNumber = "";
-					int count = 0;
-					foreach (char s in phoneBox.Text.ToCharArray())
+					if (!string.IsNullOrEmpty(this.firstNameBox.Text) && !string.IsNullOrEmpty(this.lastNameBox.Text) && !string.IsNullOrEmpty(this.bioBox.Text))
 					{
-
-						phoneNumber = s + "";
-						if (count == 2 || count == 5)
+						string phoneNumber = "";
+						int count = 0;
+						foreach (char s in phoneBox.Text.ToCharArray())
 						{
-							phoneNumber += "-";
+
+							phoneNumber = s + "";
+							if (count == 2 || count == 5)
+							{
+								phoneNumber += "-";
+							}
+							count++;
 						}
-						count++;
+						DateTime bday = (DateTime)datePicker.Value;
+						string firstName = this.firstNameBox.Text;
+						string lastName = this.lastNameBox.Text;
+						string bio = this.bioBox.Text;
+						UserInfo ui = new UserInfo()
+						{
+							FirstName = firstName,
+							LastName = lastName,
+							Phone = phoneNumber,
+							Bio = bio,
+							Birthday = bday,
+							User = ParseUser.CurrentUser.ObjectId,
+							MerchantEmail = "tim.toth13@gmail.com",
+							Email = ParseUser.CurrentUser.Email,
+						};
+						UserDAL ud = new UserDAL();
+						await ud.UpdateUserInfo(ui);
 					}
-					DateTime bday = (DateTime)datePicker.Value;
-					string firstName = this.firstNameBox.Text;
-					string lastName = this.lastNameBox.Text;
-					string bio = this.bioBox.Text;
-					UserInfo ui = new UserInfo()
-					{
-						FirstName = firstName,
-						LastName = lastName,
-						Phone = phoneNumber,
-						Bio = bio,
-						Birthday = bday,
-						User = ParseUser.CurrentUser.ObjectId,
-						MerchantEmail = "tim.toth13@gmail.com",
-						Email = ParseUser.CurrentUser.Email,
-					};
-					UserDAL ud = new UserDAL();
-					await ud.UpdateUserInfo(ui);
 				}
 				else
 				{
@@ -130,7 +133,7 @@ namespace TheMainEvent_Capstone.Pages
 				switch (e1.Result)
 				{
 					case CustomMessageBoxResult.RightButton:
-
+						photoChooserTask.Show();
 						break;
 					case CustomMessageBoxResult.LeftButton:
 						message.Dismiss();

@@ -48,7 +48,9 @@ namespace TheMainEvent_Capstone.Pages
 
 				if (this.isValidPhone)
 				{
-					string phoneNumber = "";
+					if (!string.IsNullOrEmpty(firstNameBox.Text) && !string.IsNullOrEmpty(lastNameBox.Text) && !string.IsNullOrEmpty(bioBox.Text))
+					{
+						string phoneNumber = "";
 					int count = 0;
 					foreach (char s in phoneBox.Text.ToCharArray())
 					{
@@ -80,6 +82,8 @@ namespace TheMainEvent_Capstone.Pages
 					byte[] data = ud.ConvertToBytes(i);
 					ui.ProfilePic = data;
 					await ud.UpdateUserInfo(ui);
+					}
+					
 				}
 				else
 				{

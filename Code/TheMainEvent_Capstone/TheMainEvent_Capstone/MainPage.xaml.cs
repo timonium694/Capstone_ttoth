@@ -49,6 +49,8 @@ namespace TheMainEvent_Capstone
 		{
 			string username = usernameBox.Text;
 			string password = passwordBox.Password;
+			this.loadingBar.Visibility = Visibility.Visible;
+			this.loadingBar.IsIndeterminate = true;
 
 			await this.LoginUser(username, password);
 		}
@@ -71,6 +73,9 @@ namespace TheMainEvent_Capstone
 			try
 			{
 				await ParseUser.LogInAsync(username, password);
+
+				this.loadingBar.Visibility = Visibility.Collapsed;
+				this.loadingBar.IsIndeterminate = false;
 				NavigationService.Navigate(new Uri("/Pages/MainPages.xaml", UriKind.Relative));
 			}
 			catch (Exception ex)

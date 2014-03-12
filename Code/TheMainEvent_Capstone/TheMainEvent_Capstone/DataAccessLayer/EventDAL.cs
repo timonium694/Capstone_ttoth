@@ -208,7 +208,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			List<Event> output = new List<Event>();
 			var query = (from accept in ParseObject.GetQuery("Event")
 						 where (accept.Get<string>("title").Contains(searchTerm) || accept.Get<string>("description").Contains(searchTerm)) &&
-						 accept.Get<string>("type")=="public"
+						 accept.Get<string>("type")=="Public"
 						select accept);
 			IEnumerable<ParseObject> events = await query.FindAsync();
 			foreach (ParseObject p in events)
