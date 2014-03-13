@@ -21,6 +21,7 @@ namespace TheMainEvent_Capstone.Pages
 		string eventId = "";
 		string curId = "";
 		Event ev;
+		UserInfo owner;
 		List<UserInfo> contacts = new List<UserInfo>();
 		List<UserInfo> invitees = new List<UserInfo>();
 		List<UserInfo> attendees = new List<UserInfo>();
@@ -39,6 +40,8 @@ namespace TheMainEvent_Capstone.Pages
 				ev = await ed.RetrieveEvent(msg);
 				this.eventId = ev.ID;
 				UserDAL ud = new UserDAL();
+				string ownerId = await ed.GetOwner(ev.ID);
+				owner = await ud.GetUserInfo(ownerId);
 				this.curId = ParseUser.CurrentUser.ObjectId;
 				this.cur = await ud.GetUserInfo(curId);
 				ApplicationBar = ((ApplicationBar)this.Resources["DefaultAppBar"]);
@@ -130,11 +133,18 @@ namespace TheMainEvent_Capstone.Pages
 		private async Task InvitePeople()
 		{
 			EventDAL ed = new EventDAL();
+			NotificationDAL nd = new NotificationDAL();
 			foreach (var item in this.contactList.SelectedItems)
 			{
 				UserInfo ui = (UserInfo)item;
 				if (!invitees.Contains(ui))
 				{
+					
+					Notification n = new Notification();
+					n.User = ui.User;
+					n.Date = DateTime.Now;
+					n.Message = ui.FirstName + " " + ui.LastName + " has invited you to " + this.ev.Title;
+					await nd.CreateNotification(n);
 					await ed.InviteUser(ui.User, this.eventId, this.curId);
 				}
 			}
@@ -144,6 +154,11 @@ namespace TheMainEvent_Capstone.Pages
 				UserInfo ui = (UserInfo)item;
 				if (!container.IsSelected && invitees.Contains(ui))
 				{
+					Notification n = new Notification();
+					n.User = ui.User;
+					n.Date = DateTime.Now;
+					n.Message = ui.FirstName + " " + ui.LastName + " has uninvited you to " + this.ev.Title;
+					await nd.CreateNotification(n);
 					await ed.RejectInvitation(ui.User, this.eventId);
 				}
 			}

@@ -82,8 +82,6 @@
 
 		<ScrollViewer Grid.Row="1">
 			<StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
-
-
 				<TextBlock x:Name="titleBlock" Text="Event Title" HorizontalAlignment="Center" Style="{StaticResource PhoneTextTitle2Style}" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 				<toolkit:PhoneTextBox x:Name="titleBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="Title" VerticalAlignment="Top" Width="300" TextChanged="title_TextChanged" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
 				<toolkit:PhoneTextBox x:Name="addressBox" HorizontalAlignment="Center" Height="72" TextWrapping="Wrap" Hint="Street Address" VerticalAlignment="Top" Width="300" toolkit:TurnstileFeatherEffect.FeatheringIndex="4"/>
@@ -136,7 +134,7 @@
 							<TextBlock Text="Private"/>
 						</toolkit:ListPickerItem>
 						<toolkit:ListPickerItem>
-							<TextBlock Text="Meetings"/>
+							<TextBlock Text="Meeting"/>
 						</toolkit:ListPickerItem>
 					</toolkit:ListPicker.Items>
 				</toolkit:ListPicker>
@@ -147,13 +145,13 @@
 
 	<phone:PhoneApplicationPage.ApplicationBar>
 		<shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Default" Opacity="1.0" >
-
-			<shell:ApplicationBarIconButton x:Name="eventsNav" IconUri="/Assets/AppBar/photo.flash.on.png" Text="events" Click="eventsNav_Click" />
-			<shell:ApplicationBarIconButton x:Name="contactsNav" IconUri="/Assets/AppBar/people.groups.png" Text="contacts" Click="contactsNav_Click" />
-			<shell:ApplicationBarIconButton x:Name="searchNav" IconUri="/Assets/AppBar/appbar.magnify.png" Text="Search" Click="searchNav_Click"/>
-			<shell:ApplicationBarIconButton x:Name="logutNav" IconUri="/Assets/AppBar/appbar.moon.sleep.png" Text="Logout" Click="logutNav_Click" />
-
-
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.add.png" Text="create" Click="createButton_Click" />
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click" />
+				<shell:ApplicationBarMenuItem Text="contacts" Click="contactsNav_Click" />
+				<shell:ApplicationBarMenuItem Text="Search" Click="searchNav_Click"/>
+				<shell:ApplicationBarMenuItem Text="Logout" Click="logutNav_Click" />
+			</shell:ApplicationBar.MenuItems>
 		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

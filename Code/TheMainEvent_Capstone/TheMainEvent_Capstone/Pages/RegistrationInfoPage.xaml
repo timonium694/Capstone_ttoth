@@ -66,7 +66,7 @@
 			<StackPanel>
 				<toolkit:PhoneTextBox x:Name="firstNameBox" Width="300" Hint="First Name" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="2"/>
 				<toolkit:PhoneTextBox x:Name="lastNameBox" Width="300" Hint="Last Name" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="3"/>
-				<TextBlock x:Name="phoneStatus" Text="Enter a valid phone number: 330-766-0092" TextAlignment="Center" Width="350" Visibility="Visible" TextWrapping="Wrap"/>
+				<TextBlock x:Name="phoneStatus" Text="Enter a valid phone number: 3307660092" TextAlignment="Center" Width="350" Visibility="Collapsed" TextWrapping="Wrap"/>
 				<toolkit:PhoneTextBox x:Name="phoneBox" Width="300" Hint="Phone Number" Height="72" HorizontalAlignment="Center" toolkit:TurnstileFeatherEffect.FeatheringIndex="4" TextChanged="phoneBox_TextChanged"/>
 				
 				<toolkit:PhoneTextBox x:Name="bioBox" Hint="Bio" Width="300" Height="72" AcceptsReturn="True" TextWrapping="Wrap" GotFocus="bioBox_GotFocus" LostFocus="bioBox_LostFocus"/>

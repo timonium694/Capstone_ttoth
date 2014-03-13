@@ -32,6 +32,7 @@ namespace TheMainEvent_Capstone.Pages
 			string email = this.merchantBox.Text;
 			
 			ui.MerchantEmail = email;
+			ui.UseCalendar = (bool)allowAppointMents.IsChecked;
 			await ud.UpdateUserInfo(ui);
 		}
 		protected override void OnNavigatedFrom(NavigationEventArgs e)

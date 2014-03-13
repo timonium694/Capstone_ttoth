@@ -15,6 +15,8 @@ using Parse;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using PayPal.Checkout;
+using Microsoft.Phone.Scheduler;
+using Windows.Phone.System.UserProfile;
 
 namespace TheMainEvent_Capstone.Pages
 {
@@ -33,6 +35,7 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			InitializeComponent();
 		}
+
 		protected async override void OnNavigatedTo(NavigationEventArgs e)
 		{
 			this.ShowLoadingBar();
@@ -173,7 +176,7 @@ namespace TheMainEvent_Capstone.Pages
 			{
 				this.noEvents = true;
 			}
-			
+
 		}
 		private async Task LoadInvites()
 		{
@@ -193,6 +196,7 @@ namespace TheMainEvent_Capstone.Pages
 						Cost = e.Cost,
 						Date = e.Date,
 						Description = e.Description,
+						IsDonatable = e.IsDonatable
 					};
 					this.Invites.Add(ivm);
 				}
@@ -208,12 +212,12 @@ namespace TheMainEvent_Capstone.Pages
 			ParseUser p = ParseUser.CurrentUser;
 			cur = await ud.GetUserInfo(p.ObjectId);
 			ProfilePage.DataContext = cur;
-			ProfilePage.Header = cur.FirstName + " " + cur.LastName;	
+			ProfilePage.Header = cur.FirstName + " " + cur.LastName;
 		}
 
 		private async Task LoadContacts()
 		{
-			if (ContactList.ItemsSource!=null)
+			if (ContactList.ItemsSource != null)
 				this.ContactList.ItemsSource.Clear();
 			UserDAL ud = new UserDAL();
 			List<string> ids = await ud.GetContacts(ParseUser.CurrentUser.ObjectId);
@@ -280,12 +284,27 @@ namespace TheMainEvent_Capstone.Pages
 					case CustomMessageBoxResult.RightButton:
 						if (ivm.Cost > 0)
 						{
-							MessageBox.Show("You will be redirected to the event page, you can pay from there.");
+							MessageBox.Show("You must pay to attend this event, you will be redirected to the event page.");
+							NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml?msg=" + ivm.ID, UriKind.Relative));
+						}
+						else if (ivm.IsDonatable)
+						{
+							MessageBox.Show("You have the option to donate to this page, you will be redirected to the event page to continue.");
 							NavigationService.Navigate(new Uri("/Pages/EventPanorama.xaml?msg=" + ivm.ID, UriKind.Relative));
 						}
 						else
 						{
 							this.ShowLoadingBar();
+
+							NotificationDAL nd = new NotificationDAL();
+							Notification n = new Notification();
+							UserDAL ud = new UserDAL();
+							string ownerId = await ed.GetOwner(ivm.ID);
+							UserInfo owner = await ud.GetUserInfo(ownerId);
+							n.User = owner.User;
+							n.Date = DateTime.Now;
+							n.Message = this.cur.FirstName + " " + cur.LastName + " is attending " + ivm.Title;
+							await nd.CreateNotification(n);
 							await ed.AddAttendee(ivm.ID, cur.User);
 							await this.LoadInvites();
 							this.ShowUI();
@@ -300,6 +319,7 @@ namespace TheMainEvent_Capstone.Pages
 						MessageBox.Show("You have rejected the invitation for " + ivm.Title);
 						break;
 					case CustomMessageBoxResult.None:
+						message.Dismiss();
 						break;
 					default:
 						break;
@@ -355,6 +375,10 @@ namespace TheMainEvent_Capstone.Pages
 			NavigationService.Navigate(new Uri("/Pages/UserAccountSettingsPage.xaml", UriKind.Relative));
 		}
 
+		private void navToNotifications(object sender, EventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pages/NotificationsPage.xaml", UriKind.Relative));
+		}
 		private void MainPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			switch (((Pivot)sender).SelectedIndex)
@@ -380,6 +404,6 @@ namespace TheMainEvent_Capstone.Pages
 			UserInfo ui = (UserInfo)ContactList.SelectedItem;
 			NavigationService.Navigate(new Uri("/Pages/Contact.xaml?msg=" + ui.User, UriKind.Relative));
 		}
-		
+
 	}
 }

@@ -47,7 +47,7 @@ namespace TheMainEvent_Capstone.Pages
 		ObservableCollection<UserInfo> AttendingInfo = new ObservableCollection<UserInfo>();
 		ObservableCollection<ContactViewModel> AttendingUsers = new ObservableCollection<ContactViewModel>();
 		List<GeoCoordinate> MyCoordinates = new List<GeoCoordinate>();
-		GeoCoordinate g;
+		GeoCoordinate eventLoc;
 		GeoCoordinate myLoc;
 		RouteQuery MyQuery = null;
 		GeocodeQuery Mygeocodequery = null;
@@ -187,6 +187,13 @@ namespace TheMainEvent_Capstone.Pages
 				await this.LoadEvent();
 				this.LoadMap();
 				await this.LoadTweets();
+				Map.Center = this.eventLoc;
+				UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
+				marker.GeoCoordinate = this.eventLoc;
+
+				Pushpin pushpin = (Pushpin)this.FindName("MyPushpin");
+				pushpin.GeoCoordinate = this.myLoc;
+				Map.SetView(this.eventLoc, 13);
 
 				if (evm.Type.Equals("Meeting"))
 				{
@@ -284,6 +291,12 @@ namespace TheMainEvent_Capstone.Pages
 				{
 					statusBlock.Text = "Your payment is complete. Transaction id: " + args.TransactionID;
 					EventDAL ed = new EventDAL();
+					NotificationDAL nd = new NotificationDAL();
+					Notification n = new Notification();
+					n.User = owner.User;
+					n.Date = DateTime.Now;
+					n.Message = this.currentUser.FirstName + " " + currentUser.LastName + " is attending " + this.evm.Title;
+					await nd.CreateNotification(n);
 					await ed.AddAttendee(evm.ID, currentUser.User);
 				});
 				bn.Cancel += new EventHandler<PayPal.Checkout.Event.CancelEventArgs>((source, args) =>
@@ -318,11 +331,26 @@ namespace TheMainEvent_Capstone.Pages
 		private async void unattendButton_Click(object sender, EventArgs e)
 		{
 			EventDAL ed = new EventDAL();
+			NotificationDAL nd = new NotificationDAL();
+			Notification n = new Notification();
+			n.User = owner.User;
+			n.Date = DateTime.Now;
+			n.Message = this.currentUser.FirstName + " " + currentUser.LastName + " is NOT attending " + this.evm.Title;
+			await nd.CreateNotification(n);
 			await ed.UnattendEvent(this.evm.ID, this.currentUser.User);
 		}
 		private async void cancelEventButton_Click(object sender, EventArgs e)
 		{
 			EventDAL ed = new EventDAL();
+			NotificationDAL nd = new NotificationDAL();
+			foreach(UserInfo ui in this.InvitedInfo)
+			{
+				Notification n = new Notification();
+				n.User = ui.User;
+				n.Date = DateTime.Now;
+				n.Message = this.evm.Title + " has been cancelled";
+				await nd.CreateNotification(n);
+			}
 			await ed.DeleteEvent(this.evm.ID);
 		}
 
@@ -356,19 +384,7 @@ namespace TheMainEvent_Capstone.Pages
 
 				var twitterCtx = new TwitterContext(auth);
 
-				decimal latitude = 37.78215m;
-				decimal longitude = -122.40060m;
-
-				Status tweet = await twitterCtx.TweetAsync(this.tweetBox.Text, latitude, longitude);
-
-
-				BackgroundWorker worker = new BackgroundWorker();
-				worker.RunWorkerCompleted += new
-
-				RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
-				worker.DoWork += new DoWorkEventHandler(worker_DoWork);
-				worker.RunWorkerAsync();
-
+				Status tweet = await twitterCtx.TweetAsync(this.tweetBox.Text);
 
 			}
 			else
@@ -464,6 +480,12 @@ namespace TheMainEvent_Capstone.Pages
 
 			this.Maps_GeoCoding(null, null);
 			this.OneShotLocation_Click(null, null);
+			//Map.Center = this.eventLoc;
+			//UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
+			//marker.GeoCoordinate =	this.eventLoc;
+
+			//Pushpin pushpin = (Pushpin)this.FindName("MyPushpin");
+			//MyPushpin.GeoCoordinate = this.myLoc;
 			//this.GetCoordinates();
 			//DrawMapMarker(eventLoc, Colors.Black, layer);
 			//DrawMapMarker(current, Colors.Black, layer);
@@ -579,6 +601,7 @@ namespace TheMainEvent_Capstone.Pages
 
 		private void kickAttendants_Click(object sender, EventArgs e)
 		{
+			NavigationService.Navigate(new Uri("/Pages/KickAttendants.xaml?msg=" + this.evm.ID, UriKind.Relative));
 		}
 
 		private void Maps_GeoCoding(object sender, RoutedEventArgs e)
@@ -595,12 +618,8 @@ namespace TheMainEvent_Capstone.Pages
 		void query_QueryCompleted(object sender, QueryCompletedEventArgs<IList<MapLocation>> e)
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("Ferry Building Geocoding results...");
 			var item = e.Result[0];
-			this.g = item.GeoCoordinate;
-			
-			
-			MessageBox.Show(sb.ToString());
+			this.eventLoc = item.GeoCoordinate;
 		}
 
 		private async void OneShotLocation_Click(object sender, RoutedEventArgs e)
@@ -627,6 +646,12 @@ namespace TheMainEvent_Capstone.Pages
 			{
 				
 			}
+		}
+
+		private void AttendingList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			UserInfo ui = (UserInfo)((LongListSelector)sender).SelectedItem;
+			NavigationService.Navigate(new Uri("/Pages/Contact.xaml?msg=" + ui.User, UriKind.Relative));
 		}
 
 

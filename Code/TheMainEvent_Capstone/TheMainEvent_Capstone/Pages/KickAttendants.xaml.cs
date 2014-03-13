@@ -47,9 +47,14 @@ namespace TheMainEvent_Capstone.Pages
 		private async void kiskUsers_Click(object sender, EventArgs e)
 		{
 			EventDAL ed = new EventDAL();
+			NotificationDAL nd = new NotificationDAL();
 			foreach (var item in contactList.SelectedItems)
 			{
+				Notification n = new Notification();
 				UserInfo ui = (UserInfo)item;
+				n.Date = DateTime.Now;
+				n.Message = "You have been kicked from " + ev.Title;
+				n.User = ui.User;
 				await ed.UnattendEvent(ui.User, this.eventId);
 			}
 		}

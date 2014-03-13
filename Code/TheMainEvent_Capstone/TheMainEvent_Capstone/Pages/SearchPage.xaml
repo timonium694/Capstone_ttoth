@@ -88,7 +88,7 @@
 												<TextBlock x:Name="timeBlock" Text="{Binding Time, StringFormat='H:mm tt'}" FontWeight="Bold" Style="{StaticResource PhoneTextSubtleStyle}"/>
 											</StackPanel>
 											<TextBlock 
-												Text="Description"
+												Text="{Binding Description}"
 												TextWrapping="Wrap"
 												Style="{StaticResource PhoneTextSubtleStyle}"
 												/>
@@ -116,7 +116,7 @@
 												<Image Width="90" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
 												<StackPanel VerticalAlignment="Top" Margin="10,0,0,0">
 													<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" Style="{StaticResource PhoneTextExtraLargeStyle}" />
-													<TextBlock Text="{Binding LastName}" FontSize="30"/>
+													<TextBlock Text="{Binding LastName}" Margin="15,0,0,0" FontSize="30"/>
 												</StackPanel>
 											</StackPanel>
 										</StackPanel>

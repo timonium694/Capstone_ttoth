@@ -22,6 +22,7 @@ namespace TheMainEvent_Capstone.Pages
 	{
 		ObservableCollection<UserInfo> Users = new ObservableCollection<UserInfo>();
 		ParseUser user;
+		UserInfo cur;
 		public CreateEvent()
 		{
 			InitializeComponent();
@@ -41,8 +42,8 @@ namespace TheMainEvent_Capstone.Pages
 			otherDetailsBox.LostFocus += this.OtherDetailsBox_LostFocus;
 			titleBox.TextChanged += this.title_TextChanged;
 			UserDAL ud = new UserDAL();
-			UserInfo ui = await ud.GetUserInfo(ParseUser.CurrentUser.ObjectId);
-			if (ui.MerchantEmail.Equals("none"))
+			cur = await ud.GetUserInfo(ParseUser.CurrentUser.ObjectId);
+			if (cur.MerchantEmail.Equals("none"))
 				costPanel.Visibility = Visibility.Collapsed;
 		}
 
@@ -73,7 +74,7 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			TextBox box = (TextBox)sender;
 		}
-		private async void CreateEvent_Click()
+		private async void Create()
 		{
 			string eventToAdd = "";
 			this.statusBlock.Text = "Creating...";
@@ -109,10 +110,20 @@ namespace TheMainEvent_Capstone.Pages
 					string creatorId = ParseUser.CurrentUser.ObjectId;
 					eventToAdd = await ed.NewestEventFromUser(ParseUser.CurrentUser.ObjectId);
 					await ed.SetOwner(eventToAdd, creatorId);
+					NotificationDAL nd = new NotificationDAL();
 					foreach (Object i in contacts.SelectedItems)
 					{
-						ContactViewModel con = (ContactViewModel)i;
-						await ed.InviteUser(con.User, eventToAdd, creatorId);
+						UserInfo ui = (UserInfo)i;
+						Notification n = new Notification();
+						n.User = ui.User;
+						n.Date = DateTime.Now;
+						n.Message = cur.FirstName + " " + cur.LastName + " has invited you to " + ev.Title;
+						await nd.CreateNotification(n);
+						await ed.InviteUser(ui.User, eventToAdd, creatorId);
+					}
+					if (cur.UseCalendar)
+					{
+						CalendarSchedulaer.ScheduleEvent(ev);
 					}
 				}
 			}
@@ -124,8 +135,9 @@ namespace TheMainEvent_Capstone.Pages
 
 		}
 
-		private async void createButton_Click(object sender, RoutedEventArgs e)
+		private void createButton_Click(object sender, EventArgs e)
 		{
+			this.Create();
 		}
 
 		private void title_TextChanged(object sender, TextChangedEventArgs e)

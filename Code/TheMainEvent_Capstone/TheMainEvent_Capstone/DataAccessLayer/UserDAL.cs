@@ -56,6 +56,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 					output.FilterMode = p.Get<string>("filter");
 					var picFile = p.Get<ParseFile>("picFile");
 					output.ProfilePic = await new HttpClient().GetByteArrayAsync(picFile.Url);
+					output.UseCalendar = p.Get<bool>("useCalendar");
 				}
 			}
 			catch (Exception e)
@@ -82,6 +83,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			ParseFile picFile = new ParseFile("default.jpg", ui.ProfilePic);
 			await picFile.SaveAsync();
 			info["picFile"] = picFile;
+			info["useCalendar"] = ui.UseCalendar;
 			await info.SaveAsync();
 		}
 		public async Task CreateUser(User u)
@@ -136,6 +138,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			ParseFile picFile = new ParseFile("default.jpg", ui.ProfilePic);
 			await picFile.SaveAsync();
 			info["picFile"] = picFile;
+			info["useCalendar"] = ui.UseCalendar;
 			await info.SaveAsync();
 		}
 		public byte[] ConvertToBytes(BitmapImage bitmapImage)
@@ -193,6 +196,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 						output.FilterMode = p.Get<string>("filter");
 						var picFile = p.Get<ParseFile>("picFile");
 						output.ProfilePic = await new HttpClient().GetByteArrayAsync(picFile.Url);
+						output.UseCalendar = p.Get<bool>("useCalendar");
 					}
 					string currId = ParseUser.CurrentUser.ObjectId;
 					if (!users.Contains(output) && !output.User.Equals(currId))
@@ -225,6 +229,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 						output.FilterMode = p.Get<string>("filter");
 						var picFile = p.Get<ParseFile>("picFile");
 						output.ProfilePic = await new HttpClient().GetByteArrayAsync(picFile.Url);
+						output.UseCalendar = p.Get<bool>("useCalendar");
 					}
 					string currId = ParseUser.CurrentUser.ObjectId;
 					if (!users.Contains(output) && !output.User.Equals(currId))
@@ -235,6 +240,17 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 
 
 			return users;
+		}
+
+		public async Task RemoveContact(string user, string contactId)
+		{
+			var query = from contact in ParseObject.GetQuery("Contact")
+						where contact.Get<string>("user").Equals(user) && contact.Get<string>("contact").Equals(contactId)
+						select contact;
+			IEnumerable<ParseObject> cons = await query.FindAsync();
+			ParseObject p = cons.FirstOrDefault();
+			if (p != null)
+				await p.DeleteAsync();
 		}
 	}
 }

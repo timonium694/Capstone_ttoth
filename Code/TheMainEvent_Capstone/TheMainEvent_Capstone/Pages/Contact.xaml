@@ -38,7 +38,7 @@
 	<phone:PhoneApplicationPage.Resources>
 		<con:BytesToImageConverter x:Key="BytesToImageConverter"/>
 		<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
-			<shell:ApplicationBarIconButton x:Name="addContactIcon" IconUri="/Assets/AppBar/photo.flash.on.png" Text="add contact" Click="addContactItem_Click" />
+			<shell:ApplicationBarIconButton x:Name="addContactIcon" IconUri="/Assets/AppBar/photo.flash.on.png" Text="add contact" Click="removeContact_Click" />
 			<shell:ApplicationBarIconButton x:Name="inviteToMeetingIcon" IconUri="/Assets/AppBar/people.groups.png" Text="meeting" Click="inviteContactItem_Click" />
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>
@@ -48,7 +48,7 @@
 			</shell:ApplicationBar.MenuItems>
 		</shell:ApplicationBar>
 		<shell:ApplicationBar x:Key="IsContactAppBar" x:Name="IsContactAppBar" IsVisible="True" IsMenuEnabled="True">
-			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/photo.flash.on.png" Text="remove contact" Click="addContactItem_Click" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/photo.flash.on.png" Text="remove" Click="addContactItem_Click" />
 			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/people.groups.png" Text="meeting" Click="inviteContactItem_Click" />
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem Text="events" Click="eventsNav_Click"/>

@@ -73,21 +73,23 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 			<StackPanel>
-				<toolkit:LongListMultiSelector HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" x:Name="contactList" ItemsSource="{Binding Users}" Height="600" Margin="0,50,0,0" LayoutMode="List" EnforceIsSelectionEnabled="True">
-					<toolkit:LongListMultiSelector.ItemTemplate>
-						<DataTemplate>
-							<Grid Margin="0,15,0,-22">
-								<StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-									<Image Width="60" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
-									<StackPanel VerticalAlignment="Top" Margin="10,0,0,0" Orientation="Horizontal">
-										<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" />
-										<TextBlock Text="{Binding LastName}" />
+				<ScrollViewer>
+					<toolkit:LongListMultiSelector VerticalAlignment="Center" Width="300" x:Name="contactList" ItemsSource="{Binding Users}" Height="600" Margin="0,50,0,0" LayoutMode="List" EnforceIsSelectionEnabled="True">
+						<toolkit:LongListMultiSelector.ItemTemplate>
+							<DataTemplate>
+								<Grid Margin="0,5,0,-22">
+									<StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+										<Image Width="60" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
+										<StackPanel VerticalAlignment="Top" Margin="10,0,0,0" Orientation="Horizontal">
+											<TextBlock FontWeight="Bold"  Text="{Binding FirstName}" />
+											<TextBlock Text="{Binding LastName}" />
+										</StackPanel>
 									</StackPanel>
-								</StackPanel>
-							</Grid>
-						</DataTemplate>
-					</toolkit:LongListMultiSelector.ItemTemplate>
-				</toolkit:LongListMultiSelector>
+								</Grid>
+							</DataTemplate>
+						</toolkit:LongListMultiSelector.ItemTemplate>
+					</toolkit:LongListMultiSelector>
+				</ScrollViewer>
 			</StackPanel>
 		</Grid>
     </Grid>

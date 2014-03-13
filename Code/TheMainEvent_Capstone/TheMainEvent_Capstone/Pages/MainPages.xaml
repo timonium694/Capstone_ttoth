@@ -67,6 +67,7 @@
 		
 		<shell:ApplicationBar x:Key="DefaultAppBar" x:Name="defaultBar" IsVisible="True" IsMenuEnabled="True">
 			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.add.png" Text="create" Click="navToCreate" />
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.alert.png" Text="alerts" Click="navToNotifications" />
 
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem Text="edit profile" Click="navToEditAccount"/>
@@ -127,7 +128,7 @@
 										Style="{StaticResource PhoneTextSubtleStyle}"
 										/>
 									</StackPanel>
-									<StackPanel HorizontalAlignment="Right" Height="120" Margin="0,0,10,0">
+									<StackPanel HorizontalAlignment="Right" Margin="0,15,0,0">
 										<StackPanel Orientation="Horizontal">
 											<TextBlock Text="$"/>
 											<TextBlock Text="{Binding Cost}"/>
@@ -136,6 +137,7 @@
 								</Grid>
 							</DataTemplate>
 						</phone:LongListSelector.ItemTemplate>
+
 					</phone:LongListSelector>
 
 				</Grid>
@@ -160,7 +162,7 @@
 						SelectionChanged="ContactList_SelectionChanged">
 						<phone:LongListSelector.ItemTemplate>
 							<DataTemplate>
-								<StackPanel VerticalAlignment="Top" Margin="10,0,0,0">
+								<StackPanel VerticalAlignment="Top" Margin="10,5,0,5">
 									<StackPanel Orientation="Horizontal">
 										<Image Width="50" VerticalAlignment="Top" Stretch="Uniform" Source="{Binding ProfilePic, Converter={StaticResource BytesToImageConverter}}"/>
 										<StackPanel VerticalAlignment="Top" Margin="10,0,0,0">

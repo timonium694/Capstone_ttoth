@@ -16,5 +16,6 @@ namespace TheMainEvent_Capstone.Model.ViewModels
 		public DateTime Date { get; set; }
 		public DateTime Time { get; set; }
 		public string Description { get; set; }
+		public bool IsDonatable { get; set; }
 	}
 }

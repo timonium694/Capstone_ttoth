@@ -264,6 +264,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 		}
 		public async Task DeleteEvent(string eventId)
 		{
+			NotificationDAL nd = new NotificationDAL();
 			var query = (from invite in ParseObject.GetQuery("UserInvites")
 						 where invite.Get<string>("event").Equals(eventId)
 						 where invite.Get<string>("isAccepted").Equals("false")
@@ -271,6 +272,7 @@ namespace TheMainEvent_Capstone.DataAccessLayer
 			IEnumerable<ParseObject> invites = await query.FindAsync();
 			foreach (ParseObject p in invites)
 			{
+				
 				await p.DeleteAsync();
 			}
 			var query1 = (from attendee in ParseObject.GetQuery("eventAttendee")

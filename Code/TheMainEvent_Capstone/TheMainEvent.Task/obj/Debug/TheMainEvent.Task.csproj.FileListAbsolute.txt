@@ -1,0 +1,4 @@
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent.Task\Bin\Debug\TheMainEvent.Task.dll
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent.Task\Bin\Debug\TheMainEvent.Task.pdb
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent.Task\obj\Debug\TheMainEvent.Task.dll
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\TheMainEvent.Task\obj\Debug\TheMainEvent.Task.pdb

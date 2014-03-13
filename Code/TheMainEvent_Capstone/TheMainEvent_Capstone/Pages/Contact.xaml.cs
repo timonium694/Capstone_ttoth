@@ -72,6 +72,7 @@ namespace TheMainEvent_Capstone.Pages
 		{
 			UserDAL ud = new UserDAL();
 			ud.AddContact(cur.User, ui.User);
+			MessageBox.Show(ui.FirstName + " " + ui.LastName + " has been added as a contact.");
 		}
 
 
@@ -342,6 +343,13 @@ namespace TheMainEvent_Capstone.Pages
 				}
 			};
 			message.Show();
+		}
+
+		private void removeContact_Click(object sender, EventArgs e)
+		{
+			UserDAL ud = new UserDAL();
+			
+			MessageBox.Show(ui.FirstName + " " + ui.LastName + " has been added as a contact.");
 		}
 	}
 }

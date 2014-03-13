@@ -49,6 +49,8 @@ namespace TheMainEvent_Capstone
 		{
 			string username = usernameBox.Text;
 			string password = passwordBox.Password;
+			username = "Timonium";
+			password = "CorrectHorse1";
 			this.loadingBar.Visibility = Visibility.Visible;
 			this.loadingBar.IsIndeterminate = true;
 
@@ -80,6 +82,9 @@ namespace TheMainEvent_Capstone
 			}
 			catch (Exception ex)
 			{
+
+				this.loadingBar.Visibility = Visibility.Collapsed;
+				this.loadingBar.IsIndeterminate = false;
 				this.errorBox.Text = "Please provide a valid username and password or Register an Account";
 				//NavigationService.Navigate(new Uri("MainPage.xaml?msg=" + "Please provide a valid username and password or Register an Account", UriKind.Relative));
 			}

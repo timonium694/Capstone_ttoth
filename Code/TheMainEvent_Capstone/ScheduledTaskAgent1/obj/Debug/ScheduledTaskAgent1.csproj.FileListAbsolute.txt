@@ -1,0 +1,4 @@
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\ScheduledTaskAgent1\Bin\Debug\ScheduledTaskAgent1.dll
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\ScheduledTaskAgent1\Bin\Debug\ScheduledTaskAgent1.pdb
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\ScheduledTaskAgent1\obj\Debug\ScheduledTaskAgent1.dll
+C:\Users\Tim\TheMainEvent\Code\TheMainEvent_Capstone\ScheduledTaskAgent1\obj\Debug\ScheduledTaskAgent1.pdb
